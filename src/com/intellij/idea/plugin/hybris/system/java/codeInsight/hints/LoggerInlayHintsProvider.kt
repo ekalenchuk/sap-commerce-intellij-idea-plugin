@@ -28,6 +28,7 @@ import com.intellij.codeInsight.hints.settings.language.isInlaySettingsEditor
 import com.intellij.idea.plugin.hybris.common.HybrisConstants
 import com.intellij.idea.plugin.hybris.common.utils.HybrisIcons
 import com.intellij.idea.plugin.hybris.settings.components.ProjectSettingsComponent
+import com.intellij.idea.plugin.hybris.tools.logging.CxLoggerAccess
 import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -62,6 +63,7 @@ class LoggerInlayHintsProvider : JavaCodeVisionProviderBase() {
         get() = emptyList()
 
     override fun computeLenses(editor: Editor, psiFile: PsiFile): List<Pair<TextRange, CodeVisionEntry>> {
+        val project = psiFile.project
         if (!ProjectSettingsComponent.getInstance(psiFile.project).isHybrisProject()) return emptyList()
 
         val entries = mutableListOf<Pair<TextRange, CodeVisionEntry>>()
@@ -90,7 +92,9 @@ class LoggerInlayHintsProvider : JavaCodeVisionProviderBase() {
 
                 val handler = ClickHandler(targetElement, loggerIdentifier)
                 val range = InlayHintsUtils.getTextRangeWithoutLeadingCommentsAndWhitespaces(targetElement)
-                entries.add(range to ClickableTextCodeVisionEntry("[y] log level", id, handler, HybrisIcons.Y.REMOTE, "", "Setup the logger for SAP Commerce Cloud"))
+
+                val text = CxLoggerAccess.getInstance(project).getLoggers().get(loggerIdentifier)?.let { "[y] log level [${it.effectiveLevel}]" } ?: "[y] log level"
+                entries.add(range to ClickableTextCodeVisionEntry(text, id, handler, HybrisIcons.Y.REMOTE, "", "Setup the logger for SAP Commerce Cloud"))
             }
         })
 

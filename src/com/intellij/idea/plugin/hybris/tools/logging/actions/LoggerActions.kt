@@ -21,6 +21,7 @@ package com.intellij.idea.plugin.hybris.tools.logging.actions
 import com.intellij.idea.plugin.hybris.common.HybrisConstants
 import com.intellij.idea.plugin.hybris.common.utils.HybrisIcons
 import com.intellij.idea.plugin.hybris.notifications.Notifications
+import com.intellij.idea.plugin.hybris.tools.logging.CxLoggerAccess
 import com.intellij.idea.plugin.hybris.tools.remote.RemoteConnectionType
 import com.intellij.idea.plugin.hybris.tools.remote.RemoteConnectionUtil
 import com.intellij.idea.plugin.hybris.tools.remote.http.AbstractHybrisHacHttpClient
@@ -133,3 +134,15 @@ class WarnLoggerAction : AbstractLoggerAction("WARN", HybrisIcons.Log.Level.WARN
 class ErrorLoggerAction : AbstractLoggerAction("ERROR", HybrisIcons.Log.Level.ERROR)
 class FatalLoggerAction : AbstractLoggerAction("FATAL", HybrisIcons.Log.Level.FATAL)
 class SevereLoggerAction : AbstractLoggerAction("SEVERE", HybrisIcons.Log.Level.SEVERE)
+
+class FetchLoggerStateAction : AnAction("Fetch Logger State", "", HybrisIcons.Log.Level.ALL) {
+    override fun actionPerformed(e: AnActionEvent) {
+        val project = e.project ?: return
+
+        val cxLoggerAccess = CxLoggerAccess.getInstance(project)
+        cxLoggerAccess.fetchLoggers()
+        cxLoggerAccess.getLoggers().forEach { println("${it.key} - [${it.value.name}|${it.value.parentName}|${it.value.effectiveLevel}]") }
+
+
+    }
+}

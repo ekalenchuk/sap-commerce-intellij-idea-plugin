@@ -19,6 +19,9 @@
 <idea-plugin>
     <actions>
         <group id="sap.cx.logging.actions" popup="true">
+
+            <action class="com.intellij.idea.plugin.hybris.tools.logging.actions.FetchLoggerStateAction"/>
+
             <separator text="Active Connection"/>
 
             <reference id="hybris.hac.chooseConnection"/>
@@ -34,5 +37,6 @@
             <action class="com.intellij.idea.plugin.hybris.tools.logging.actions.FatalLoggerAction"/>
             <action class="com.intellij.idea.plugin.hybris.tools.logging.actions.SevereLoggerAction"/>
         </group>
+        
     </actions>
 </idea-plugin>
