@@ -19,7 +19,7 @@
 package com.intellij.idea.plugin.hybris.tools.logging
 
 import com.intellij.idea.plugin.hybris.notifications.Notifications
-import com.intellij.idea.plugin.hybris.system.bean.meta.BSMetaModel
+import com.intellij.idea.plugin.hybris.tools.logging.actions.CxLoggerCacheTracker
 import com.intellij.idea.plugin.hybris.tools.remote.RemoteConnectionType
 import com.intellij.idea.plugin.hybris.tools.remote.RemoteConnectionUtil
 import com.intellij.idea.plugin.hybris.tools.remote.http.AbstractHybrisHacHttpClient
@@ -28,84 +28,83 @@ import com.intellij.javascript.nodejs.execution.withBackgroundProgress
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.Key
-import com.intellij.openapi.util.ModificationTracker
-import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
-import com.intellij.psi.util.PsiModificationTracker
 import kotlinx.coroutines.runBlocking
 
 @Service(Service.Level.PROJECT)
 class CxLoggerAccess(private val project: Project) {
     companion object {
-        private val CACHE_KEY = Key.create<CachedValue<BSMetaModel>>("CX_LOGGER_CACHE_KEY")
-
         fun getInstance(project: Project): CxLoggerAccess = project.getService(CxLoggerAccess::class.java)
     }
 
-    private var cache: CachedValue<Map<String, CxLoggerModel>>? = null
-
-    fun fetchLoggers() {
-        cache = CachedValuesManager.getManager(project).createCachedValue(
+    fun getLoggers(): Map<String, CxLoggerModel> {
+        return CachedValuesManager.getManager(project).getCachedValue<Map<String, CxLoggerModel>>(
+            project,
             {
+
                 val localCache: Map<String, CxLoggerModel> = runBlocking {
                     withBackgroundProgress(project, "Loading loggers from SAP Commerce...") {
-                        val groovyScriptResult = HybrisHacHttpClient.getInstance(project).executeGroovyScript(
-                            project, """
+                        try {
+                            val groovyScriptResult = HybrisHacHttpClient.getInstance(project).executeGroovyScript(
+                                project, """
                             import de.hybris.platform.core.Registry
                             import de.hybris.platform.hac.facade.HacLog4JFacade
                             import java.util.stream.Collectors
-                            
+
                             Registry.applicationContext.getBean("hacLog4JFacade", HacLog4JFacade.class).getLoggers().stream()
                                     .map { it -> it.name + " | " + it.parentName + " | " + it.effectiveLevel }
                                     .collect(Collectors.joining("\n"))
                         """.trimIndent(), false, AbstractHybrisHacHttpClient.DEFAULT_HAC_TIMEOUT
-                        )
+                            )
 
-                        val server = RemoteConnectionUtil.getActiveRemoteConnectionSettings(project, RemoteConnectionType.Hybris)
+                            val server = RemoteConnectionUtil.getActiveRemoteConnectionSettings(project, RemoteConnectionType.Hybris)
 
-                        if (groovyScriptResult.statusCode == 200) {
-                            Notifications.create(
-                                NotificationType.INFORMATION, "Loading loggers from SAP Commerce...", """
+                            if (groovyScriptResult.statusCode == 200) {
+                                Notifications.create(
+                                    NotificationType.INFORMATION, "Loading loggers from SAP Commerce...", """
                                 <p>Loggers state is fetched.</p>
                                 <p>${server.shortenConnectionName()}</p>
                             """.trimIndent()
-                            ).hideAfter(5).notify(project)
-                        } else {
-                            Notifications.create(
-                                NotificationType.ERROR, "Loading loggers from SAP Commerce...", """
+                                ).hideAfter(5).notify(project)
+                            } else {
+                                Notifications.create(
+                                    NotificationType.ERROR, "Loading loggers from SAP Commerce...", """
                                 <p>Failed to fetch logger states.</p>
                                 <p>${server.shortenConnectionName()}</p>
                             """.trimIndent()
-                            ).hideAfter(5).notify(project)
-                        }
-                        val resultAsString = groovyScriptResult.result
-
-                        resultAsString
-                            .splitToSequence("\n")
-                            .map { it -> it.split(" | ") }
-                            .map { it ->
-                                if (it.size == 3)
-                                    CxLoggerModel(it[0], it[2], it[1])
-                                else {
-                                    println("!!!------------------!!!")
-                                    it.forEach { logger -> println("!!!$logger") }
-                                    println("!!!${it.size}")
-                                    println("!!!------------------!!!")
-                                    CxLoggerModel(null, null, null)
-                                }
+                                ).hideAfter(5).notify(project)
                             }
-                            .associateBy { it.name!! }
+                            val resultAsString = groovyScriptResult.result
+
+                            resultAsString
+                                .splitToSequence("\n")
+                                .map { it -> it.split(" | ") }
+                                .map { it ->
+                                    if (it.size == 3)
+                                        CxLoggerModel(it[0], it[2], it[1])
+                                    else {
+                                        println("!!!------------------!!!")
+                                        it.forEach { logger -> println("!!!$logger") }
+                                        println("!!!${it.size}")
+                                        println("!!!------------------!!!")
+                                        CxLoggerModel(null, null, null)
+                                    }
+                                }
+                                .associateBy { it.name!! }
+                        } catch (e: Exception) {
+                            println("!!!------------------!!!")
+                            println("!!!${e.message}")
+                            println("!!!------------------!!!")
+                            return@withBackgroundProgress mutableMapOf()
+                        }
                     }
                 }
-                CachedValueProvider.Result.create(
-                    localCache,
-                    ModificationTracker.NEVER_CHANGED
-                )
-            }, false
+
+                CachedValueProvider.Result.create(localCache, CxLoggerCacheTracker)
+            }
         )
     }
 
-    fun getLoggers(): Map<String, CxLoggerModel> = cache?.value ?: emptyMap()
+    fun refresh() = CxLoggerCacheTracker.incModificationCount()
 }

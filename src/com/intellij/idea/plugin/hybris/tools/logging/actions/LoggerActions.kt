@@ -18,6 +18,7 @@
 
 package com.intellij.idea.plugin.hybris.tools.logging.actions
 
+import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.idea.plugin.hybris.common.HybrisConstants
 import com.intellij.idea.plugin.hybris.common.utils.HybrisIcons
 import com.intellij.idea.plugin.hybris.notifications.Notifications
@@ -32,11 +33,15 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import javax.swing.Icon
+
 
 abstract class AbstractLoggerAction(private val logLevel: String, val icon: Icon) : AnAction(logLevel, "", icon) {
 
@@ -81,8 +86,8 @@ abstract class AbstractLoggerAction(private val logLevel: String, val icon: Icon
                                     <p>Level  : $logLevel</p>
                                     <p>Logger : $abbreviationLogIdentifier</p>
                                     <p>${server.shortenConnectionName()}</p>"""
-
                             )
+                            CxLoggerAccess.getInstance(project).refresh()
                         } else {
                             notify(
                                 project,
@@ -138,11 +143,17 @@ class SevereLoggerAction : AbstractLoggerAction("SEVERE", HybrisIcons.Log.Level.
 class FetchLoggerStateAction : AnAction("Fetch Logger State", "", HybrisIcons.Log.Level.ALL) {
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
+        CxLoggerAccess.getInstance(project).refresh()
 
-        val cxLoggerAccess = CxLoggerAccess.getInstance(project)
-        cxLoggerAccess.fetchLoggers()
-        cxLoggerAccess.getLoggers().forEach { println("${it.key} - [${it.value.name}|${it.value.parentName}|${it.value.effectiveLevel}]") }
-
+//        val fileEditorManager = FileEditorManager.getInstance(project)
+//        val file: VirtualFile? = psiFile.getVirtualFile()
+//        if (file != null && fileEditorManager.isFileOpen(file)) {
+//            val editor: Editor? = fileEditorManager.getSelectedTextEditor()
+//            if (editor != null) {
+//                //InlayHintsPassFactory.forceHintsUpdateOnNextPass()
+//                DaemonCodeAnalyzer.getInstance(project).restart(psiFile)
+//            }
+//        }
 
     }
 }
