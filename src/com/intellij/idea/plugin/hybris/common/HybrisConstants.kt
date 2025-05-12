@@ -716,6 +716,7 @@ object HybrisConstants {
     val KEY_ANT_UPDATE_MAVEN_DEPENDENCIES = Key.create<Boolean>("notification_update_external-dependencies.xml")
 
     val LOGGER_IDENTIFIER_DATA_CONTEXT_KEY = DataKey.create<String>("sap.cx.logger.identifier")
+    val LOGGER_INLAY_HINT_TEXT_DATA_CONTEXT_KEY = DataKey.create<String>("sap.cx.logger.status.hint.text")
 
     const val FXS_DUMMY_IDENTIFIER = CompletionUtilCore.DUMMY_IDENTIFIER_TRIMMED
     val FXS_SUPPORTED_ELEMENT_TYPES = setOf(

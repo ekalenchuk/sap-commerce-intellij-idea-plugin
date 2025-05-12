@@ -19,6 +19,8 @@
 package com.intellij.idea.plugin.hybris.tools.logging.actions
 
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
+import com.intellij.codeInsight.daemon.impl.DaemonCodeAnalyzerEx
+import com.intellij.codeInsight.daemon.impl.InlayHintsPassFactoryInternal
 import com.intellij.idea.plugin.hybris.common.HybrisConstants
 import com.intellij.idea.plugin.hybris.common.utils.HybrisIcons
 import com.intellij.idea.plugin.hybris.notifications.Notifications
@@ -32,14 +34,21 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.ReadAction
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.impl.DocumentImpl
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.util.Disposer
+import com.intellij.openapi.util.Key
+import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiFile
 import javax.swing.Icon
 
 
@@ -88,6 +97,13 @@ abstract class AbstractLoggerAction(private val logLevel: String, val icon: Icon
                                     <p>${server.shortenConnectionName()}</p>"""
                             )
                             CxLoggerAccess.getInstance(project).refresh()
+
+
+                            val editor = e.dataContext.getData<Editor>(CommonDataKeys.EDITOR) ?: return
+                            val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.document) ?: return
+
+                            forceInlayRefreshViaEdit(project, psiFile)
+
                         } else {
                             notify(
                                 project,
@@ -103,6 +119,36 @@ abstract class AbstractLoggerAction(private val logLevel: String, val icon: Icon
                     }
                 }
             })
+        }
+    }
+
+    fun forceInlayRefreshViaEdit(project: Project, psiFile: PsiFile) {
+        val document = PsiDocumentManager.getInstance(project).getDocument(psiFile) ?: return
+
+        if (document.isWritable) {
+            ApplicationManager.getApplication().invokeLater {
+                WriteCommandAction.runWriteCommandAction(project) {
+                    val lastLine = document.lineCount - 1
+                    val insertOffset = document.getLineEndOffset(lastLine)
+
+                    // Insert and delete a dummy newline to trigger editor updates
+                    document.insertString(insertOffset, "\n")
+                    PsiDocumentManager.getInstance(project).commitDocument(document)
+                    document.deleteString(insertOffset, insertOffset + 1)
+                    PsiDocumentManager.getInstance(project).commitDocument(document)
+
+                }
+            }
+        } else {
+//            ApplicationManager.getApplication().invokeLater {
+//                ReadAction.run {
+//                    val documentImpl = document as? DocumentImpl ?: return@run
+//                    documentImpl.modificationStamp += 1
+//                    PsiDocumentManager.getInstance(project).commitDocument(documentImpl)
+//                    //DaemonCodeAnalyzerEx.getInstanceEx(project).restart(psiFile)
+//                }
+//            }
+
         }
     }
 
@@ -139,21 +185,3 @@ class WarnLoggerAction : AbstractLoggerAction("WARN", HybrisIcons.Log.Level.WARN
 class ErrorLoggerAction : AbstractLoggerAction("ERROR", HybrisIcons.Log.Level.ERROR)
 class FatalLoggerAction : AbstractLoggerAction("FATAL", HybrisIcons.Log.Level.FATAL)
 class SevereLoggerAction : AbstractLoggerAction("SEVERE", HybrisIcons.Log.Level.SEVERE)
-
-class FetchLoggerStateAction : AnAction("Fetch Logger State", "", HybrisIcons.Log.Level.ALL) {
-    override fun actionPerformed(e: AnActionEvent) {
-        val project = e.project ?: return
-        CxLoggerAccess.getInstance(project).refresh()
-
-//        val fileEditorManager = FileEditorManager.getInstance(project)
-//        val file: VirtualFile? = psiFile.getVirtualFile()
-//        if (file != null && fileEditorManager.isFileOpen(file)) {
-//            val editor: Editor? = fileEditorManager.getSelectedTextEditor()
-//            if (editor != null) {
-//                //InlayHintsPassFactory.forceHintsUpdateOnNextPass()
-//                DaemonCodeAnalyzer.getInstance(project).restart(psiFile)
-//            }
-//        }
-
-    }
-}
