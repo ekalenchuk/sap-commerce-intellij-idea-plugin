@@ -32,6 +32,16 @@ import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import kotlinx.coroutines.runBlocking
 
+private const val FETCH_LOGGERS_STATE_GROOVY_SCRIPT = """
+    import de.hybris.platform.core.Registry
+    import de.hybris.platform.hac.facade.HacLog4JFacade
+    import java.util.stream.Collectors
+    
+    Registry.applicationContext.getBean("hacLog4JFacade", HacLog4JFacade.class).getLoggers().stream()
+            .map { it -> it.name + " | " + it.parentName + " | " + it.effectiveLevel }
+            .collect(Collectors.joining("\n"))
+"""
+
 @Service(Service.Level.PROJECT)
 class CxLoggerAccess(private val project: Project) {
     companion object {
@@ -42,42 +52,43 @@ class CxLoggerAccess(private val project: Project) {
         return CachedValuesManager.getManager(project).getCachedValue<Map<String, CxLoggerModel>>(
             project,
             {
-
                 val localCache: Map<String, CxLoggerModel> = runBlocking {
                     withBackgroundProgress(project, "Loading loggers from SAP Commerce...") {
                         try {
                             val groovyScriptResult = HybrisHacHttpClient.getInstance(project).executeGroovyScript(
-                                project, """
-                            import de.hybris.platform.core.Registry
-                            import de.hybris.platform.hac.facade.HacLog4JFacade
-                            import java.util.stream.Collectors
-
-                            Registry.applicationContext.getBean("hacLog4JFacade", HacLog4JFacade.class).getLoggers().stream()
-                                    .map { it -> it.name + " | " + it.parentName + " | " + it.effectiveLevel }
-                                    .collect(Collectors.joining("\n"))
-                        """.trimIndent(), false, AbstractHybrisHacHttpClient.DEFAULT_HAC_TIMEOUT
+                                project, FETCH_LOGGERS_STATE_GROOVY_SCRIPT.trimIndent(), false, AbstractHybrisHacHttpClient.DEFAULT_HAC_TIMEOUT
                             )
 
                             val server = RemoteConnectionUtil.getActiveRemoteConnectionSettings(project, RemoteConnectionType.Hybris)
 
                             if (groovyScriptResult.statusCode == 200) {
-                                Notifications.create(
-                                    NotificationType.INFORMATION, "Loading loggers from SAP Commerce...", """
-                                <p>Loggers state is fetched.</p>
-                                <p>${server.shortenConnectionName()}</p>
-                            """.trimIndent()
-                                ).hideAfter(5).notify(project)
+                                Notifications
+                                    .create(
+                                        NotificationType.INFORMATION,
+                                        "Loading loggers from SAP Commerce...",
+                                        """
+                                        <p>Loggers state is fetched.</p>
+                                        <p>${server.shortenConnectionName()}</p>
+                                    """.trimIndent()
+                                    )
+                                    .hideAfter(5)
+                                    .notify(project)
                             } else {
-                                Notifications.create(
-                                    NotificationType.ERROR, "Loading loggers from SAP Commerce...", """
-                                <p>Failed to fetch logger states.</p>
-                                <p>${server.shortenConnectionName()}</p>
-                            """.trimIndent()
-                                ).hideAfter(5).notify(project)
+                                Notifications
+                                    .create(
+                                        NotificationType.ERROR,
+                                        "Loading loggers from SAP Commerce...",
+                                        """
+                                            <p>Failed to fetch logger states.</p>
+                                            <p>${server.shortenConnectionName()}</p>
+                                        """.trimIndent()
+                                    )
+                                    .hideAfter(5)
+                                    .notify(project)
                             }
                             val resultAsString = groovyScriptResult.result
 
-                            resultAsString
+                            return@withBackgroundProgress resultAsString
                                 .splitToSequence("\n")
                                 .map { it -> it.split(" | ") }
                                 .map { it ->
@@ -87,6 +98,7 @@ class CxLoggerAccess(private val project: Project) {
                                         CxLoggerModel(null, null, null)
                                     }
                                 }
+                                .filter { it.name != null }
                                 .associateBy { it.name!! }
                         } catch (e: Exception) {
                             return@withBackgroundProgress mutableMapOf()
