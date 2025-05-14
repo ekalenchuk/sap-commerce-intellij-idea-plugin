@@ -126,15 +126,17 @@ class LoggerInlayHintsProvider : JavaCodeVisionProviderBase() {
         }
     }
 
+    class Test(richText: RichText)
+
     fun handleClick(editor: Editor, element: PsiElement, loggerIdentifier: String, text: RichText) {
-        text.append(" [x]", SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, JBColor.red))
+        //text.append(" [x]", SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, JBColor.red))
 
         val actionGroup = ActionManager.getInstance().getAction("sap.cx.logging.actions") as ActionGroup
         val project = editor.project ?: return
         val dataContext = SimpleDataContext.builder()
-            //.add(HybrisConstants.LOGGER_INLAY_HINT_TEXT_DATA_CONTEXT_KEY, text) - todo fix
             .add(CommonDataKeys.PROJECT, project)
             .add(CommonDataKeys.EDITOR, editor)
+            .add(HybrisConstants.LOGGER_INLAY_HINT_TEXT_DATA_CONTEXT_KEY, text)
             .add(HybrisConstants.LOGGER_IDENTIFIER_DATA_CONTEXT_KEY, loggerIdentifier)
             .build()
 

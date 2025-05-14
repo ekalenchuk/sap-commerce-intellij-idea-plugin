@@ -84,18 +84,11 @@ class CxLoggerAccess(private val project: Project) {
                                     if (it.size == 3)
                                         CxLoggerModel(it[0], it[2], it[1])
                                     else {
-                                        println("!!!------------------!!!")
-                                        it.forEach { logger -> println("!!!$logger") }
-                                        println("!!!${it.size}")
-                                        println("!!!------------------!!!")
                                         CxLoggerModel(null, null, null)
                                     }
                                 }
                                 .associateBy { it.name!! }
                         } catch (e: Exception) {
-                            println("!!!------------------!!!")
-                            println("!!!${e.message}")
-                            println("!!!------------------!!!")
                             return@withBackgroundProgress mutableMapOf()
                         }
                     }

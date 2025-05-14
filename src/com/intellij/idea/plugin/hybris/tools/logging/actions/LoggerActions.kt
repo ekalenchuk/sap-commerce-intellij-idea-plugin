@@ -18,6 +18,8 @@
 
 package com.intellij.idea.plugin.hybris.tools.logging.actions
 
+import com.intellij.codeInsight.codeVision.ui.model.richText.RichString
+import com.intellij.codeInsight.codeVision.ui.model.richText.RichText
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer
 import com.intellij.codeInsight.daemon.impl.DaemonCodeAnalyzerEx
 import com.intellij.codeInsight.daemon.impl.InlayHintsPassFactoryInternal
@@ -47,8 +49,11 @@ import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.Key
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
+import com.intellij.ui.JBColor
+import com.intellij.ui.SimpleTextAttributes
 import javax.swing.Icon
 
 
@@ -99,10 +104,12 @@ abstract class AbstractLoggerAction(private val logLevel: String, val icon: Icon
                             CxLoggerAccess.getInstance(project).refresh()
 
 
-                            val editor = e.dataContext.getData<Editor>(CommonDataKeys.EDITOR) ?: return
-                            val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.document) ?: return
-
-                            forceInlayRefreshViaEdit(project, psiFile)
+                            val inlayHintRichText = e.dataContext.getData(HybrisConstants.LOGGER_INLAY_HINT_TEXT_DATA_CONTEXT_KEY) ?: return
+                            val parts = inlayHintRichText.parts as ArrayList<RichString>
+                            parts.clear()
+                            val text = "[y] log level"
+                            parts.add(RichString(TextRange(0, text.length), SimpleTextAttributes.REGULAR_BOLD_ATTRIBUTES, RichText(text)))
+                            inlayHintRichText.append(" [$logLevel]", SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, JBColor.blue))
 
                         } else {
                             notify(
@@ -119,36 +126,6 @@ abstract class AbstractLoggerAction(private val logLevel: String, val icon: Icon
                     }
                 }
             })
-        }
-    }
-
-    fun forceInlayRefreshViaEdit(project: Project, psiFile: PsiFile) {
-        val document = PsiDocumentManager.getInstance(project).getDocument(psiFile) ?: return
-
-        if (document.isWritable) {
-            ApplicationManager.getApplication().invokeLater {
-                WriteCommandAction.runWriteCommandAction(project) {
-                    val lastLine = document.lineCount - 1
-                    val insertOffset = document.getLineEndOffset(lastLine)
-
-                    // Insert and delete a dummy newline to trigger editor updates
-                    document.insertString(insertOffset, "\n")
-                    PsiDocumentManager.getInstance(project).commitDocument(document)
-                    document.deleteString(insertOffset, insertOffset + 1)
-                    PsiDocumentManager.getInstance(project).commitDocument(document)
-
-                }
-            }
-        } else {
-//            ApplicationManager.getApplication().invokeLater {
-//                ReadAction.run {
-//                    val documentImpl = document as? DocumentImpl ?: return@run
-//                    documentImpl.modificationStamp += 1
-//                    PsiDocumentManager.getInstance(project).commitDocument(documentImpl)
-//                    //DaemonCodeAnalyzerEx.getInstanceEx(project).restart(psiFile)
-//                }
-//            }
-
         }
     }
 
@@ -185,3 +162,8 @@ class WarnLoggerAction : AbstractLoggerAction("WARN", HybrisIcons.Log.Level.WARN
 class ErrorLoggerAction : AbstractLoggerAction("ERROR", HybrisIcons.Log.Level.ERROR)
 class FatalLoggerAction : AbstractLoggerAction("FATAL", HybrisIcons.Log.Level.FATAL)
 class SevereLoggerAction : AbstractLoggerAction("SEVERE", HybrisIcons.Log.Level.SEVERE)
+
+class CustomRichText : RichText() {
+
+
+}

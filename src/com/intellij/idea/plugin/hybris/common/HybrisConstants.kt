@@ -17,6 +17,7 @@
  */
 package com.intellij.idea.plugin.hybris.common
 
+import com.intellij.codeInsight.codeVision.ui.model.richText.RichText
 import com.intellij.codeInsight.completion.CompletionUtilCore
 import com.intellij.facet.FacetTypeId
 import com.intellij.idea.plugin.hybris.facet.YFacet
@@ -716,7 +717,7 @@ object HybrisConstants {
     val KEY_ANT_UPDATE_MAVEN_DEPENDENCIES = Key.create<Boolean>("notification_update_external-dependencies.xml")
 
     val LOGGER_IDENTIFIER_DATA_CONTEXT_KEY = DataKey.create<String>("sap.cx.logger.identifier")
-    val LOGGER_INLAY_HINT_TEXT_DATA_CONTEXT_KEY = DataKey.create<String>("sap.cx.logger.status.hint.text")
+    val LOGGER_INLAY_HINT_TEXT_DATA_CONTEXT_KEY = DataKey.create<RichText>("sap.cx.logger.status.hint.text")
 
     const val FXS_DUMMY_IDENTIFIER = CompletionUtilCore.DUMMY_IDENTIFIER_TRIMMED
     val FXS_SUPPORTED_ELEMENT_TYPES = setOf(
