@@ -1,0 +1,112 @@
+/*
+ * This file is part of "SAP Commerce Developers Toolset" plugin for IntelliJ IDEA.
+ * Copyright (C) 2019-2025 EPAM Systems <hybrisideaplugin@epam.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.intellij.idea.plugin.hybris.flexibleSearch.actions
+
+import com.intellij.idea.plugin.hybris.common.utils.HybrisI18NBundleUtils.message
+import com.intellij.idea.plugin.hybris.common.utils.HybrisIcons
+import com.intellij.idea.plugin.hybris.flexibleSearch.editor.FlexibleSearchSplitEditor
+import com.intellij.idea.plugin.hybris.system.meta.MetaModelChangeListener
+import com.intellij.idea.plugin.hybris.system.meta.MetaModelStateService
+import com.intellij.idea.plugin.hybris.system.type.meta.TSGlobalMetaModel
+import com.intellij.idea.plugin.hybris.system.type.meta.TSMetaModelStateService
+import com.intellij.idea.plugin.hybris.toolwindow.system.type.view.TSViewSettings
+import com.intellij.openapi.Disposable
+import com.intellij.openapi.actionSystem.ActionUpdateThread
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.PlatformDataKeys
+import com.intellij.openapi.actionSystem.Presentation
+import com.intellij.openapi.components.service
+import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.project.DumbService
+import com.intellij.openapi.project.Project
+
+class FlexibleSearchToggleParametersPanelAction : AnAction(
+    message("hybris.fxs.actions.show_parameters"),
+    message("hybris.fxs.actions.show_parameters.description"),
+    HybrisIcons.FlexibleSearch.SHOW_PARAMETERS_PANEL
+), DumbAware, Disposable {
+
+    override fun getActionUpdateThread() = ActionUpdateThread.BGT
+
+    override fun update(e: AnActionEvent) {
+        val editor = e.getData(PlatformDataKeys.FILE_EDITOR) ?: return
+        val flexibleSearchEditor = editor as? FlexibleSearchSplitEditor ?: return
+        val visible = flexibleSearchEditor.isParameterPanelVisible()
+        val project = e.project ?: return
+
+        if (visible) {
+            e.presentation.text = message("hybris.fxs.actions.hide_parameters")
+            e.presentation.description = message("hybris.fxs.actions.hide_parameters.description")
+            e.presentation.icon = HybrisIcons.FlexibleSearch.HIDE_PARAMETERS_PANEL
+        } else {
+            e.presentation.text = message("hybris.fxs.actions.show_parameters")
+            e.presentation.description = message("hybris.fxs.actions.show_parameters.description")
+            e.presentation.icon = HybrisIcons.FlexibleSearch.SHOW_PARAMETERS_PANEL
+        }
+
+        val metaModelStateService = project.service<TSMetaModelStateService>()
+
+        when {
+            DumbService.isDumb(project) -> e.presentation.isEnabled = false
+            !metaModelStateService.initialized() -> e.presentation.isEnabled = false
+
+            else -> e.presentation.isEnabled = true
+        }
+
+        installSettingsListener(e.presentation, project)
+    }
+
+    private fun installSettingsListener(presentation: Presentation, project: Project) {
+        with(project.messageBus.connect(this)) {
+            subscribe(TSViewSettings.TOPIC, object : TSViewSettings.Listener {
+                override fun settingsChanged(changeType: TSViewSettings.ChangeType) {
+                    try {
+                        project.service<TSMetaModelStateService>().get()
+                        presentation.isEnabled = true
+                    } catch (_: Throwable) {
+                        presentation.isEnabled = false
+                    }
+                }
+            })
+            subscribe(MetaModelStateService.TOPIC, object : MetaModelChangeListener {
+                override fun typeSystemChanged(globalMetaModel: TSGlobalMetaModel) {
+                    try {
+                        project.service<TSMetaModelStateService>().get()
+                        presentation.isEnabled = true
+                    } catch (_: Throwable) {
+                        presentation.isEnabled = false
+                    }
+                }
+            })
+        }
+    }
+
+    override fun actionPerformed(e: AnActionEvent) {
+        val editor = e.getData(PlatformDataKeys.FILE_EDITOR) ?: return
+        val flexibleSearchEditor = editor as? FlexibleSearchSplitEditor ?: return
+        val visible = !flexibleSearchEditor.isParameterPanelVisible()
+
+        flexibleSearchEditor.triggerLayoutChange(visible)
+    }
+
+    override fun dispose() {
+        //NOP
+    }
+}
