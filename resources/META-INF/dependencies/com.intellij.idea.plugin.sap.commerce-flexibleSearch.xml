@@ -103,6 +103,7 @@
         <action id="hybris.fxs.toggleInEditorResults" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchToggleInEditorResultsAction"/>
         <action id="hybris.fxs.copyToClipboard" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchCopyToClipboardAction"/>
 
+
         <group id="hybris.fxs.toolbar.left">
             <reference ref="hybris.fxs.execute"/>
             <reference ref="hybris.fxs.openQuery"/>
@@ -110,6 +111,8 @@
             <separator/>
             <reference ref="hybris.fxs.toggleInEditorResults"/>
             <reference ref="hybris.fxs.toggleParameters"/>
+            <separator/>
+            <action class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.ToggleFlexibleSearchExecutionContextAction"/>
             <separator/>
             <reference ref="hybris.fxs.openSettings"/>
         </group>

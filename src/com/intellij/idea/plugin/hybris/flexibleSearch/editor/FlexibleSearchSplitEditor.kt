@@ -30,10 +30,7 @@ import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.Disposer
-import com.intellij.openapi.util.Key
-import com.intellij.openapi.util.UserDataHolderBase
-import com.intellij.openapi.util.getOrCreateUserData
+import com.intellij.openapi.util.*
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.pom.Navigatable
 import com.intellij.psi.PsiDocumentManager
@@ -58,7 +55,12 @@ class FlexibleSearchSplitEditor(internal val textEditor: TextEditor, private val
         private const val serialVersionUID: Long = -3770395176190649196L
         private val KEY_PARAMETERS = Key.create<Map<String, FlexibleSearchVirtualParameter>>("flexibleSearch.parameters.key")
         private val KEY_IN_EDITOR_RESULTS = Key.create<Boolean>("flexibleSearch.in_editor_results.key")
+        private val KEY_FLEXIBLE_SEARCH_USER: Key<String> = Key.create("flexibleSearch.user")
     }
+
+    var user: String
+        get() = getOrCreateUserDataUnsafe(KEY_FLEXIBLE_SEARCH_USER) {"admin"}
+        set(value) = putUserData(KEY_FLEXIBLE_SEARCH_USER, value)
 
     var inEditorParameters: Boolean
         get() = inEditorParametersView != null

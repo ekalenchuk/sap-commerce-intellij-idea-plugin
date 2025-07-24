@@ -180,6 +180,7 @@ object HybrisIcons {
 
         object Actions {
             val GROUP = getIcon("/icons/flexibleSearch/actions/group.svg")
+            val TOGGLE_CONTEXT_PANEL = getIcon("/icons/flexibleSearch/actions/toggleContextPanel.svg")
         }
     }
 
