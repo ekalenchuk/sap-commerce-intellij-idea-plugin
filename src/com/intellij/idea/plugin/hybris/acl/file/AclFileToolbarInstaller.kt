@@ -27,10 +27,10 @@ import com.intellij.util.application
 
 @Service
 class AclFileToolbarInstaller : AbstractHybrisFileToolbarInstaller(
-    "hybris.acl.console",
-    "hybris.acl.toolbar.left",
-    "hybris.acl.toolbar.right",
-    AclFileType
+    toolbarId = "hybris.acl.console",
+    leftGroupId = "hybris.acl.toolbar.left",
+    rightGroupId = "hybris.acl.toolbar.right",
+    fileType = AclFileType
 ) {
 
     companion object {

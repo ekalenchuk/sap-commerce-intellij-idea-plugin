@@ -30,11 +30,13 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.Project
 import com.intellij.util.containers.JBIterable
+import java.awt.BorderLayout
 
 abstract class AbstractHybrisFileToolbarInstaller(
     private val toolbarId: String,
     private val leftGroupId: String,
     private val rightGroupId: String,
+    private val contextGroupId: String? = null,
     internal val fileType: FileType
 ) {
 
@@ -47,11 +49,22 @@ abstract class AbstractHybrisFileToolbarInstaller(
         val rightGroup = actionManager.getAction(rightGroupId) as ActionGroup
         val leftToolbar = actionManager.createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, leftGroup, true)
         val rightToolbar = actionManager.createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, rightGroup, true)
+
         rightToolbar.setReservePlaceAutoPopupIcon(false)
+
         leftToolbar.targetComponent = editor.contentComponent
         rightToolbar.targetComponent = editor.contentComponent
+
         headerComponent.add(leftToolbar.component, "Center")
         headerComponent.add(rightToolbar.component, "East")
+
+        if (contextGroupId != null) {
+            val contextGroup = actionManager.getAction(contextGroupId) as ActionGroup
+            val contextToolbar = actionManager.createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, contextGroup, true)
+            contextToolbar.targetComponent = editor.contentComponent
+            headerComponent.add(contextToolbar.component, BorderLayout.SOUTH)
+        }
+
         leftToolbar.updateActionsAsync()
         editor.permanentHeaderComponent = headerComponent
         editor.headerComponent = headerComponent

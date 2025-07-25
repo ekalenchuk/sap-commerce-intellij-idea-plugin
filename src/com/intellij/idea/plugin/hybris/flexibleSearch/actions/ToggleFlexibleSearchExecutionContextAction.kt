@@ -20,16 +20,14 @@ package com.intellij.idea.plugin.hybris.flexibleSearch.actions
 
 import com.intellij.idea.plugin.hybris.common.utils.HybrisIcons
 import com.intellij.idea.plugin.hybris.flexibleSearch.editor.flexibleSearchSplitEditor
-import com.intellij.openapi.actionSystem.ActionUpdateThread
-import com.intellij.openapi.actionSystem.AnAction
-import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.*
+import com.intellij.openapi.actionSystem.impl.ToolbarUtils
+import com.intellij.openapi.editor.toolbar.floating.FloatingToolbar
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.JBPopupFactory
-import java.awt.FlowLayout
+import java.awt.Dimension
 import javax.swing.JButton
-import javax.swing.JOptionPane
-import javax.swing.JPanel
 
 class ToggleFlexibleSearchExecutionContextAction : AnAction(
     "Show Context Panel",
@@ -51,23 +49,25 @@ class ToggleFlexibleSearchExecutionContextAction : AnAction(
 object MyFloatingToolbarPopup {
 
     fun show(project: Project, event: AnActionEvent) {
-        val toolbarPanel = JPanel(FlowLayout()).apply {
-            add(makeButton("Say Hello") {
-                JOptionPane.showMessageDialog(null, "Hello from Popup Toolbar!")
-            })
 
-            add(makeButton("Another") {
-                JOptionPane.showMessageDialog(null, "Another action")
-            })
-        }
+        val defineUserAction = ActionManager.getInstance().getAction("hybris.fxs.user") as ActionGroup
 
+//        val toolbarPanel = JPanel(FlowLayout()).apply {
+//
+//        }
+        val flexibleSearchSplitEditor = event.flexibleSearchSplitEditor() ?: return
+        val toolbar2 = ToolbarUtils.createImmediatelyUpdatedToolbar(defineUserAction, event.place, flexibleSearchSplitEditor.component, true, {})
+
+        val toolbarPanel = FloatingToolbar(flexibleSearchSplitEditor.component, defineUserAction, flexibleSearchSplitEditor)
         val popup = JBPopupFactory.getInstance()
             .createComponentPopupBuilder(toolbarPanel, null)
             .setRequestFocus(true)
             .setMovable(true)
             .setResizable(false)
             .setCancelOnClickOutside(true)
-            .createPopup()
+            .createPopup().apply {
+                size = Dimension(100, 30)
+            }
 
         popup.showInBestPositionFor(event.dataContext)
     }

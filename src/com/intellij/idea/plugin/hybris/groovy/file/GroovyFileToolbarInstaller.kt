@@ -28,10 +28,10 @@ import com.intellij.util.application
 import org.jetbrains.plugins.groovy.GroovyFileType
 
 class GroovyFileToolbarInstaller : AbstractHybrisFileToolbarInstaller(
-    "hybris.groovy.console",
-    "hybris.groovy.toolbar.left",
-    "hybris.groovy.toolbar.right",
-    GroovyFileType.GROOVY_FILE_TYPE
+    toolbarId = "hybris.groovy.console",
+    leftGroupId = "hybris.groovy.toolbar.left",
+    rightGroupId = "hybris.groovy.toolbar.right",
+    fileType = GroovyFileType.GROOVY_FILE_TYPE
 ) {
 
     companion object {

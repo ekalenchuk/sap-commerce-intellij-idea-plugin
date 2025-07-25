@@ -43,7 +43,7 @@
 
         <colorSettingsPage implementation="com.intellij.idea.plugin.hybris.flexibleSearch.highlighting.FlexibleSearchColorSettingsPage"/>
 
-        <platform.backend.documentation.psiTargetProvider implementation="com.intellij.idea.plugin.hybris.flexibleSearch.lang.documentation.FlexibleSearchPsiDocumentationTargetProvider" />
+        <platform.backend.documentation.psiTargetProvider implementation="com.intellij.idea.plugin.hybris.flexibleSearch.lang.documentation.FlexibleSearchPsiDocumentationTargetProvider"/>
         <platform.backend.documentation.targetProvider implementation="com.intellij.idea.plugin.hybris.flexibleSearch.lang.documentation.FlexibleSearchDocumentationTargetProvider"/>
         <lang.braceMatcher language="FlexibleSearch" implementationClass="com.intellij.idea.plugin.hybris.flexibleSearch.lang.FlexibleSearchPairedBraceMatcher"/>
         <lang.braceMatcher language="FlexibleSearch" implementationClass="com.intellij.ide.highlighter.custom.impl.CustomFileTypeBraceMatcher"/>
@@ -103,6 +103,13 @@
         <action id="hybris.fxs.toggleInEditorResults" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchToggleInEditorResultsAction"/>
         <action id="hybris.fxs.copyToClipboard" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchCopyToClipboardAction"/>
 
+        <group id="hybris.fxs.user" popup="true"
+               class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchUserActionGroup">
+            <separator text="Users"/>
+            <action id="hybris.fxs.user.default" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchSetupAdminUserAction"/>
+            <action id="hybris.fxs.user.anonymous" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchSetupAnonymousUserAction"/>
+            <action id="hybris.fxs.user.select" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchSetupCustomUserAction"/>
+        </group>
 
         <group id="hybris.fxs.toolbar.left">
             <reference ref="hybris.fxs.execute"/>
@@ -115,17 +122,19 @@
             <action class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.ToggleFlexibleSearchExecutionContextAction"/>
             <separator/>
             <reference ref="hybris.fxs.openSettings"/>
-            <separator/>
-            <group id="hybris.fxs.user" popup="true"
+        </group>
+        <group id="hybris.fxs.toolbar.right">
+            <reference ref="hybris.hac.chooseConnection"/>
+        </group>
+
+        <group id="hybris.fxs.toolbar.context">
+            <group popup="true"
                    class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchUserActionGroup">
                 <separator text="Users"/>
                 <action id="hybris.fxs.user.default" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchSetupAdminUserAction"/>
                 <action id="hybris.fxs.user.anonymous" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchSetupAnonymousUserAction"/>
                 <action id="hybris.fxs.user.select" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchSetupCustomUserAction"/>
             </group>
-        </group>
-        <group id="hybris.fxs.toolbar.right">
-            <reference ref="hybris.hac.chooseConnection"/>
         </group>
     </actions>
 

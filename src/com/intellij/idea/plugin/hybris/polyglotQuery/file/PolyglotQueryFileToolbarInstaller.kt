@@ -27,10 +27,10 @@ import com.intellij.util.application
 
 @Service
 class PolyglotQueryFileToolbarInstaller : AbstractHybrisFileToolbarInstaller(
-    "hybris.pgq.console",
-    "hybris.pgq.toolbar.left",
-    "hybris.pgq.toolbar.right",
-    PolyglotQueryFileType
+    toolbarId = "hybris.pgq.console",
+    leftGroupId = "hybris.pgq.toolbar.left",
+    rightGroupId = "hybris.pgq.toolbar.right",
+    fileType = PolyglotQueryFileType
 ) {
 
     companion object {

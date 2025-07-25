@@ -27,10 +27,10 @@ import com.intellij.util.application
 
 @Service
 class ImpExFileToolbarInstaller : AbstractHybrisFileToolbarInstaller(
-    "hybris.impex.console",
-    "hybris.impex.toolbar.left",
-    "hybris.impex.toolbar.right",
-    ImpexFileType
+    toolbarId = "hybris.impex.console",
+    leftGroupId = "hybris.impex.toolbar.left",
+    rightGroupId = "hybris.impex.toolbar.right",
+    fileType = ImpexFileType
 ) {
 
     companion object {

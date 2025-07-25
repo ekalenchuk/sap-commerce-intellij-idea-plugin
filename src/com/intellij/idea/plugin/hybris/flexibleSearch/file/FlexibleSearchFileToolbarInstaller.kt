@@ -27,10 +27,11 @@ import com.intellij.util.application
 
 @Service
 class FlexibleSearchFileToolbarInstaller : AbstractHybrisFileToolbarInstaller(
-    "hybris.fxs.console",
-    "hybris.fxs.toolbar.left",
-    "hybris.fxs.toolbar.right",
-    FlexibleSearchFileType
+    toolbarId = "hybris.fxs.console",
+    leftGroupId = "hybris.fxs.toolbar.left",
+    rightGroupId = "hybris.fxs.toolbar.right",
+    contextGroupId = "hybris.fxs.toolbar.context",
+    fileType = FlexibleSearchFileType
 ) {
 
     companion object {
