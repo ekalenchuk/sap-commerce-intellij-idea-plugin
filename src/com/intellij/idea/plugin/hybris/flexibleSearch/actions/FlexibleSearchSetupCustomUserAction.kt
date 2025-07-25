@@ -18,7 +18,6 @@
 
 package com.intellij.idea.plugin.hybris.flexibleSearch.actions
 
-import com.intellij.codeInsight.completion.CompletionResultSet
 import com.intellij.idea.plugin.hybris.flexibleSearch.editor.flexibleSearchSplitEditor
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
@@ -31,11 +30,12 @@ import com.intellij.openapi.ui.popup.JBPopup
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.ui.popup.JBPopupListener
 import com.intellij.openapi.ui.popup.LightweightWindowEvent
-import com.intellij.util.TextFieldCompletionProvider
+import com.intellij.ui.components.JBTextField
 import com.intellij.util.asSafely
 import com.intellij.util.textCompletion.TextFieldWithCompletion
 import com.intellij.util.ui.JBDimension
 import java.awt.BorderLayout
+import java.awt.event.MouseEvent
 import javax.swing.JPanel
 
 class FlexibleSearchSetupCustomUserAction : AnAction(
@@ -48,8 +48,9 @@ class FlexibleSearchSetupCustomUserAction : AnAction(
 
         val project = e.project ?: return
         val flexibleSearchSplitEditor = e.flexibleSearchSplitEditor() ?: return
+        val currentContextUser = flexibleSearchSplitEditor.user
 
-        val popup = createPopup(project)
+        val popup = createPopup(project, currentContextUser)
         popup.addListener(object : JBPopupListener {
             override fun onClosed(event: LightweightWindowEvent) {
                 if (event.isOk) {
@@ -66,16 +67,14 @@ class FlexibleSearchSetupCustomUserAction : AnAction(
                 }
             }
         })
+        val event = e.inputEvent.asSafely<MouseEvent>() ?: return
         popup.showUnderneathOf(e.inputEvent?.component ?: return)
     }
 
-    fun createPopup(project: Project): JBPopup {
+    fun createPopup(project: Project, currentContextUser: String): JBPopup {
         val panel = JPanel(BorderLayout())
-        val myTextField = TextFieldWithCompletion(project, object : TextFieldCompletionProvider() {
-            override fun addCompletionVariants(text: String, offset: Int, prefix: String, result: CompletionResultSet) {
-                ""
-            }
-        }, "admin", false, true, false)
+        val myTextField = JBTextField()
+        myTextField.text = currentContextUser
 
         panel.add(myTextField, "Center")
         val builder = JBPopupFactory.getInstance()
@@ -92,7 +91,9 @@ class FlexibleSearchSetupCustomUserAction : AnAction(
             override fun actionPerformed(e: AnActionEvent) {
                 this.unregisterCustomShortcutSet(popup.content)
                 val enteredText = myTextField.text
-                popup.closeOk(e.inputEvent)
+                println(enteredText)
+                val inputEvent = e.inputEvent
+                popup.closeOk(inputEvent)
             }
         }
         okAction.registerCustomShortcutSet(CommonShortcuts.getCtrlEnter(), popup.content)

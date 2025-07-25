@@ -121,6 +121,14 @@
             <separator/>
             <action class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.ToggleFlexibleSearchExecutionContextAction"/>
             <separator/>
+            <group id="_hybris.fxs.toolbar.context.parameters" popup="true"
+                   class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchUserActionGroup">
+                <separator text="Users"/>
+                <action id="_hybris.fxs.user.default" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchSetupAdminUserAction"/>
+                <action id="_hybris.fxs.user.anonymous" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchSetupAnonymousUserAction"/>
+                <action id="_hybris.fxs.user.select" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchSetupCustomUserAction"/>
+            </group>
+            <separator/>
             <reference ref="hybris.fxs.openSettings"/>
         </group>
         <group id="hybris.fxs.toolbar.right">
@@ -128,7 +136,7 @@
         </group>
 
         <group id="hybris.fxs.toolbar.context">
-            <group popup="true"
+            <group id="hybris.fxs.toolbar.context.parameters" popup="true"
                    class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchUserActionGroup">
                 <separator text="Users"/>
                 <action id="hybris.fxs.user.default" class="com.intellij.idea.plugin.hybris.flexibleSearch.actions.FlexibleSearchSetupAdminUserAction"/>
