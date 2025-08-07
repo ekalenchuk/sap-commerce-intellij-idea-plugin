@@ -22,7 +22,9 @@ import com.intellij.idea.plugin.hybris.settings.RemoteConnectionSettings
 import com.intellij.idea.plugin.hybris.tools.logging.CxLoggerAccess
 import com.intellij.idea.plugin.hybris.tools.logging.CxLoggerModel
 import com.intellij.idea.plugin.hybris.tools.logging.CxLoggersState
+import com.intellij.idea.plugin.hybris.tools.logging.LogLevel
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.ColoredTableCellRenderer
 import com.intellij.ui.JBColor
 import com.intellij.ui.SimpleTextAttributes
@@ -34,7 +36,10 @@ import com.intellij.util.ui.JBUI
 import com.intellij.util.ui.ListTableModel
 import java.awt.Dimension
 import java.io.Serial
+import javax.swing.DefaultCellEditor
+import javax.swing.DefaultComboBoxModel
 import javax.swing.JTable
+import javax.swing.table.TableCellEditor
 import javax.swing.table.TableCellRenderer
 
 private const val COLUMN_LOGGER = 1
@@ -57,6 +62,10 @@ class LoggersTable : TableView<List<String>> {
             .withIndex()
             .maxBy { it.value.length }
         setSize(renderer, longestLogger.value, COLUMN_LOGGER, longestLogger.index)
+
+//        val levelColumn: TableColumn = columnModel.getColumn(0)
+//        levelColumn.cellEditor = DefaultCellEditor(ComboBox(EnumComboBoxModel(LogLevel::class.java)))
+
     }
 
     private fun setSize(
@@ -140,10 +149,23 @@ private class CustomCellRenderer(val project: Project, val connectionSettings: R
 private class LoggerColumnInfo(
     columnName: String,
     private val columnIndex: Int,
-    private val customCellRenderer: CustomCellRenderer
+    private val customCellRenderer: TableCellRenderer
 ) : ColumnInfo<List<String>, Any>(columnName) {
 
+    private val cellEditor: TableCellEditor = DefaultCellEditor(ComboBox(DefaultComboBoxModel(LogLevel.entries.map { it.name }.toTypedArray())))
+
+    init {
+        //cellEditor.
+    }
     override fun valueOf(item: List<String>?) = item?.get(columnIndex)
-    override fun isCellEditable(item: List<String>?) = false
+    override fun isCellEditable(item: List<String>?) = if (columnIndex == COLUMN_LEVEL) true else false
     override fun getRenderer(item: List<String>?) = customCellRenderer
+
+    override fun getEditor(item: List<String>?): TableCellEditor? {
+        if (columnIndex == COLUMN_LEVEL) {
+            return cellEditor
+        }
+        return super.getEditor(item)
+    }
+
 }
