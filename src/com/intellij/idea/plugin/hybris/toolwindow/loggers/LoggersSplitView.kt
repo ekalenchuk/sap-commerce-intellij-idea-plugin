@@ -40,6 +40,7 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.ui.OnePixelSplitter
+import com.intellij.ui.PopupHandler
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.util.asSafely
 import kotlinx.coroutines.CoroutineScope
@@ -60,7 +61,7 @@ class LoggersSplitView(
         firstComponent = JBScrollPane(tree)
         secondComponent = loggersStateView.view
 
-        //PopupHandler.installPopupMenu(tree, "action.group.id", "place")
+        PopupHandler.installPopupMenu(tree, "sap.cx.loggers.toolwindow.menu", "Sap.Cx.LoggersToolWindow")
         Disposer.register(this, tree)
         Disposer.register(this, loggersStateView)
 
