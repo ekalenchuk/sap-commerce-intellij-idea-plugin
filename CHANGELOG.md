@@ -2,7 +2,7 @@
 
 <cite>Release contributors</code>
 - 20 PR(s) by [Mykhailo Lytvyn](https://github.com/epam/sap-commerce-intellij-idea-plugin/pulls?q=milestone%3A2026.0.9+author%3Amlytvyn+is%3Apr)
-- 13 PR(s) by [Eugeni Kalenchuk](https://github.com/epam/sap-commerce-intellij-idea-plugin/pulls?q=milestone%3A2026.0.9+author%3Aekalenchuk+is%3Apr)
+- 14 PR(s) by [Eugeni Kalenchuk](https://github.com/epam/sap-commerce-intellij-idea-plugin/pulls?q=milestone%3A2026.0.9+author%3Aekalenchuk+is%3Apr)
 
 ### `Project Import` enhancements
 - Enable `externalDependencies.xml` as a restoration entry on project reimport [#1884](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1884)
@@ -18,6 +18,7 @@
 - Enhanced extensions load & preselection order based on `localextensions.xml` [#1911](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1911)
 - Support `dir`-only dependency declaration via `localextensions.xml` [#1915](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1915)
 - Advanced support of the extensions preselection for recursive dependencies based on defined order [#1919](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1919)
+- Fixed autoselection for custom extensions [#1918](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1918)
 
 ### `Project View` enhancements
 - Show `.github` as a project node [#1907](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1907)
