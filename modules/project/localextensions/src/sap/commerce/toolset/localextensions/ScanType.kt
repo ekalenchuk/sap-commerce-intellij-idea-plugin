@@ -19,11 +19,18 @@
 package sap.commerce.toolset.localextensions
 
 import java.nio.file.Path
-import kotlin.io.path.Path
 
+/**
+ * Represents the path tag stored in localextension.xml stored as is except normalized type. The path tag is responsible for loading order of extensions.
+ * The dir represents the folder from which extensions will be loaded. Value examples: ${property}, /path/to/folder.
+ * The normalizedPath represents the resolved dir path, that verifies that the dir actually exists. The property is resolved based on the expanded properties,
+ * that's why it's important to build the platform before the project import.
+ *
+ * Official documentation available here https://help.sap.com/docs/SAP_COMMERCE/b490bb4e85bc42a7aa09d513d0bcb18e/cce26d8ef435425fb9e054d91794148c.html.
+ **/
 data class ScanType(
     val dir: String,
     val autoload: Boolean,
     var depth: Int,
-    var normalizedPath: Path = Path(dir),
+    val normalizedPath: Path,
 )
