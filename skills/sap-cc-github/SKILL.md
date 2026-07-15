@@ -15,6 +15,19 @@ Architecture and build/test commands are in the repo's root `CLAUDE.md`; Kotlin 
 are in `skills/sap-commerce-plugin-dev/SKILL.md`. This skill is the single source of truth for
 **getting a change committed and into a pull request**.
 
+## Scope & consent (read first)
+
+- **Apply changes to the current branch only.** When asked to fix, tweak, or "apply the same change",
+  edit the branch the user is already on. Do **not** spin the change onto a new branch or a separate
+  PR — even when the change touches a different module/file than the branch's main topic — unless the
+  user **explicitly** asks for a new branch/PR. If a fix seems to belong elsewhere, surface that in
+  your summary and let the user relocate it manually; don't relocate it for them.
+- **Create a PR only on explicit request.** "Commit and push" means commit and push to the current
+  branch — it does not authorize opening a new PR.
+- **Never roll back or rewrite without being asked.** Do not revert commits, close/reopen PRs,
+  force-push, `git reset`, or undo pushed work on your own initiative. If something looks misplaced,
+  say so and leave it — the user will fix it manually.
+
 ## Remote topology
 
 - `origin` — the contributor's **fork** (e.g. `ekalenchuk/sap-commerce-intellij-idea-plugin`). Push
