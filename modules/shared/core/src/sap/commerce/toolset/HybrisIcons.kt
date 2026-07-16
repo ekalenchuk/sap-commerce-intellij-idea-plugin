@@ -234,6 +234,7 @@ object HybrisIcons {
 
         object Actions {
             val GROUP = getIcon("/icons/flexibleSearch/actions/group.svg")
+            val INTRODUCE_BIND_PARAMETERS = AllIcons.Nodes.Parameter
         }
     }
 

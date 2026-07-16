@@ -96,6 +96,16 @@ data class FlexibleSearchVirtualParameter(
             ?: ""
     }
 
+    private fun coerceRawValue(value: Any?): Any? {
+        val stringValue = value?.asSafely<String>() ?: return value
+
+        return when (type) {
+            Boolean::class -> stringValue == "1" || stringValue.equals("true", ignoreCase = true)
+            Date::class -> parseDate(stringValue) ?: value
+            else -> value
+        }
+    }
+
     private fun evaluatePresentationValue(): String = when (type) {
         Boolean::class -> BooleanUtils.toStringTrueFalse(sqlValue == "1")
 
@@ -111,12 +121,18 @@ data class FlexibleSearchVirtualParameter(
 
         const val DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS"
 
+        private val PARSE_DATE_FORMATS = listOf(DATE_FORMAT, "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd")
+
         fun of(bindParameter: FlexibleSearchBindParameter, currentParameters: Map<String, FlexibleSearchVirtualParameter>) = FlexibleSearchVirtualParameter(
             name = bindParameter.value,
             operand = bindParameter.expression?.elementType,
             rawType = bindParameter.itemType,
         ).apply {
-            rawValue = currentParameters[name]?.rawValue
+            rawValue = coerceRawValue(currentParameters[name]?.rawValue)
+        }
+
+        private fun parseDate(value: String): Date? = PARSE_DATE_FORMATS.firstNotNullOfOrNull { format ->
+            runCatching { SimpleDateFormat(format).apply { isLenient = false }.parse(value) }.getOrNull()
         }
 
     }
