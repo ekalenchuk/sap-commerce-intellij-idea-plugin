@@ -38,10 +38,11 @@ import com.intellij.psi.*
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.endOffset
 import com.intellij.psi.util.startOffset
+import com.intellij.util.LocalTimeCounter
 import com.intellij.util.application
+import sap.commerce.toolset.impex.file.ImpExFileType
 import sap.commerce.toolset.impex.mcp.dto.ImpExSyntaxIssueDto
 import sap.commerce.toolset.impex.mcp.dto.ImpExValidationResult
-import sap.commerce.toolset.impex.psi.ImpExElementFactory
 import sap.commerce.toolset.path
 import java.nio.file.Path
 
@@ -136,11 +137,14 @@ class ImpExValidationMcpService(private val project: Project) {
         val content = context.content
             ?: error("Either 'content' or an existing 'filePath' must be provided.")
 
-        val psiFile = readAction { ImpExElementFactory.createFile(project, content) }
-        val document = readAction { PsiDocumentManager.getInstance(project).getDocument(psiFile) }
-            ?: error("Could not create an in-memory document for the given content.")
-
-        return Triple(psiFile, document, null)
+        return readAction {
+            // eventSystemEnabled = true makes the in-memory file physical; inspections refuse to anchor problems on non-physical PSI
+            val psiFile = PsiFileFactory.getInstance(project)
+                .createFileFromText("in-memory.impex", ImpExFileType, content, LocalTimeCounter.currentTime(), true)
+            val document = psiFile.viewProvider.document
+                ?: error("Could not create an in-memory document for the given content.")
+            Triple(psiFile, document, null)
+        }
     }
 
     private fun resolveVirtualFile(filePath: String): VirtualFile? {
