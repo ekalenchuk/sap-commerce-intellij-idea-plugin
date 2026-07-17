@@ -45,6 +45,7 @@
 - Expose type system Atomic types as MCP tool (name/extension filters, JSON) [#1946](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1946)
 - Expose type system Collection types as MCP tool (name/extension filters, JSON) [#1947](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1947)
 - Introduce JSON serialization mechanism for MCP tools [#1949](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1949)
+- Fix ImpEx validation MCP tool for content mode 
 
 ### Other enhancements
 - Migrated obsolete `invokeLater` to `runInEdt` [#1940](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1940)
