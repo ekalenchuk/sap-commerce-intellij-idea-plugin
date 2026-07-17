@@ -549,6 +549,7 @@ object HybrisIcons {
         val SHOW_DIAGRAM = AllIcons.FileTypes.Diagram
         val TOGGLE_IN_EDITOR_PARAMETERS = AllIcons.General.LayoutEditorPreview
         val TOGGLE_IN_EDITOR_RESULTS = AllIcons.General.EditorPreviewVertical
+        val TOGGLE_IN_EDITOR_TABLE_VIEW = AllIcons.Nodes.DataTables
     }
 
     object Log {

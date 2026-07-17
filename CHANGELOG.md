@@ -18,6 +18,7 @@
 - Expose Bean System enums as MCP tool [#1959](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1959)
 
 ### `ImpEx` enhancements
+- New in-editor `Table View` mode: each header with its value lines is rendered as a separate editable table — independent column widths, folded header parameters, resolved macro values, macro key/value tables, inline-editable headers with attribute/modifier completion, editable cells, Excel-like row insertion and add/remove row/column actions, applicable inspection quick fixes, cross-table search, ImpEx execution toolbar, `Cmd+Click` type system navigation staying within the table view, enum/boolean value completion, editor-like value coloring and multiline value editing
 - Copy ImpEx value line into an executable FlexibleSearch query [#1960](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1960)
 - Hide `ImpEx to FlexibleSearch` for statements with unique docId columns [#1963](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1963)
 - Do not add alias in the `ImpEx to FlexibleSearch` when there are no joins [#1964](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1964)

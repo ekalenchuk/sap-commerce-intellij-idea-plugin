@@ -36,16 +36,20 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.SmartPsiElementPointer
 import com.intellij.ui.OnePixelSplitter
 import com.intellij.util.asSafely
+import com.intellij.util.ui.UIUtil
 import kotlinx.coroutines.*
 import sap.commerce.toolset.exec.context.DefaultExecResult
 import sap.commerce.toolset.impex.exec.context.ImpExExecContext
 import sap.commerce.toolset.impex.exec.impexExecContextSettings
 import sap.commerce.toolset.impex.psi.ImpExMacroDeclaration
 import java.awt.BorderLayout
+import java.awt.CardLayout
 import java.beans.PropertyChangeListener
 import java.io.Serial
 import javax.swing.JComponent
 import javax.swing.JPanel
+import javax.swing.JScrollPane
+import javax.swing.SwingUtilities
 import kotlin.time.Duration
 
 fun AnActionEvent.impexSplitEditorEx() = this.getData(PlatformDataKeys.FILE_EDITOR)
@@ -63,6 +67,10 @@ class ImpExSplitEditorBase(override val textEditor: TextEditor, private val proj
 
         private val KEY_PARAMETERS = Key.create<Map<SmartPsiElementPointer<ImpExMacroDeclaration>, ImpExVirtualParameter>>("impex.parameters.key")
         private val KEY_IN_EDITOR_RESULTS = Key.create<Boolean>("impex.in_editor_results.key")
+        private val KEY_IN_EDITOR_TABLE_VIEW = Key.create<Boolean>("impex.in_editor_table_view.key")
+
+        private const val CARD_TEXT_EDITOR = "TEXT_EDITOR"
+        private const val CARD_TABLE_VIEW = "TABLE_VIEW"
     }
 
     override var inEditorParameters: Boolean
@@ -98,6 +106,29 @@ class ImpExSplitEditorBase(override val textEditor: TextEditor, private val proj
             verticalSplitter.secondComponent?.isVisible = state
         }
 
+    override var inEditorTableView: Boolean
+        get() = getOrCreateUserData(KEY_IN_EDITOR_TABLE_VIEW) { false }
+        set(state) {
+            putUserData(KEY_IN_EDITOR_TABLE_VIEW, state)
+
+            if (state) {
+                ImpExInEditorTableView.getInstance(project).renderTableView(this)
+            } else {
+                inEditorTableViewDisposable?.let { Disposer.dispose(it) }
+                inEditorTableViewDisposable = null
+                _tableViewComponent?.let { editorCards.remove(it) }
+                _tableViewComponent = null
+
+                editorCardsLayout.show(editorCards, CARD_TEXT_EDITOR)
+                (textEditor.preferredFocusedComponent ?: textEditor.component).requestFocus()
+            }
+        }
+
+    override var inEditorTableViewDisposable: Disposable? = null
+
+    override val tableViewComponent: JComponent?
+        get() = _tableViewComponent
+
     override var inEditorParametersView: JComponent?
         get() = horizontalSplitter.secondComponent
         set(view) {
@@ -114,13 +145,20 @@ class ImpExSplitEditorBase(override val textEditor: TextEditor, private val proj
 
     private var renderParametersJob: Job? = null
     private var reparseTextEditorJob: Job? = null
+    private var refreshTableViewJob: Job? = null
+    private var _tableViewComponent: JComponent? = null
+
+    private val editorCardsLayout = CardLayout()
+    private val editorCards = JPanel(editorCardsLayout).apply {
+        add(textEditor.component, CARD_TEXT_EDITOR)
+    }
 
     private val horizontalSplitter = OnePixelSplitter(false).apply {
         isShowDividerControls = true
         splitterProportionKey = "$javaClass.horizontalSplitter"
         setHonorComponentsMinimumSize(true)
 
-        firstComponent = textEditor.component
+        firstComponent = editorCards
     }
 
     private val verticalSplitter = OnePixelSplitter(true).apply {
@@ -164,6 +202,40 @@ class ImpExSplitEditorBase(override val textEditor: TextEditor, private val proj
 
     override fun showLoader(context: ImpExExecContext) {
         inEditorResultsView = ImpExInEditorResultsView.getInstance(project).executingView(context.executionTitle)
+    }
+
+    override fun showTableView(view: JComponent) {
+        val scrollPosition = _tableViewComponent
+            ?.let { UIUtil.findComponentOfType(it, JScrollPane::class.java) }
+            ?.viewport
+            ?.viewPosition
+
+        _tableViewComponent?.let { editorCards.remove(it) }
+        _tableViewComponent = view
+
+        editorCards.add(view, CARD_TABLE_VIEW)
+        editorCardsLayout.show(editorCards, CARD_TABLE_VIEW)
+
+        view.requestFocusInWindow()
+
+        scrollPosition?.let { position ->
+            SwingUtilities.invokeLater {
+                UIUtil.findComponentOfType(view, JScrollPane::class.java)
+                    ?.viewport
+                    ?.viewPosition = position
+            }
+        }
+    }
+
+    override fun refreshTableView(delayMs: Duration) {
+        refreshTableViewJob?.cancel()
+        refreshTableViewJob = CoroutineScope(Dispatchers.Default).launch {
+            delay(delayMs)
+
+            if (project.isDisposed || !inEditorTableView) return@launch
+
+            ImpExInEditorTableView.getInstance(project).renderTableView(this@ImpExSplitEditorBase)
+        }
     }
 
     override fun refreshParameters(delayMs: Duration) {

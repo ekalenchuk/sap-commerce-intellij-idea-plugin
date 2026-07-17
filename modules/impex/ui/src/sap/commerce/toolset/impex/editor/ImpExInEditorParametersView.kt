@@ -43,6 +43,7 @@ import sap.commerce.toolset.impex.psi.ImpExMacroDeclaration
 import sap.commerce.toolset.ui.scrollPanel
 import java.awt.Dimension
 import javax.swing.LayoutFocusTraversalPolicy
+import kotlin.time.Duration.Companion.milliseconds
 
 @Service(Service.Level.PROJECT)
 class ImpExInEditorParametersView(private val project: Project, private val coroutineScope: CoroutineScope) {
@@ -158,6 +159,8 @@ class ImpExInEditorParametersView(private val project: Project, private val coro
 
         if (originalRawValue != parameter.rawValue) {
             fileEditor.reparseTextEditor()
+
+            if (fileEditor.inEditorTableView) fileEditor.refreshTableView(1500.milliseconds)
         }
     }
 

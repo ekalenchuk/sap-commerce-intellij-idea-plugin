@@ -18,17 +18,25 @@
 
 package sap.commerce.toolset.impex.editor
 
+import com.intellij.openapi.Disposable
 import com.intellij.psi.SmartPsiElementPointer
 import sap.commerce.toolset.exec.context.DefaultExecResult
 import sap.commerce.toolset.impex.exec.context.ImpExExecContext
 import sap.commerce.toolset.impex.psi.ImpExMacroDeclaration
+import javax.swing.JComponent
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 interface ImpExSplitEditorEx : ImpExSplitEditor {
+    var inEditorTableView: Boolean
+    var inEditorTableViewDisposable: Disposable?
+    val tableViewComponent: JComponent?
+
     fun showLoader(context: ImpExExecContext)
     fun refreshParameters(delayMs: Duration = 500.milliseconds)
     fun reparseTextEditor(delayMs: Duration = 1000.milliseconds)
     fun renderExecutionResult(result: DefaultExecResult)
     fun resetVirtualParameter(pointer: SmartPsiElementPointer<ImpExMacroDeclaration>)
+    fun showTableView(view: JComponent)
+    fun refreshTableView(delayMs: Duration = 500.milliseconds)
 }

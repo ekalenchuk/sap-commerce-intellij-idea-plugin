@@ -100,6 +100,7 @@
             <separator/>
             <action class="sap.commerce.toolset.impex.actionSystem.ImpExToggleInEditorResultsAction"/>
             <action class="sap.commerce.toolset.impex.actionSystem.ImpExToggleInEditorParametersAction"/>
+            <action id="hybris.impex.toggleTableView" class="sap.commerce.toolset.impex.actionSystem.ImpExToggleTableViewAction"/>
             <separator/>
             <reference ref="hybris.impex.openSettings"/>
         </group>
