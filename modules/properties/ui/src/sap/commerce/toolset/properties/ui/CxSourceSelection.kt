@@ -16,19 +16,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sap.commerce.toolset.properties.settings.event
+package sap.commerce.toolset.properties.ui
 
-import com.intellij.util.messages.Topic
-import sap.commerce.toolset.properties.settings.state.CxPropertySourceMode
-import sap.commerce.toolset.properties.settings.state.CxPropertyViewMode
+/** What the Source Code view was asked to list. */
+internal sealed interface CxSourceSelection {
 
-interface CxPropertyViewSettingsListener {
+    /** The project as a whole, listing the chain as the running system would resolve it. */
+    data object Project : CxSourceSelection
 
-    fun onViewModeChanged(viewMode: CxPropertyViewMode) = Unit
-
-    fun onSourceModeChanged(sourceMode: CxPropertySourceMode) = Unit
-
-    companion object {
-        val TOPIC = Topic(CxPropertyViewSettingsListener::class.java)
-    }
+    /** A single extension, listing what its own `project.properties` declares. */
+    data class Extension(val name: String) : CxSourceSelection
 }

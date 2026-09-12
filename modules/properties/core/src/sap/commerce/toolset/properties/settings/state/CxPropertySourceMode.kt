@@ -16,19 +16,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sap.commerce.toolset.properties.settings.event
+package sap.commerce.toolset.properties.settings.state
 
-import com.intellij.util.messages.Topic
-import sap.commerce.toolset.properties.settings.state.CxPropertySourceMode
-import sap.commerce.toolset.properties.settings.state.CxPropertyViewMode
+/**
+ * How the Source Code branch of the properties tree is arranged.
+ */
+enum class CxPropertySourceMode(val title: String, val description: String) {
 
-interface CxPropertyViewSettingsListener {
+    /** One node standing for the whole project, listing the chain as the running system would resolve it. */
+    PROJECT("Project", "List the properties of the project as a whole"),
 
-    fun onViewModeChanged(viewMode: CxPropertyViewMode) = Unit
-
-    fun onSourceModeChanged(sourceMode: CxPropertySourceMode) = Unit
-
-    companion object {
-        val TOPIC = Topic(CxPropertyViewSettingsListener::class.java)
-    }
+    /** One node per extension, grouped the way the Project view groups the modules. */
+    EXTENSIONS("Extensions", "List the properties declared by each extension on its own"),
 }

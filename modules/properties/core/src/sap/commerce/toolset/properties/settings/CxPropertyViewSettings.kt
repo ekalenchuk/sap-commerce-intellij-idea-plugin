@@ -22,6 +22,7 @@ import com.intellij.openapi.components.*
 import com.intellij.openapi.project.Project
 import sap.commerce.toolset.HybrisConstants
 import sap.commerce.toolset.properties.settings.event.CxPropertyViewSettingsListener
+import sap.commerce.toolset.properties.settings.state.CxPropertySourceMode
 import sap.commerce.toolset.properties.settings.state.CxPropertyViewMode
 import sap.commerce.toolset.properties.settings.state.CxPropertyViewSettingsState
 
@@ -41,9 +42,19 @@ class CxPropertyViewSettings(private val project: Project) : SerializablePersist
             updateState { it.copy(viewMode = value) }
         }
 
+    var sourceMode
+        get() = state.sourceMode
+        set(value) {
+            updateState { it.copy(sourceMode = value) }
+        }
+
     fun fireViewModeChanged(viewMode: CxPropertyViewMode) = project.messageBus
         .syncPublisher(CxPropertyViewSettingsListener.TOPIC)
         .onViewModeChanged(viewMode)
+
+    fun fireSourceModeChanged(sourceMode: CxPropertySourceMode) = project.messageBus
+        .syncPublisher(CxPropertyViewSettingsListener.TOPIC)
+        .onSourceModeChanged(sourceMode)
 
     companion object {
         fun getInstance(project: Project): CxPropertyViewSettings = project.service()

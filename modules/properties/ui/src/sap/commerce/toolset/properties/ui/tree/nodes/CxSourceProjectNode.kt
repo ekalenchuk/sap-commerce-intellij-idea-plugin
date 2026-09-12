@@ -16,19 +16,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sap.commerce.toolset.properties.settings.event
+package sap.commerce.toolset.properties.ui.tree.nodes
 
-import com.intellij.util.messages.Topic
-import sap.commerce.toolset.properties.settings.state.CxPropertySourceMode
-import sap.commerce.toolset.properties.settings.state.CxPropertyViewMode
+import com.intellij.openapi.project.Project
+import com.intellij.ui.tree.LeafState
+import sap.commerce.toolset.HybrisIcons
 
-interface CxPropertyViewSettingsListener {
-
-    fun onViewModeChanged(viewMode: CxPropertyViewMode) = Unit
-
-    fun onSourceModeChanged(sourceMode: CxPropertySourceMode) = Unit
-
-    companion object {
-        val TOPIC = Topic(CxPropertyViewSettingsListener::class.java)
-    }
+/** The project as a whole: every property its files declare, with the value the running system would resolve. */
+class CxSourceProjectNode(project: Project) : CxPropertiesNode(
+    project = project,
+    presentationName = "Project",
+    icon = HybrisIcons.Module.ROOT,
+) {
+    override fun getLeafState() = LeafState.ALWAYS
 }

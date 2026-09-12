@@ -35,6 +35,8 @@ import sap.commerce.toolset.hac.exec.settings.state.HacConnectionSettingsState
 import sap.commerce.toolset.i18n
 import sap.commerce.toolset.properties.CxRemotePropertyStateService
 import sap.commerce.toolset.properties.custom.settings.event.CxCustomPropertyTemplateStateListener
+import sap.commerce.toolset.properties.settings.event.CxPropertyViewSettingsListener
+import sap.commerce.toolset.properties.settings.state.CxPropertySourceMode
 import sap.commerce.toolset.properties.exec.event.CxRemotePropertyStateListener
 import sap.commerce.toolset.properties.presentation.CxPropertyTemplatePresentation
 import sap.commerce.toolset.properties.ui.tree.CxPropertiesTree
@@ -42,6 +44,10 @@ import sap.commerce.toolset.properties.ui.tree.CxPropertiesTreeNode
 import sap.commerce.toolset.properties.ui.tree.nodes.CxCustomPropertyTemplateItemNode
 import sap.commerce.toolset.properties.ui.tree.nodes.CxPropertiesNode
 import sap.commerce.toolset.properties.ui.tree.nodes.CxRemotePropertyStateNode
+import sap.commerce.toolset.properties.ui.tree.nodes.CxSourceCodeNode
+import sap.commerce.toolset.properties.ui.tree.nodes.CxSourceExtensionGroupNode
+import sap.commerce.toolset.properties.ui.tree.nodes.CxSourceExtensionNode
+import sap.commerce.toolset.properties.ui.tree.nodes.CxSourceProjectNode
 import sap.commerce.toolset.ui.addMouseListener
 import sap.commerce.toolset.ui.addTreeSelectionListener
 import sap.commerce.toolset.ui.event.MouseListener
@@ -54,9 +60,18 @@ class CxPropertiesSplitView(private val project: Project) : OnePixelSplitter(fal
     private val tree = CxPropertiesTree(project)
     private val remotePropertyStateView by lazy { CxRemotePropertyStateView(project).also { Disposer.register(this, it) } }
     private val customPropertyTemplatesView by lazy { CxCustomPropertyTemplatesView(project).also { Disposer.register(this, it) } }
+    private val sourcePropertiesView by lazy { CxSourcePropertiesView(project).also { Disposer.register(this, it) } }
     private val nothingSelectedPanel = panel {
         row {
             label(i18n("empty.text.nothing.selected"))
+                .resizableColumn()
+                .align(Align.CENTER)
+        }.resizableRow()
+    }
+
+    private val selectAnExtensionPanel = panel {
+        row {
+            label("Select an extension to see the properties it declares, or the Project node to see the whole chain.")
                 .resizableColumn()
                 .align(Align.CENTER)
         }.resizableRow()
@@ -113,6 +128,10 @@ class CxPropertiesSplitView(private val project: Project) : OnePixelSplitter(fal
                 }
             })
 
+            subscribe(CxPropertyViewSettingsListener.TOPIC, object : CxPropertyViewSettingsListener {
+                override fun onSourceModeChanged(sourceMode: CxPropertySourceMode) = updateTree()
+            })
+
             subscribe(CxCustomPropertyTemplateStateListener.TOPIC, object : CxCustomPropertyTemplateStateListener {
                 override fun onTemplateUpdated(templateUUID: String) = updateTree()
 
@@ -164,6 +183,9 @@ class CxPropertiesSplitView(private val project: Project) : OnePixelSplitter(fal
                     CxRemotePropertyStateService.getInstance(project).state(node.connection.uuid).get(),
                 )
                 is CxCustomPropertyTemplateItemNode -> customPropertyTemplatesView.render(coroutineScope, node.uuid, node.properties)
+                is CxSourceProjectNode -> sourcePropertiesView.render(CxSourceSelection.Project)
+                is CxSourceExtensionNode -> sourcePropertiesView.render(CxSourceSelection.Extension(node.extension))
+                is CxSourceCodeNode, is CxSourceExtensionGroupNode -> selectAnExtensionPanel
 
                 else -> nothingSelectedPanel
             }

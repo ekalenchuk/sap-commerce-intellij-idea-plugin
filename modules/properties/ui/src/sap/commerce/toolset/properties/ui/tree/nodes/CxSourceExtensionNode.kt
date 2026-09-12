@@ -16,19 +16,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sap.commerce.toolset.properties.settings.event
+package sap.commerce.toolset.properties.ui.tree.nodes
 
-import com.intellij.util.messages.Topic
-import sap.commerce.toolset.properties.settings.state.CxPropertySourceMode
-import sap.commerce.toolset.properties.settings.state.CxPropertyViewMode
+import com.intellij.ide.projectView.PresentationData
+import com.intellij.openapi.project.Project
+import com.intellij.ui.SimpleTextAttributes
+import com.intellij.ui.tree.LeafState
+import sap.commerce.toolset.project.descriptor.ModuleDescriptorType
 
-interface CxPropertyViewSettingsListener {
+/** A single extension, listing the properties its own `project.properties` declares. */
+class CxSourceExtensionNode(
+    project: Project,
+    val extension: String,
+    private val type: ModuleDescriptorType,
+) : CxPropertiesNode(project, presentationName = extension) {
 
-    fun onViewModeChanged(viewMode: CxPropertyViewMode) = Unit
+    override fun getLeafState() = LeafState.ALWAYS
 
-    fun onSourceModeChanged(sourceMode: CxPropertySourceMode) = Unit
-
-    companion object {
-        val TOPIC = Topic(CxPropertyViewSettingsListener::class.java)
+    override fun update(presentation: PresentationData) {
+        presentation.clearText()
+        presentation.addText(extension, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+        presentation.setIcon(type.lazyIcon())
     }
 }

@@ -24,4 +24,5 @@ import com.intellij.util.xmlb.annotations.Tag
 @Tag("Settings")
 data class CxPropertyViewSettingsState(
     @JvmField @OptionTag val viewMode: CxPropertyViewMode = CxPropertyViewMode.ALL,
+    @JvmField @OptionTag val sourceMode: CxPropertySourceMode = CxPropertySourceMode.PROJECT,
 )
