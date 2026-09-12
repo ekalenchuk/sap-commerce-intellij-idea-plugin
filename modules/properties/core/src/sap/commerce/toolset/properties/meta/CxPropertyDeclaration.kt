@@ -16,38 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-fun properties(key: String) = providers.gradleProperty(key)
+package sap.commerce.toolset.properties.meta
 
-plugins {
-    id("org.jetbrains.intellij.platform.module")
-    alias(libs.plugins.kotlin)
-}
-
-sourceSets {
-    main {
-        java.srcDirs("src")
-        resources.srcDirs("resources")
-    }
-    test {
-        java.srcDirs("tests")
-    }
-}
-
-dependencies {
-    implementation(project(":shared-core"))
-    implementation(project(":project-core"))
-    implementation(project(":project-extensioninfo"))
-
-    testImplementation(kotlin("test"))
-
-    intellijPlatform {
-        intellijIdea(properties("intellij.version")) {
-            useInstaller = true
-        }
-
-        bundledPlugins(
-            "com.intellij.java",
-            "com.intellij.properties",
-        )
-    }
-}
+/**
+ * One `key=value` pair as it is written in a concrete [source], with no placeholder substitution applied.
+ */
+data class CxPropertyDeclaration(
+    val key: String,
+    val value: String,
+    val source: CxPropertySource,
+)
