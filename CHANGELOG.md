@@ -1,6 +1,7 @@
 ## [2026.2.4]
 
 <cite>Release contributors</code>
+- 1 PR(s) by [Eugeni Kalenchuk](https://github.com/epam/sap-commerce-intellij-idea-plugin/pulls?q=milestone%3A2026.2.4+author%3Aekalenchuk+is%3Apr)
 - 2 PR(s) by [Flaviu Lupoian](https://github.com/epam/sap-commerce-intellij-idea-plugin/pulls?q=milestone%3A2026.2.4+author%3Aflup-repo+is%3Apr)
 - 3 PR(s) by [Mykhailo Lytvyn](https://github.com/epam/sap-commerce-intellij-idea-plugin/pulls?q=milestone%3A2026.2.4+author%3Amlytvyn+is%3Apr)
 
