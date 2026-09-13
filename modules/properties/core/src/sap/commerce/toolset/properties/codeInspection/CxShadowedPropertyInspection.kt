@@ -18,16 +18,9 @@
 
 package sap.commerce.toolset.properties.codeInspection
 
-import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.LocalQuickFix
-import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.lang.properties.IProperty
-import com.intellij.lang.properties.psi.PropertiesFile
-import com.intellij.openapi.util.TextRange
-import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
-import com.intellij.util.asSafely
-import sap.commerce.toolset.isNotHybrisProject
 import sap.commerce.toolset.properties.codeInspection.fix.CxOpenWinningDeclarationFix
 import sap.commerce.toolset.properties.codeInspection.fix.CxRemovePropertyDeclarationFix
 import sap.commerce.toolset.properties.meta.CxProperty
@@ -42,34 +35,22 @@ import sap.commerce.toolset.properties.meta.CxPropertySource
  * load order silently picks one of them, or that a declaration sits in an extension `localextensions.xml` never
  * lists - in which case the platform does not read the file at all and the value is simply not there.
  */
-class CxShadowedPropertyInspection : LocalInspectionTool() {
+class CxShadowedPropertyInspection : CxPropertyDeclarationInspection() {
 
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor = object : PsiElementVisitor() {
+    override fun appliesTo(file: PsiFile) = sourceOf(file) != null
 
-        override fun visitFile(file: PsiFile) {
-            if (file.project.isNotHybrisProject) return
+    override fun problemOf(property: IProperty, file: PsiFile): CxPropertyProblem? {
+        val key = property.key ?: return null
+        val source = sourceOf(file) ?: return null
+        val collected = CxPropertyCollector.getInstance(file.project).collect()[key] ?: return null
 
-            val propertiesFile = file.asSafely<PropertiesFile>() ?: return
-            val virtualFile = file.originalFile.virtualFile ?: return
-            val chain = CxPropertyCollector.getInstance(file.project).collect()
-            val source = chain.sources.find { it.file == virtualFile } ?: return
-
-            propertiesFile.properties.forEach { property ->
-                val key = property.key ?: return@forEach
-                val collected = chain[key] ?: return@forEach
-                val problem = problemOf(collected, source) ?: return@forEach
-
-                holder.registerProblem(
-                    property.psiElement,
-                    keyRangeOf(property, key),
-                    problem,
-                    *fixesFor(collected),
-                )
-            }
-        }
+        return messageOf(collected, source)?.let { CxPropertyProblem(it, fixesFor(collected)) }
     }
 
-    private fun problemOf(property: CxProperty, source: CxPropertySource): String? {
+    private fun sourceOf(file: PsiFile) = file.originalFile.virtualFile
+        ?.let { virtualFile -> CxPropertyCollector.getInstance(file.project).collect().sources.find { it.file == virtualFile } }
+
+    private fun messageOf(property: CxProperty, source: CxPropertySource): String? {
         val winner = property.declaration
 
         return when {
@@ -87,20 +68,12 @@ class CxShadowedPropertyInspection : LocalInspectionTool() {
         }
     }
 
-    private fun fixesFor(property: CxProperty): Array<LocalQuickFix> {
-        val winner = property.declaration ?: return arrayOf(CxRemovePropertyDeclarationFix())
+    private fun fixesFor(property: CxProperty): List<LocalQuickFix> {
+        val winner = property.declaration ?: return listOf(CxRemovePropertyDeclarationFix())
 
-        return arrayOf(
+        return listOf(
             CxOpenWinningDeclarationFix(property.key, winner.source.presentableName),
             CxRemovePropertyDeclarationFix(),
         )
-    }
-
-    /** Underlines the key alone, the way the catalogue inspections do. */
-    private fun keyRangeOf(property: IProperty, key: String): TextRange {
-        val element = property.psiElement
-        val start = element.text.indexOf(key).takeIf { it >= 0 } ?: return TextRange(0, element.textLength)
-
-        return TextRange(start, start + key.length)
     }
 }

@@ -40,7 +40,7 @@ class CxEnvironmentPropertyInExtensionInspection : CxPropertyInspection() {
     override fun problem(key: String, rule: CxPropertyRule) =
         "'$key' is ${rule.title}, declaring it in project.properties hard-codes one environment into every build"
 
-    override fun fixes(key: String, rule: CxPropertyRule) = arrayOf<LocalQuickFix>(
+    override fun fixes(key: String, rule: CxPropertyRule) = listOf<LocalQuickFix>(
         CxMovePropertyToLocalPropertiesFix(),
         CxOpenPropertyDocumentationFix(rule.documentationUrl),
     )

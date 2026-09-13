@@ -19,23 +19,9 @@
 package sap.commerce.toolset.properties.codeInspection
 
 import com.intellij.codeInspection.LocalQuickFix
-import sap.commerce.toolset.properties.codeInspection.fix.CxOpenPropertyDocumentationFix
-import sap.commerce.toolset.properties.meta.CxPropertyRule
-import sap.commerce.toolset.properties.meta.CxPropertyRuleSeverity
 
-/**
- * Reports a property which the SAP Commerce Cloud build process writes itself being declared by the project.
- *
- * The documentation is blunt about the consequence — "Modifying these properties may cause your builds to fail" — so
- * this one is reported wherever the declaration lives, `local.properties` included.
- */
-class CxManagedPropertyInspection : CxPropertyInspection() {
-
-    override fun rules() = CxPropertyRule.of(CxPropertyRuleSeverity.WARNING)
-
-    override fun problem(key: String, rule: CxPropertyRule) = "'$key' is ${rule.title}"
-
-    override fun fixes(key: String, rule: CxPropertyRule) = listOf<LocalQuickFix>(
-        CxOpenPropertyDocumentationFix(rule.documentationUrl),
-    )
-}
+/** What is wrong with one property declaration, and what can be done about it. */
+data class CxPropertyProblem(
+    val message: String,
+    val fixes: List<LocalQuickFix> = emptyList(),
+)
