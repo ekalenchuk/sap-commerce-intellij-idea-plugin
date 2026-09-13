@@ -58,7 +58,7 @@ class CxCreateCustomPropertyTemplateAction : AnAction() {
 
         val templateService = CxCustomPropertyTemplateService.getInstance(project)
         val mutable = templateService
-            .createTemplateFromProperties(templateName(selectedNode), properties)
+            .createTemplateFromProperties(templateService.uniqueTemplateName(templateName(selectedNode)), properties)
             .mutable()
 
         val context = PropertyTemplateDialogContext(
