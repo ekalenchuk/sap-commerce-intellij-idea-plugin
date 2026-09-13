@@ -11,8 +11,7 @@
 - Display `AI Capabilities` node at the top of the tree [#2005](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/2005)
 
 ### `SAP CX Properties` enhancements
-- Introduced the `Properties` tool window to browse, filter and modify the runtime properties of a remote SAP Commerce instance [#1923](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1923)
-- Added custom properties templates which can be composed from the remote state and applied back to a remote instance [#1923](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1923)
+- Introduced the `Properties` tool window to browse, filter and modify the runtime properties of a remote SAP Commerce instance, and to compose and apply custom property templates [#1923](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/1923)
 
 ### `Project Import` enhancements
 - Speed up the libraries sources and javadocs fetching by remembering the previous lookup outcome and no longer blocking the shared background threads [#2002](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/2002)
