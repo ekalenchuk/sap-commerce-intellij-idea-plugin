@@ -325,7 +325,7 @@ class CxRemotePropertyStateView(private val project: Project) : Disposable {
 
         withContext(Dispatchers.EDT) {
             reportRows = emptyList()
-            propertyList.editable = true
+            propertyList.availableActions = CxPropertyRowAction.entries.toSet()
             setSelectable(CxPropertyViewMode.ALL)
             statusLabel.text = "Loaded ${statePage.loadedCount} of ${statePage.totalItems} total"
 
@@ -386,7 +386,8 @@ class CxRemotePropertyStateView(private val project: Project) : Disposable {
             reportRows = rows
             propertyList.cancelEdit()
             // A property the remote instance does not have cannot be edited or deleted there.
-            propertyList.editable = mode != CxPropertyViewMode.MISSING_ON_REMOTE
+            propertyList.availableActions = if (mode == CxPropertyViewMode.MISSING_ON_REMOTE) setOf(CxPropertyRowAction.REPORT)
+            else CxPropertyRowAction.entries.toSet()
             // Only the properties the project is missing can be declared into it.
             setSelectable(mode)
             propertyList.retainCheckedWithin(rows.map { it.key })

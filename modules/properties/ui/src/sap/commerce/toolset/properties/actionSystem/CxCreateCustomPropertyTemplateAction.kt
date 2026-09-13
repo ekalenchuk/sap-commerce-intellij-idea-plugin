@@ -39,7 +39,9 @@ class CxCreateCustomPropertyTemplateAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) = e.ifNotFromSearchPopup {
         val project = e.project ?: return@ifNotFromSearchPopup
         val selectedNode = e.selectedNode() ?: return@ifNotFromSearchPopup
-        val properties = sourceProperties(project, selectedNode) ?: return@ifNotFromSearchPopup
+        val properties = sourceProperties(project, selectedNode)
+            ?.takeIf { it.isNotEmpty() }
+            ?: return@ifNotFromSearchPopup
         val mutable = CxCustomPropertyTemplateService.getInstance(project)
             .createTemplateFromProperties(templateName(selectedNode), properties)
             .mutable()
@@ -49,9 +51,13 @@ class CxCreateCustomPropertyTemplateAction : AnAction() {
             mutable = mutable,
             title = if (selectedNode is CxRemotePropertyStateNode) "Create a Property Template" else "Clone Template",
             showRemoveSourceTemplates = selectedNode is CxCustomPropertyTemplateItemNode,
+            selectableProperties = properties.sortedBy { it.key },
         )
+        val dialog = CxCustomPropertyTemplateDialog(context)
 
-        if (CxCustomPropertyTemplateDialog(context).showAndGet()) {
+        if (dialog.showAndGet()) {
+            dialog.applySelection()
+
             CxCustomPropertyTemplateService.getInstance(project).addTemplate(mutable.immutable())
             if (context.removeSourceTemplates.get() && selectedNode is CxCustomPropertyTemplateItemNode) {
                 CxCustomPropertyTemplateService.getInstance(project).deleteTemplates(listOf(selectedNode.uuid))
