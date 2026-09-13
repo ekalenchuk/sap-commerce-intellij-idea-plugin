@@ -21,6 +21,7 @@ package sap.commerce.toolset.properties.actionSystem
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.project.Project
 import sap.commerce.toolset.HybrisIcons
 import sap.commerce.toolset.ifNotFromSearchPopup
@@ -38,11 +39,25 @@ class CxCreateCustomPropertyTemplateAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) = e.ifNotFromSearchPopup {
         val project = e.project ?: return@ifNotFromSearchPopup
-        val selectedNode = e.selectedNode() ?: return@ifNotFromSearchPopup
-        val properties = sourceProperties(project, selectedNode)
-            ?.takeIf { it.isNotEmpty() }
-            ?: return@ifNotFromSearchPopup
-        val mutable = CxCustomPropertyTemplateService.getInstance(project)
+
+        when (val selectedNode = e.selectedNode()) {
+            // The accumulated state holds only the pages scrolled into view, so the instance is loaded in full first.
+            is CxRemotePropertyStateNode -> CxRemotePropertyStateService.getInstance(project)
+                .fetchAll(selectedNode.connection) { page ->
+                    invokeLater { createTemplate(project, selectedNode, page.properties) }
+                }
+
+            is CxCustomPropertyTemplateItemNode -> createTemplate(project, selectedNode, selectedNode.properties)
+
+            else -> Unit
+        }
+    }
+
+    private fun createTemplate(project: Project, selectedNode: Any, properties: Collection<CxPropertyPresentation>) {
+        if (properties.isEmpty()) return
+
+        val templateService = CxCustomPropertyTemplateService.getInstance(project)
+        val mutable = templateService
             .createTemplateFromProperties(templateName(selectedNode), properties)
             .mutable()
 
@@ -58,9 +73,9 @@ class CxCreateCustomPropertyTemplateAction : AnAction() {
         if (dialog.showAndGet()) {
             dialog.applySelection()
 
-            CxCustomPropertyTemplateService.getInstance(project).addTemplate(mutable.immutable())
+            templateService.addTemplate(mutable.immutable())
             if (context.removeSourceTemplates.get() && selectedNode is CxCustomPropertyTemplateItemNode) {
-                CxCustomPropertyTemplateService.getInstance(project).deleteTemplates(listOf(selectedNode.uuid))
+                templateService.deleteTemplates(listOf(selectedNode.uuid))
             }
         }
     }
@@ -70,12 +85,6 @@ class CxCreateCustomPropertyTemplateAction : AnAction() {
         e.presentation.isEnabledAndVisible = selectedNode is CxRemotePropertyStateNode || selectedNode is CxCustomPropertyTemplateItemNode
         e.presentation.text = if (selectedNode is CxCustomPropertyTemplateItemNode) "Clone Template" else "Save as Template"
         e.presentation.icon = HybrisIcons.Log.Action.SAVE_AS_TEMPLATE
-    }
-
-    private fun sourceProperties(project: Project, node: Any): Collection<CxPropertyPresentation>? = when (node) {
-        is CxRemotePropertyStateNode -> CxRemotePropertyStateService.getInstance(project).state(node.connection.uuid).get()?.properties
-        is CxCustomPropertyTemplateItemNode -> node.properties
-        else -> null
     }
 
     private fun templateName(node: Any): String = when (node) {
