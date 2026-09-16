@@ -19,10 +19,12 @@ package sap.commerce.toolset.angular.project.configurator
 
 import com.intellij.openapi.application.readAction
 import com.intellij.openapi.application.runInEdt
+import com.intellij.openapi.extensions.ExtensionPointName
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.util.Ref
 import com.intellij.openapi.vfs.VfsUtil
-import org.angular2.cli.Angular2ProjectConfigurator
+import com.intellij.platform.DirectoryProjectConfigurator
+import sap.commerce.toolset.angular.AngularConstants
 import sap.commerce.toolset.angular.project.descriptor.AngularModuleDescriptor
 import sap.commerce.toolset.project.configurator.ProjectPostImportConfigurator
 import sap.commerce.toolset.project.context.ProjectPostImportContext
@@ -54,10 +56,19 @@ class AngularConfigurator : ProjectPostImportConfigurator {
             }
         }
 
+        // Angular plugin API is located in its internal module, use its registered extension instead
+        val angularProjectConfigurator = DIRECTORY_PROJECT_CONFIGURATOR_EP.extensionList
+            .find { it.javaClass.name == AngularConstants.PROJECT_CONFIGURATOR }
+            ?: return
+
         runInEdt {
             modulesToCreate.forEach {
-                Angular2ProjectConfigurator().configureProject(project, it.first, it.second, true)
+                angularProjectConfigurator.configureProject(project, it.first, it.second, true)
             }
         }
+    }
+
+    companion object {
+        private val DIRECTORY_PROJECT_CONFIGURATOR_EP = ExtensionPointName.create<DirectoryProjectConfigurator>("com.intellij.directoryProjectConfigurator")
     }
 }

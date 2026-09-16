@@ -43,6 +43,10 @@ dependencies {
             useInstaller = true
         }
 
+        bundledModules(
+            "intellij.spring.el"
+        )
+
         bundledPlugins(
             "com.intellij.java",
             "com.intellij.spring",

@@ -51,6 +51,10 @@ dependencies {
             useInstaller = true
         }
 
+        bundledModules(
+            "intellij.diagram.java"
+        )
+
         bundledPlugins(
             "com.intellij.diagram"
         )

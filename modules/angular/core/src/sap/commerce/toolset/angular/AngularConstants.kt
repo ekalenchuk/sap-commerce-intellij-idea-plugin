@@ -22,4 +22,5 @@ object AngularConstants {
 
     const val ANGULAR_JSON = "angular.json"
     const val MODULE_TYPE_ID = "Angular"
+    const val PROJECT_CONFIGURATOR = "org.angular2.cli.Angular2ProjectConfigurator"
 }
