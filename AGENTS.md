@@ -37,8 +37,8 @@ Module dependencies: explicit `implementation(project(":…"))` in each module's
 
 ### Plugin XML
 
-No monolithic `plugin.xml`. Root uses `<xi:include>` per module.
-Register EPs/services/actions in the module's own `resources/META-INF/sap.commerce.toolset-<group>-<layer>.xml`; add `<xi:include>` to root `plugin.xml` only when adding a new module.
+No monolithic `plugin.xml`. Root registers each module either as a Plugin Model v2 content module (`<content>`) or via legacy `<xi:include>`; migration in progress — see `skills/dev-split-mode.md`.
+Register EPs/services/actions in the module's own descriptor: `resources/sap.commerce.toolset.<group>.<layer>.xml` (content module) or `resources/META-INF/sap.commerce.toolset-<group>-<layer>.xml` (legacy); touch root `plugin.xml` only when adding or migrating a module.
 
 ### Custom languages
 
@@ -79,6 +79,7 @@ Read each applicable skill **completely and sequentially** before opening any fi
 | Bean System (beans.xml, BSMeta*)      | `skills/dev-bean-system.md`      |
 | Cockpit NG                            | `skills/dev-cockpit-ng.md`       |
 | CCv2                                  | `skills/dev-ccv2.md`             |
+| Split Mode, plugin.xml, modules       | `skills/dev-split-mode.md`       |
 
 ### Phase 2 — Implementation
 
