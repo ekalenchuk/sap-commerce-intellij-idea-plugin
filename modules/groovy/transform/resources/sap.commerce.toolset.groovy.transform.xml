@@ -17,6 +17,11 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.transform"/>
+        <module name="sap.commerce.toolset.groovy.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <transformer implementation="sap.commerce.toolset.groovy.transform.GroovyToImpExScriptTransformer"/>
     </extensions>

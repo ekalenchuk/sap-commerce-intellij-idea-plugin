@@ -17,6 +17,12 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.transform"/>
+        <module name="sap.commerce.toolset.hac.exec"/>
+        <module name="sap.commerce.toolset.flexibleSearch.exec"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <transformer implementation="sap.commerce.toolset.flexibleSearch.transform.FxSToImpExTransformer"/>
     </extensions>

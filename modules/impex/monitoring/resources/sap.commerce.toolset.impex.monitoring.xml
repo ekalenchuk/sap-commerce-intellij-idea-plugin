@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.console.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <consoleProvider order="last" implementation="sap.commerce.toolset.impex.monitoring.console.ImpExMonitorConsoleProvider"/>
     </extensions>

@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.ccv2.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="JavaScript.JsonSchema">
         <ProviderFactory implementation="sap.commerce.toolset.ccv2.manifest.jsonSchema.ManifestJsonSchemaProviderFactory"/>
     </extensions>

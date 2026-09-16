@@ -15,30 +15,34 @@
   ~ You should have received a copy of the GNU Lesser General Public License
   ~ along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <idea-plugin>
 
     <dependencies>
-        <module name="sap.commerce.toolset.solr.core"/>
-        <module name="sap.commerce.toolset.solr.exec"/>
+        <module name="intellij.platform.ui.jcef"/>
         <module name="sap.commerce.toolset.exec.ui"/>
         <module name="sap.commerce.toolset.console.core"/>
         <module name="sap.commerce.toolset.console.ui"/>
+        <module name="sap.commerce.toolset.hac.exec"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectConfigurable id="sap.commerce.toolset.solr.exec.settings" parentId="hybris.settings"
+        <projectConfigurable id="sap.commerce.toolset.hac.exec.settings" parentId="hybris.settings"
                              nonDefaultProject="true" dynamic="true"
-                             displayName="Solr"
-                             provider="sap.commerce.toolset.solr.options.SolrExecProjectSettingsConfigurableProvider"/>
+                             displayName="HAC"
+                             provider="sap.commerce.toolset.hac.options.HacExecProjectSettingsConfigurableProvider"/>
+
+        <projectService serviceInterface="sap.commerce.toolset.hac.auth.HacManualAuthenticator"
+                        serviceImplementation="sap.commerce.toolset.hac.auth.HacManualAuthenticatorImpl"/>
     </extensions>
 
     <actions>
-        <group id="sap.commerce.toolset.solr.chooseConnection" popup="true" searchable="false"
-               class="sap.commerce.toolset.solr.actionSystem.ChooseSolrConnectionAction">
-            <action class="sap.commerce.toolset.solr.actionSystem.AddSolrConnectionAction"/>
-            <action class="sap.commerce.toolset.solr.actionSystem.EditActiveSolrConnectionAction"/>
-            <action class="sap.commerce.toolset.solr.actionSystem.OpenSolrSettingsAction"/>
+        <action id="sap.commerce.toolset.hac.openSettings" class="sap.commerce.toolset.hac.actionSystem.OpenHacSettingsAction"/>
+
+        <group id="sap.commerce.toolset.hac.chooseConnection" popup="true" searchable="false"
+               class="sap.commerce.toolset.hac.actionSystem.ChooseHacConnectionAction">
+            <action class="sap.commerce.toolset.hac.actionSystem.AddHacConnectionAction"/>
+            <action class="sap.commerce.toolset.hac.actionSystem.EditActiveHacConnectionAction"/>
+            <reference ref="sap.commerce.toolset.hac.openSettings"/>
 
             <add-to-group anchor="first" group-id="hybris.console.actionGroup"/>
         </group>

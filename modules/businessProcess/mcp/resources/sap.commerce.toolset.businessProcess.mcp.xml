@@ -21,6 +21,7 @@
     <dependencies>
         <plugin id="com.intellij.mcpServer"/>
         <module name="sap.commerce.toolset.ai.mcp"/>
+        <module name="sap.commerce.toolset.businessProcess.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

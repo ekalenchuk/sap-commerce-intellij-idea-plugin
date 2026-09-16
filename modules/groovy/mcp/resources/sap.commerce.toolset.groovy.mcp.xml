@@ -24,6 +24,10 @@
         <module name="sap.commerce.toolset.ai.mcp"/>
         <module name="sap.commerce.toolset.hac.mcp"/>
         <module name="sap.commerce.toolset.groovy.transform"/>
+        <module name="sap.commerce.toolset.shared.transform"/>
+        <module name="sap.commerce.toolset.hac.exec"/>
+        <module name="sap.commerce.toolset.groovy.core"/>
+        <module name="sap.commerce.toolset.groovy.exec"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

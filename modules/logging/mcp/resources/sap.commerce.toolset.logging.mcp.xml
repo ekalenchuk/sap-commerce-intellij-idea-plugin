@@ -22,6 +22,8 @@
         <plugin id="com.intellij.mcpServer"/>
         <module name="sap.commerce.toolset.ai.mcp"/>
         <module name="sap.commerce.toolset.hac.mcp"/>
+        <module name="sap.commerce.toolset.hac.exec"/>
+        <module name="sap.commerce.toolset.groovy.exec"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

@@ -45,10 +45,6 @@ dependencies {
             useInstaller = true
         }
 
-        bundledPlugins(
-            "org.jetbrains.kotlin",
-        )
-
         bundledModules(
             "intellij.platform.vcs.impl"
         )

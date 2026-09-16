@@ -15,17 +15,27 @@
   ~ You should have received a copy of the GNU Lesser General Public License
   ~ along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <idea-plugin>
 
     <dependencies>
-        <plugin id="com.intellij.mcpServer"/>
-        <module name="sap.commerce.toolset.ai.mcp"/>
         <module name="sap.commerce.toolset.ccv2.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">
-        <mcpServer.mcpToolset implementation="sap.commerce.toolset.ccv2.mcp.CCv2McpToolset"/>
+        <projectImportProvider implementation="sap.commerce.toolset.project.HybrisProjectImportProvider"/>
+        <projectImportBuilder implementation="sap.commerce.toolset.project.HybrisProjectImportBuilder"/>
+        <projectOpenProcessor implementation="sap.commerce.toolset.project.HybrisProjectOpenProcessor"/>
+
+        <postStartupActivity order="after hybrisProjectImport" implementation="sap.commerce.toolset.startup.HybrisProjectStructureStartupActivity"/>
     </extensions>
+
+    <actions>
+        <action id="sap.commerce.toolset.yRefresh" class="sap.commerce.toolset.project.actionSystem.ProjectRefreshAction">
+            <add-to-group group-id="FileMenu" anchor="after" relative-to-action="InvalidateCaches"/>
+        </action>
+
+        <action id="sap.commerce.toolset.reimport" class="sap.commerce.toolset.project.actionSystem.ProjectReimportAction"/>
+        <action id="sap.commerce.toolset.import" class="sap.commerce.toolset.project.actionSystem.ProjectImportAction"/>
+    </actions>
 
 </idea-plugin>

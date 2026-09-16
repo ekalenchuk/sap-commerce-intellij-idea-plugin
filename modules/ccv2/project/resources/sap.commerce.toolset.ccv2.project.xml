@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.ccv2.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <project.postImportLegacyConfigurator implementation="sap.commerce.toolset.ccv2.project.configurator.CCv2YFacetConfigurator"/>
 

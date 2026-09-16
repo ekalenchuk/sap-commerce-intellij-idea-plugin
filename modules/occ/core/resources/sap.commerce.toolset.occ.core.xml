@@ -17,4 +17,9 @@
   -->
 
 <idea-plugin>
+
+    <dependencies>
+        <module name="sap.commerce.toolset.beanSystem.core"/>
+    </dependencies>
+
 </idea-plugin>

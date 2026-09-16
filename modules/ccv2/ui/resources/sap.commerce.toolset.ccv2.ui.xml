@@ -19,6 +19,11 @@
 
     <dependencies>
         <module name="sap.commerce.toolset.ccv2.exec"/>
+        <module name="sap.commerce.toolset.exec.ui"/>
+        <module name="sap.commerce.toolset.hac.exec"/>
+        <module name="sap.commerce.toolset.ccv2.core"/>
+        <module name="sap.commerce.toolset.groovy.exec"/>
+        <module name="sap.commerce.toolset.groovy.ui"/>
     </dependencies>
 
     <extensions defaultExtensionNs="sap.commerce.toolset">

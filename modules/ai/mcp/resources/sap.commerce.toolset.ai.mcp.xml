@@ -20,6 +20,7 @@
 
     <dependencies>
         <plugin id="com.intellij.mcpServer"/>
+        <module name="sap.commerce.toolset.hac.exec"/>
     </dependencies>
 
 </idea-plugin>

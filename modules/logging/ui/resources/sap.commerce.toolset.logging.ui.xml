@@ -20,6 +20,7 @@
 
     <dependencies>
         <module name="sap.commerce.toolset.logging.exec"/>
+        <module name="sap.commerce.toolset.hac.exec"/>
     </dependencies>
 
     <extensions defaultExtensionNs="sap.commerce.toolset">

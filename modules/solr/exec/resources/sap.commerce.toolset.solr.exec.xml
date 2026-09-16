@@ -18,6 +18,10 @@
 
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.console.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <consoleProvider implementation="sap.commerce.toolset.solr.console.SolrSearchConsoleProvider"/>
     </extensions>

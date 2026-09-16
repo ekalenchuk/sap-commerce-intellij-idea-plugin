@@ -23,6 +23,9 @@
         <module name="sap.commerce.toolset.ai.mcp"/>
         <module name="sap.commerce.toolset.hac.mcp"/>
         <module name="sap.commerce.toolset.shared.mcp"/>
+        <module name="sap.commerce.toolset.shared.transform"/>
+        <module name="sap.commerce.toolset.hac.exec"/>
+        <module name="sap.commerce.toolset.flexibleSearch.exec"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

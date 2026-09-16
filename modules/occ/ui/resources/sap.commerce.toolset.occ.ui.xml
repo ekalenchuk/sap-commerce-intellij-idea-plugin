@@ -20,6 +20,7 @@
     <dependencies>
         <module name="sap.commerce.toolset.occ.core"/>
         <module name="sap.commerce.toolset.beanSystem.ui"/>
+        <module name="sap.commerce.toolset.beanSystem.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

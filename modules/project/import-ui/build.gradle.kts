@@ -53,7 +53,6 @@ dependencies {
         bundledPlugins(
             "com.intellij.java",
             "com.intellij.platform.images",
-            "org.jetbrains.idea.maven",
         )
     }
 }
