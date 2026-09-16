@@ -71,6 +71,7 @@
 
         <annotator language="FlexibleSearch" implementationClass="sap.commerce.toolset.flexibleSearch.lang.annotation.FlexibleSearchAnnotator"/>
         <highlightErrorFilter implementation="sap.commerce.toolset.flexibleSearch.highlighting.FlexibleSearchHighlightErrorFilter"/>
+        <languageInjector implementation="sap.commerce.toolset.codeInsight.injection.FlexibleSearchLanguageInjector"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">

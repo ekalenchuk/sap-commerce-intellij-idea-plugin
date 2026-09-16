@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":typeSystem-core"))
     implementation(project(":project-core"))
     implementation(project(":flexibleSearch-core"))
+    implementation(project(":impex-core"))
 
     testImplementation(kotlin("test"))
 

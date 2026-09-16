@@ -94,6 +94,7 @@
                                               bundle="i18n.HybrisBundle"
                                               nameKey="hybris.impex.editor.parameter.name"
                                               descriptionKey="hybris.impex.editor.parameter.description"/>
+        <languageInjector implementation="sap.commerce.toolset.codeInsight.injection.XmlToImpExLanguageInjector"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">

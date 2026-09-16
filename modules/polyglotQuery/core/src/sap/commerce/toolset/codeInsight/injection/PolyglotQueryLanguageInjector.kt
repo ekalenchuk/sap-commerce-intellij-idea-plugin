@@ -21,7 +21,6 @@ package sap.commerce.toolset.codeInsight.injection
 import com.intellij.psi.InjectedLanguagePlaces
 import com.intellij.psi.LanguageInjector
 import com.intellij.psi.PsiLanguageInjectionHost
-import sap.commerce.toolset.Plugin
 
 class PolyglotQueryLanguageInjector : LanguageInjector {
 
@@ -31,7 +30,5 @@ class PolyglotQueryLanguageInjector : LanguageInjector {
     ) {
         PolyglotQueryToImpExInjectorProvider.getInstance()
             .inject(host, injectionPlacesRegistrar)
-            ?: Plugin.KOTLIN.service(PolyglotQueryToKotlinInjectorProvider::class.java)
-                ?.inject(host, injectionPlacesRegistrar)
     }
 }

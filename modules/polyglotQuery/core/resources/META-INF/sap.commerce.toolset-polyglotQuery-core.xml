@@ -46,6 +46,7 @@
         <lang.commenter language="Polyglot Query" implementationClass="sap.commerce.toolset.polyglotQuery.lang.PolyglotQueryCommenter"/>
         <lang.braceMatcher language="Polyglot Query" implementationClass="sap.commerce.toolset.polyglotQuery.lang.PolyglotQueryPairedBraceMatcher"/>
         <lang.foldingBuilder language="Polyglot Query" implementationClass="sap.commerce.toolset.polyglotQuery.lang.folding.PolyglotQueryFoldingBuilder"/>
+        <languageInjector implementation="sap.commerce.toolset.codeInsight.injection.PolyglotQueryLanguageInjector"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">

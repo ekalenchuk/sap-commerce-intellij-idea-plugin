@@ -38,5 +38,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <defaultLiveTemplates file="liveTemplates/Kotlin.xml"/>
+        <languageInjector implementation="sap.commerce.toolset.codeInsight.injection.FlexibleSearchToKotlinLanguageInjector"/>
+        <languageInjector implementation="sap.commerce.toolset.codeInsight.injection.PolyglotQueryToKotlinLanguageInjector"/>
     </extensions>
 </idea-plugin>

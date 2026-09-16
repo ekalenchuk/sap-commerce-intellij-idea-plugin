@@ -1,6 +1,6 @@
 /*
  * This file is part of "SAP Commerce Developers Toolset" plugin for IntelliJ IDEA.
- * Copyright (C) 2019-2025 EPAM Systems <hybrisideaplugin@epam.com> and contributors
+ * Copyright (C) 2019-2026 EPAM Systems <hybrisideaplugin@epam.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -18,13 +18,17 @@
 
 package sap.commerce.toolset.codeInsight.injection
 
-import com.intellij.openapi.components.Service
-import sap.commerce.toolset.flexibleSearch.FlexibleSearchLanguage
-import sap.commerce.toolset.flexibleSearch.FxSUtils
+import com.intellij.psi.InjectedLanguagePlaces
+import com.intellij.psi.LanguageInjector
+import com.intellij.psi.PsiLanguageInjectionHost
 
-@Service
-class FlexibleSearchToKotlinInjectorProvider : LanguageToKotlinInjectorProvider(FlexibleSearchLanguage) {
+class PolyglotQueryToKotlinLanguageInjector : LanguageInjector {
 
-    override fun canProcess(expression: String) = FxSUtils.isFlexibleSearchQuery(expression)
-
+    override fun getLanguagesToInject(
+        host: PsiLanguageInjectionHost,
+        injectionPlacesRegistrar: InjectedLanguagePlaces
+    ) {
+        PolyglotQueryToKotlinInjectorProvider.getInstance()
+            .inject(host, injectionPlacesRegistrar)
+    }
 }

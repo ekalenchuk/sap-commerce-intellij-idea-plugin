@@ -42,6 +42,7 @@
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="sap.commerce.toolset.beanSystem.codeInsight.daemon.DtoBeanPropertyLineMarkerProvider"/>
 
         <codeInsight.inlayProvider language="XML" implementationClass="sap.commerce.toolset.beanSystem.codeInsight.hints.BeansXmlInlayHintsProvider"/>
+        <languageInjector implementation="sap.commerce.toolset.codeInsight.injection.JavaToBeansXmlLanguageInjector"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">

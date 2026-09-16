@@ -39,6 +39,8 @@ dependencies {
     implementation(project(":project-core"))
     implementation(project(":project-extensioninfo"))
     implementation(project(":project-import-core"))
+    implementation(project(":flexibleSearch-core"))
+    implementation(project(":polyglotQuery-core"))
 
     intellijPlatform {
         intellijIdea(properties("intellij.version")) {
