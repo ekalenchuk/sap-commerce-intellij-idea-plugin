@@ -164,7 +164,7 @@ actionButton(
 
 1. `build.gradle.kts` — `org.jetbrains.intellij.platform.module` + kotlin (+ serialization if needed); source sets; `implementation(project(":..."))` deps; `libs.*` versions. Template: `groovy/mcp/build.gradle.kts`.
 2. Descriptor `resources/sap.commerce.toolset.<group>.<layer>.xml` with `<dependencies>` — packaged as a content module automatically (`skills/dev-split-mode.md`). MCP: `<plugin id="com.intellij.mcpServer"/>` + `<module name="sap.commerce.toolset.ai.mcp"/>`.
-3. `<module name="sap.commerce.toolset.<group>.<layer>"/>` in root `plugin.xml` `<content>`. A composed module that main-jar code depends on still uses the legacy `resources/META-INF/sap.commerce.toolset-<group>-<layer>.xml` + `<xi:include>`.
+3. `<module name="sap.commerce.toolset.<group>.<layer>"/>` in root `plugin.xml` `<content>`.
 4. All versions in `gradle/libs.versions.toml` / `gradle.properties` — never inline.
 
 ## @ApiStatus.Internal

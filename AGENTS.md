@@ -32,13 +32,13 @@ Feature layers:
 - `exec` — execution against a remote SAP Commerce instance.
 - `project` — project import, facets.
 
-Shared: `modules/shared/{core,ui,emitter}`. Root assembles all via `pluginComposedModule(...)`.
+Shared: `modules/shared/{core,ui,emitter}`. Root assembles all via `pluginModule(...)` into `lib/modules/<content module name>.jar`.
 Module dependencies: explicit `implementation(project(":…"))` in each module's `build.gradle.kts`; respect layering (`core` must not depend on `ui`).
 
 ### Plugin XML
 
-No monolithic `plugin.xml`. Root registers each module either as a Plugin Model v2 content module (`<content>`) or via legacy `<xi:include>`; migration in progress — see `skills/dev-split-mode.md`.
-Register EPs/services/actions in the module's own descriptor: `resources/sap.commerce.toolset.<group>.<layer>.xml` (content module) or `resources/META-INF/sap.commerce.toolset-<group>-<layer>.xml` (legacy); touch root `plugin.xml` only when adding or migrating a module.
+No monolithic `plugin.xml`. Every module is a Plugin Model v2 content module listed in root `plugin.xml` `<content>` — see `skills/dev-split-mode.md`.
+Register EPs/services/actions in the module's own descriptor `resources/sap.commerce.toolset.<group>.<layer>.xml` with explicit `<dependencies>`; touch root `plugin.xml` only when adding a module.
 
 ### Custom languages
 
