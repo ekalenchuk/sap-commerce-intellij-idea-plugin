@@ -42,8 +42,13 @@ dependencies {
             useInstaller = true
         }
 
+        bundledModules(
+            "intellij.platform.ui.jcef"
+        )
+
         bundledPlugins(
             "com.intellij.java",
+            "com.intellij.modules.jcef",
         )
     }
 }

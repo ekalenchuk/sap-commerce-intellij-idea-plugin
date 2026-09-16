@@ -21,6 +21,8 @@
         <projectImportProvider implementation="sap.commerce.toolset.project.HybrisProjectImportProvider"/>
         <projectImportBuilder implementation="sap.commerce.toolset.project.HybrisProjectImportBuilder"/>
         <projectOpenProcessor implementation="sap.commerce.toolset.project.HybrisProjectOpenProcessor"/>
+
+        <postStartupActivity order="after hybrisProjectImport" implementation="sap.commerce.toolset.startup.HybrisProjectStructureStartupActivity"/>
     </extensions>
 
     <actions>
