@@ -27,7 +27,8 @@ import sap.commerce.toolset.exceptions.HybrisConfigurationException
 import java.nio.file.Files
 
 /**
- * All resources located within the `resources/extensions` will be copied to the target IDE to the `config/extensions/<plugin_id>` folder.
+ * All resources located within the `resources/extensions` of the root plugin module will be copied to the target IDE to the `config/extensions/<plugin_id>` folder.
+ * Bundled resources are resolved by the plugin class loader, which cannot see resources of the content modules.
  * The goal is to grant a chance to an end-user to adjust default scripts used by the Plugin to align with possible project specifics.
  */
 @Service
