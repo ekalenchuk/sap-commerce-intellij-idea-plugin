@@ -39,7 +39,7 @@ Behaviour in a monolithic IDE is unchanged. `resources/META-INF/plugin.xml` hold
 1. `./gradlew verifyPlugin` — it runs `buildSearchableOptions`, a headless IDE with the plugin:
    - sandbox `log/idea.log` plugin set section: no `sap.commerce.toolset.*` module `excluded`/`not resolved` (JRebel is disabled there on purpose), no `PluginException`/`NoClassDefFoundError`/bundle errors
    - `build/reports/pluginVerifier/**/compatibility-problems.txt`: no new entries compared to `main`
-2. Plugin Verifier and the headless start do **not** check per-module class loader visibility — a missing `<module>`/`<plugin>` dependency surfaces only when the class is used. Check every class referenced by a module jar against its reachable class loaders (module deps, plugin main jars, main plugin parents, core) — transitive, `<plugin>` without content modules, `<depends>` with content modules.
+2. `./gradlew verifyContentModules` (part of `check`) — Plugin Verifier and the headless start do **not** check per-module class loader visibility, a missing `<module>`/`<plugin>` dependency surfaces only when the class is used at runtime. The task resolves every class referenced by the plugin jars against the class loaders configured by the platform and fails with the missing dependencies. `build/reports/verifyContentModules/report.txt` also lists declared dependencies without class references — review them when adding dependencies, they gate module loading. Implementation: `gradle/build-logic` (`CxVerifyContentModulesGradleTask`, `ContentModulesVerifier`).
 3. Exercise the changed features in `runIde`.
 
 ## Next phases

@@ -16,28 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-plugins {
-    `kotlin-dsl`
-}
+package sap.commerce.toolset.gradle.contentModules
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation(libs.gson)
-
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-gradlePlugin {
-    plugins {
-        create("Gradle Build Plugin") {
-            id = "sap-commerce-developers-toolset-gradle-plugin"
-            implementationClass = "sap.commerce.toolset.gradle.SAPCommerceDevelopersToolsetGradlePlugin"
-        }
-    }
-}
+class ApiFixture

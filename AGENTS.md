@@ -13,6 +13,7 @@ Kotlin (K2) · JDK 25 (JetBrains runtime) · IntelliJ Platform Gradle Plugin 2.x
 ./gradlew test                                # all tests (JUnit Platform)
 ./gradlew test --tests "a.b.ClassName"        # single class
 ./gradlew verifyPlugin                        # IDE compatibility check
+./gradlew verifyContentModules                # class loader visibility of content modules (part of check)
 GITHUB_SKIP_TASK_FETCH_PRS=true ./gradlew … # skip GitHub PR fetch locally
 ```
 

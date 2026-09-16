@@ -23,6 +23,7 @@ import org.jetbrains.intellij.platform.gradle.models.ProductRelease
 import org.jetbrains.intellij.platform.gradle.tasks.ComposedJarTask
 import org.jetbrains.intellij.platform.gradle.tasks.RunIdeTask
 import sap.commerce.toolset.gradle.api.CxFetchPRsGradleTask
+import sap.commerce.toolset.gradle.api.CxVerifyContentModulesGradleTask
 import java.nio.file.Files
 
 fun properties(key: String) = providers.gradleProperty(key)
@@ -191,6 +192,21 @@ tasks {
         onlyIf {
             System.getenv("GITHUB_SKIP_TASK_FETCH_PRS") != "true"
         }
+    }
+
+    // Plugin Verifier does not check class loader visibility of the content modules
+    val verifyContentModules = register<CxVerifyContentModulesGradleTask>("verifyContentModules") {
+        dependsOn(prepareSandbox)
+        pluginDirectory.set(prepareSandbox.flatMap { it.pluginDirectory })
+        sandboxPluginsDirectory.set(prepareSandbox.flatMap { it.sandboxPluginsDirectory })
+        platformDirectory.set(file(intellijPlatform.platformPath))
+        scannedPackagePrefixes.set(listOf("sap/commerce/toolset/"))
+        reportFile.set(layout.buildDirectory.file("reports/verifyContentModules/report.txt"))
+    }
+
+    check {
+        dependsOn(verifyContentModules)
+        dependsOn(gradle.includedBuild("build-logic").task(":test"))
     }
 
     patchPluginXml {
