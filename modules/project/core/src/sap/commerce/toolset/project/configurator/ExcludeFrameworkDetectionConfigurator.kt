@@ -18,6 +18,7 @@
 
 package sap.commerce.toolset.project.configurator
 
+import com.intellij.facet.FacetType
 import com.intellij.facet.FacetTypeId
 import com.intellij.facet.FacetTypeRegistry
 import com.intellij.framework.detection.DetectionExcludesConfiguration
@@ -29,8 +30,20 @@ abstract class ExcludeFrameworkDetectionConfigurator : ProjectImportConfigurator
     override val name: String
         get() = "Exclude Framework Detection"
 
-    protected fun excludeFrameworkDetection(project: Project, facetTypeId: FacetTypeId<*>) = FacetTypeRegistry.getInstance()
-        .findFacetType(facetTypeId)
-        .let { FrameworkDetectionUtil.findFrameworkTypeForFacetDetector(it) }
+    protected fun excludeFrameworkDetection(project: Project, facetTypeId: FacetTypeId<*>) = excludeFrameworkDetection(
+        project,
+        FacetTypeRegistry.getInstance().findFacetType(facetTypeId)
+    )
+
+    /**
+     * Facet type is resolved by its string id, when the facet type class is not accessible from a content module.
+     */
+    protected fun excludeFrameworkDetection(project: Project, facetTypeId: String) = excludeFrameworkDetection(
+        project,
+        FacetTypeRegistry.getInstance().findFacetType(facetTypeId)
+    )
+
+    private fun excludeFrameworkDetection(project: Project, facetType: FacetType<*, *>?) = facetType
+        ?.let { FrameworkDetectionUtil.findFrameworkTypeForFacetDetector(it) }
         ?.let { DetectionExcludesConfiguration.getInstance(project).addExcludedFramework(it) }
 }

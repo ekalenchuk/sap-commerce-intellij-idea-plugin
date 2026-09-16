@@ -19,6 +19,10 @@
 
     <dependencies>
         <module name="sap.commerce.toolset.console.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.exec.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="sap.commerce.toolset">

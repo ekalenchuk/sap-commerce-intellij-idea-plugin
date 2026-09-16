@@ -19,6 +19,8 @@
 
     <dependencies>
         <plugin id="org.jetbrains.idea.maven"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.project.extensioninfo"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

@@ -20,6 +20,19 @@
 
     <dependencies>
         <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
     </dependencies>
+
+    <extensionPoints>
+        <extensionPoint qualifiedName="sap.commerce.toolset.meta.modelTrackerProvider"
+                        interface="sap.commerce.toolset.meta.MetaModelTrackerProvider"
+                        dynamic="true"/>
+    </extensionPoints>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <vfs.asyncListener implementation="sap.commerce.toolset.meta.event.MetaSystemFileListener"/>
+        <psi.treeChangeListener implementation="sap.commerce.toolset.meta.event.MetaSystemPsiTreeChangeListener"/>
+        <backgroundPostStartupActivity implementation="sap.commerce.toolset.startup.PreLoadSystemsStartupActivity"/>
+    </extensions>
 
 </idea-plugin>

@@ -21,6 +21,8 @@
 
     <dependencies>
         <module name="sap.commerce.toolset.welcomescreen.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.shared.ui"/>
     </dependencies>
 
     <actions resource-bundle="i18n.HybrisBundle">

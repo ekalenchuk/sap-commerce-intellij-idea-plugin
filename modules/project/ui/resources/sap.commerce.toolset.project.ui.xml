@@ -19,6 +19,12 @@
 
     <dependencies>
         <module name="sap.commerce.toolset.ccv2.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.shared.ui"/>
+        <module name="sap.commerce.toolset.project.extensioninfo"/>
+        <module name="sap.commerce.toolset.project.localextensions"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.java.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

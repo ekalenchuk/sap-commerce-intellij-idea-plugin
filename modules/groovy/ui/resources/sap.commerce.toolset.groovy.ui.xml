@@ -25,6 +25,10 @@
         <module name="sap.commerce.toolset.console.ui"/>
         <module name="sap.commerce.toolset.groovy.exec"/>
         <module name="sap.commerce.toolset.groovy.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.shared.ui"/>
+        <module name="sap.commerce.toolset.exec.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="sap.commerce.toolset">

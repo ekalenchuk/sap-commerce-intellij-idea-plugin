@@ -20,6 +20,9 @@
 
     <dependencies>
         <module name="sap.commerce.toolset.beanSystem.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.meta.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
     </dependencies>
 
 </idea-plugin>

@@ -22,6 +22,8 @@
         <plugin id="com.intellij.mcpServer"/>
         <module name="sap.commerce.toolset.ai.mcp"/>
         <module name="sap.commerce.toolset.solr.exec"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.exec.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

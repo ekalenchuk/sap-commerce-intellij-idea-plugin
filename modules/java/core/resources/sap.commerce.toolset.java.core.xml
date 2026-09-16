@@ -17,6 +17,14 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.project.extensioninfo"/>
+        <module name="sap.commerce.toolset.project.import.core"/>
+        <module name="sap.commerce.toolset.typeSystem.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <project.importConfigurator implementation="sap.commerce.toolset.java.configurator.JavaSdkConfigurator"/>
 

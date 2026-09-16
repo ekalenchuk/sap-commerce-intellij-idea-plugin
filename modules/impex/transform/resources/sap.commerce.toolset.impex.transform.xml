@@ -21,6 +21,12 @@
         <module name="sap.commerce.toolset.shared.transform"/>
         <module name="sap.commerce.toolset.hac.exec"/>
         <module name="sap.commerce.toolset.flexibleSearch.exec"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
+        <module name="sap.commerce.toolset.flexibleSearch.core"/>
+        <module name="sap.commerce.toolset.polyglotQuery.core"/>
+        <module name="sap.commerce.toolset.typeSystem.core"/>
+        <module name="sap.commerce.toolset.exec.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="sap.commerce.toolset">

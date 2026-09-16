@@ -18,7 +18,6 @@
 
 package sap.commerce.toolset.javaee.configurator
 
-import com.intellij.javaee.application.facet.JavaeeApplicationFacet
 import sap.commerce.toolset.Plugin
 import sap.commerce.toolset.project.configurator.ExcludeFrameworkDetectionConfigurator
 import sap.commerce.toolset.project.context.ProjectImportContext
@@ -26,6 +25,11 @@ import sap.commerce.toolset.project.context.ProjectImportContext
 class JavaeeExcludeFrameworkDetectionConfigurator : ExcludeFrameworkDetectionConfigurator() {
 
     override suspend fun configure(context: ProjectImportContext) {
-        Plugin.JAVAEE.ifActive { excludeFrameworkDetection(context.project, JavaeeApplicationFacet.ID) }
+        Plugin.JAVAEE.ifActive { excludeFrameworkDetection(context.project, JAVAEE_APPLICATION_FACET_TYPE_ID) }
+    }
+
+    companion object {
+        // JavaeeApplicationFacet is located in the internal module of the Jakarta EE plugin
+        private const val JAVAEE_APPLICATION_FACET_TYPE_ID = "javaeeApplication"
     }
 }

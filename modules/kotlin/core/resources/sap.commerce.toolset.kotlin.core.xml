@@ -17,6 +17,17 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="org.jetbrains.kotlin"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.java.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.project.extensioninfo"/>
+        <module name="sap.commerce.toolset.project.import.core"/>
+        <module name="sap.commerce.toolset.flexibleSearch.core"/>
+        <module name="sap.commerce.toolset.polyglotQuery.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <project.importConfigurator implementation="sap.commerce.toolset.kotlin.configurator.KotlinConfigurator"/>
         <project.postImportConfigurator implementation="sap.commerce.toolset.kotlin.configurator.KotlinPostImportConfigurator"/>

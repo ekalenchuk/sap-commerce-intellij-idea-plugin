@@ -19,7 +19,11 @@
 
     <dependencies>
         <plugin id="JavaScript"/>
+        <module name="intellij.javascript.parser"/>
         <module name="sap.commerce.toolset.businessProcess.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.typeSystem.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

@@ -16,4 +16,10 @@
   ~ along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <idea-plugin>
+
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.shared.ui"/>
+    </dependencies>
+
 </idea-plugin>

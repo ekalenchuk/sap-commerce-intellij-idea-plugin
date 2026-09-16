@@ -41,11 +41,6 @@ dependencies {
 
         bundledPlugins(
             "com.intellij.java",
-            "com.intellij.gradle",
-            "org.jetbrains.kotlin",
-        )
-        compatiblePlugins(
-            "AngularJS"
         )
     }
 }

@@ -17,6 +17,11 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.exec.core"/>
+    </dependencies>
+
     <extensionPoints>
         <extensionPoint qualifiedName="sap.commerce.toolset.hac.connectionSettingsProvider"
                         interface="sap.commerce.toolset.hac.exec.HacConnectionSettingsProvider"

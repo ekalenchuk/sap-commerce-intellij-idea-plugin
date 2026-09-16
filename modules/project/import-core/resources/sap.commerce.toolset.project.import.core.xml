@@ -17,6 +17,14 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="intellij.spellchecker"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.project.extensioninfo"/>
+        <module name="sap.commerce.toolset.project.localextensions"/>
+        <module name="sap.commerce.toolset.project.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <project.beforeCreateConfigurator order="first" id="backupProjectSettingsConfigurator"
                                           implementation="sap.commerce.toolset.project.configurator.BackupProjectSettingsConfigurator"/>

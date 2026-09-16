@@ -17,6 +17,12 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.project.extensioninfo"/>
+        <module name="sap.commerce.toolset.project.localextensions"/>
+    </dependencies>
+
     <extensionPoints>
         <extensionPoint qualifiedName="sap.commerce.toolset.project.importConfigurator"
                         interface="sap.commerce.toolset.project.configurator.ProjectImportConfigurator"

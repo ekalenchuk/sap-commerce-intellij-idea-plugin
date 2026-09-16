@@ -26,6 +26,9 @@
         <module name="sap.commerce.toolset.shared.transform"/>
         <module name="sap.commerce.toolset.hac.exec"/>
         <module name="sap.commerce.toolset.flexibleSearch.exec"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.exec.core"/>
+        <module name="sap.commerce.toolset.flexibleSearch.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

@@ -20,6 +20,9 @@
     <dependencies>
         <plugin id="AngularJS"/>
         <module name="sap.commerce.toolset.angular.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.project.import.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="sap.commerce.toolset">

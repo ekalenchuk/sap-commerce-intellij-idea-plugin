@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.core"/>
+    </dependencies>
+
     <extensionPoints>
         <extensionPoint qualifiedName="sap.commerce.toolset.transformer"
                         interface="sap.commerce.toolset.transform.Transformer"

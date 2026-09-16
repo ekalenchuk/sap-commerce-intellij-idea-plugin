@@ -17,6 +17,22 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="com.intellij.database"/>
+        <module name="intellij.database"/>
+        <module name="intellij.database.connectivity"/>
+        <module name="intellij.database.core.impl"/>
+        <module name="intellij.database.impl"/>
+        <module name="intellij.grid.impl"/>
+        <module name="intellij.grid.csv.core.impl"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.project.extensioninfo"/>
+        <module name="sap.commerce.toolset.project.import.core"/>
+        <module name="sap.commerce.toolset.java.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <project.postImportConfigurator implementation="sap.commerce.toolset.database.configurator.DataSourceConfigurator"/>
     </extensions>

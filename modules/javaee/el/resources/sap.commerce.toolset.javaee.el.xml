@@ -23,6 +23,8 @@
         <plugin id="com.intellij.javaee.el"/>
         <module name="intellij.spring.el"/>
         <module name="sap.commerce.toolset.cockpitNG.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.typeSystem.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

@@ -20,6 +20,8 @@
     <dependencies>
         <module name="sap.commerce.toolset.shared.transform"/>
         <module name="sap.commerce.toolset.groovy.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="sap.commerce.toolset">

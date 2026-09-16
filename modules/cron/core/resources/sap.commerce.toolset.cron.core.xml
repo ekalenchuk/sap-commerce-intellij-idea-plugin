@@ -19,6 +19,9 @@
 
     <dependencies>
         <plugin id="com.intellij.cron"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
+        <module name="sap.commerce.toolset.typeSystem.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

@@ -17,6 +17,12 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.project.extensioninfo"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="com.intellij">
         <!-- We cannot rely on `context.isRebuild` as it will be false in case of modules of various types.-->
         <!-- Thus, we're looking for Platform module.-->

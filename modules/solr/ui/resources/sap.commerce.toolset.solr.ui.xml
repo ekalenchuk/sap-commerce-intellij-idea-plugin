@@ -24,6 +24,9 @@
         <module name="sap.commerce.toolset.exec.ui"/>
         <module name="sap.commerce.toolset.console.core"/>
         <module name="sap.commerce.toolset.console.ui"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.shared.ui"/>
+        <module name="sap.commerce.toolset.exec.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

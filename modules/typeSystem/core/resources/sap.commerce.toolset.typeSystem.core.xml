@@ -17,6 +17,16 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="intellij.spellchecker"/>
+        <module name="intellij.spellchecker.xml"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.shared.ui"/>
+        <module name="sap.commerce.toolset.meta.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.project.extensioninfo"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <project.postImportConfigurator implementation="sap.commerce.toolset.typeSystem.project.configurator.TSProjectImportConfigurator"/>
         <meta.modelTrackerProvider implementation="sap.commerce.toolset.typeSystem.meta.TSMetaModelTrackerProvider"/>

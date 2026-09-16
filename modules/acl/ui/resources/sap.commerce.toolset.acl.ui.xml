@@ -25,6 +25,10 @@
         <module name="sap.commerce.toolset.acl.core"/>
         <module name="sap.commerce.toolset.impex.exec"/>
         <module name="sap.commerce.toolset.impex.ui"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.shared.ui"/>
+        <module name="sap.commerce.toolset.exec.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="sap.commerce.toolset">

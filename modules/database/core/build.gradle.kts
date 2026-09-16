@@ -46,6 +46,15 @@ dependencies {
             useInstaller = true
         }
 
+        bundledModules(
+            "intellij.database",
+            "intellij.database.connectivity",
+            "intellij.database.core.impl",
+            "intellij.database.impl",
+            "intellij.grid.impl",
+            "intellij.grid.csv.core.impl",
+        )
+
         bundledPlugins(
             "com.intellij.database",
         )

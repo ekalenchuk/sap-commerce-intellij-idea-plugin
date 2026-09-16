@@ -20,6 +20,8 @@
     <dependencies>
         <plugin id="com.intellij.copyright"/>
         <module name="sap.commerce.toolset.acl.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij.copyright">

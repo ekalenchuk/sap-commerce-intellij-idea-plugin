@@ -17,6 +17,14 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.typeSystem.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.flexibleSearch.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <editor.toolbarProvider implementation="sap.commerce.toolset.polyglotQuery.actionSystem.PolyglotQueryEditorToolbarProvider"/>
     </extensions>

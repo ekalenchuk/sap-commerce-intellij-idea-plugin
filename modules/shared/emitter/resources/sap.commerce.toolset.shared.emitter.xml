@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.core"/>
+    </dependencies>
+
     <actions>
         <action id="GenerateDomModel"
                 class="sap.commerce.toolset.emitter.GenerateDomModelAction"

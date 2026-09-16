@@ -19,6 +19,8 @@
 
     <dependencies>
         <module name="sap.commerce.toolset.beanSystem.core"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.typeSystem.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

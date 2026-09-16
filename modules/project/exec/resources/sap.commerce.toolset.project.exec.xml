@@ -17,6 +17,12 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.project.import.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <project.whenSmartConfigurator implementation="sap.commerce.toolset.project.configurator.RemoteDebugRunConfigurationWhenSmartConfigurator"/>
         <project.whenSmartConfigurator implementation="sap.commerce.toolset.project.configurator.LocalServerRunConfigurationWhenSmartConfigurator"/>

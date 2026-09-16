@@ -17,9 +17,9 @@
   -->
 <idea-plugin>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <dom.fileMetaData rootTagName="extensioninfo" stubVersion="2"
-                          implementation="sap.commerce.toolset.extensioninfo.EiDomFileDescription"/>
-    </extensions>
+    <dependencies>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
+    </dependencies>
 
 </idea-plugin>

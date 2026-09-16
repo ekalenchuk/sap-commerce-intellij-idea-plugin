@@ -44,6 +44,10 @@ dependencies {
             useInstaller = true
         }
 
+        bundledModules(
+            "intellij.javascript.parser",
+        )
+
         bundledPlugins(
             "JavaScript",
         )

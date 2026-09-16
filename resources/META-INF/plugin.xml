@@ -26,8 +26,6 @@
     <vendor email="hybrisideaplugin@epam.com" url="https://github.com/epam/sap-commerce-intellij-idea-plugin">EPAM_Systems</vendor>
     <!-- Naming convention - https://plugins.jetbrains.com/docs/intellij/plugin-dependencies.html#optional-plugin-dependencies -->
 
-    <resource-bundle>i18n.HybrisBundle</resource-bundle>
-
     <incompatible-with>csap.commerce.toolset.impex</incompatible-with>
     <incompatible-with>ccom.intellij.idea.plugin.commerce.integration</incompatible-with>
 
@@ -42,31 +40,6 @@
     <depends>com.intellij.java</depends>
     <depends>com.intellij.properties</depends>
     <depends>org.intellij.groovy</depends>
-
-    <xi:include href="/META-INF/sap.commerce.toolset-shared-core.xml" xpointer="xpointer(/idea-plugin/*)"/>
-    <xi:include href="/META-INF/sap.commerce.toolset-shared-ui.xml" xpointer="xpointer(/idea-plugin/*)"/>
-
-    <xi:include href="/META-INF/sap.commerce.toolset-meta-core.xml" xpointer="xpointer(/idea-plugin/*)"/>
-    <xi:include href="/META-INF/sap.commerce.toolset-exec-core.xml" xpointer="xpointer(/idea-plugin/*)"/>
-
-    <xi:include href="/META-INF/sap.commerce.toolset-typeSystem-core.xml" xpointer="xpointer(/idea-plugin/*)"/>
-
-    <xi:include href="/META-INF/sap.commerce.toolset-project-extensioninfo.xml" xpointer="xpointer(/idea-plugin/*)"/>
-    <xi:include href="/META-INF/sap.commerce.toolset-project-localextensions.xml" xpointer="xpointer(/idea-plugin/*)"/>
-    <xi:include href="/META-INF/sap.commerce.toolset-project-core.xml" xpointer="xpointer(/idea-plugin/*)"/>
-    <xi:include href="/META-INF/sap.commerce.toolset-project-import-core.xml" xpointer="xpointer(/idea-plugin/*)"/>
-
-    <xi:include href="/META-INF/sap.commerce.toolset-impex-core.xml" xpointer="xpointer(/idea-plugin/*)"/>
-
-    <xi:include href="/META-INF/sap.commerce.toolset-flexibleSearch-core.xml" xpointer="xpointer(/idea-plugin/*)"/>
-
-    <xi:include href="/META-INF/sap.commerce.toolset-polyglotQuery-core.xml" xpointer="xpointer(/idea-plugin/*)"/>
-
-    <xi:include href="/META-INF/sap.commerce.toolset-java-core.xml" xpointer="xpointer(/idea-plugin/*)"/>
-
-    <depends optional="true" config-file="sap.commerce.toolset-kotlin-core.xml">org.jetbrains.kotlin</depends>
-
-    <depends optional="true" config-file="sap.commerce.toolset-database-core.xml">com.intellij.database</depends>
 
     <!--
         Plugin Model v2 content modules -> https://plugins.jetbrains.com/docs/intellij/modular-plugins.html
@@ -163,6 +136,23 @@
         <module name="sap.commerce.toolset.javaee.core"/>
         <module name="sap.commerce.toolset.javaee.el"/>
         <module name="sap.commerce.toolset.javaee.web"/>
+
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.shared.ui"/>
+        <module name="sap.commerce.toolset.exec.core"/>
+        <module name="sap.commerce.toolset.meta.core"/>
+        <module name="sap.commerce.toolset.project.extensioninfo"/>
+        <module name="sap.commerce.toolset.project.localextensions"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.project.import.core"/>
+        <module name="sap.commerce.toolset.typeSystem.core"/>
+        <module name="sap.commerce.toolset.flexibleSearch.core"/>
+        <module name="sap.commerce.toolset.polyglotQuery.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
+        <module name="sap.commerce.toolset.java.core"/>
+        <module name="sap.commerce.toolset.database.core"/>
+        <module name="sap.commerce.toolset.kotlin.core"/>
+        <module name="sap.commerce.toolset.logging.core"/>
     </content>
 
     <xi:include href="/META-INF/plugin-internal.xml" xpointer="xpointer(/idea-plugin/*)"/>

@@ -19,6 +19,8 @@
 
     <dependencies>
         <module name="sap.commerce.toolset.groovy.exec"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.exec.core"/>
     </dependencies>
 
 </idea-plugin>

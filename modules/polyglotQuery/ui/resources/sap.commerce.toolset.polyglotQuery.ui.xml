@@ -30,6 +30,14 @@
         <module name="sap.commerce.toolset.polyglotQuery.exec"/>
         <module name="sap.commerce.toolset.flexibleSearch.exec"/>
         <module name="sap.commerce.toolset.flexibleSearch.ui"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.shared.ui"/>
+        <module name="sap.commerce.toolset.meta.core"/>
+        <module name="sap.commerce.toolset.typeSystem.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
+        <module name="sap.commerce.toolset.exec.core"/>
+        <module name="sap.commerce.toolset.impex.core"/>
+        <module name="sap.commerce.toolset.polyglotQuery.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="sap.commerce.toolset">

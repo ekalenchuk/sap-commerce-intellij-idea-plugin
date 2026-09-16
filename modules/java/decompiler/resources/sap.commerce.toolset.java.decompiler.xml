@@ -21,6 +21,9 @@
 
     <dependencies>
         <plugin id="org.jetbrains.java.decompiler"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+        <module name="sap.commerce.toolset.java.core"/>
+        <module name="sap.commerce.toolset.project.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="sap.commerce.toolset">

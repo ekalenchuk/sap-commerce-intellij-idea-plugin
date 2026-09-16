@@ -17,4 +17,15 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <module name="intellij.spellchecker"/>
+        <module name="intellij.spellchecker.xml"/>
+        <module name="sap.commerce.toolset.shared.core"/>
+    </dependencies>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <dom.fileMetaData rootTagName="extensioninfo" stubVersion="2"
+                          implementation="sap.commerce.toolset.extensioninfo.EiDomFileDescription"/>
+    </extensions>
+
 </idea-plugin>
