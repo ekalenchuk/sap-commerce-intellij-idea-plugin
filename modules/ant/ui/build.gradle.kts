@@ -36,7 +36,7 @@ sourceSets {
 dependencies {
     implementation(project(":shared-core"))
     implementation(project(":ant-core"))
-    implementation(project(":externalDependencies-core"))
+    implementation(project(":project-extensioninfo"))
 
     intellijPlatform {
         intellijIdea(properties("intellij.version")) {

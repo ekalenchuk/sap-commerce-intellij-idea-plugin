@@ -20,7 +20,6 @@
     <dependencies>
         <plugin id="AntSupport"/>
         <module name="sap.commerce.toolset.ant.core"/>
-        <module name="sap.commerce.toolset.externalDependencies.core"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

@@ -47,10 +47,5 @@ dependencies {
         intellijIdea(properties("intellij.version")) {
             useInstaller = true
         }
-
-        // printBundledPlugins for bundled plugins
-        bundledPlugins(
-            "com.intellij.database",
-        )
     }
 }

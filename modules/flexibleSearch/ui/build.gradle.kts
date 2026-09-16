@@ -58,11 +58,9 @@ dependencies {
 
         bundledModules(
             "intellij.libraries.microba",
-            "intellij.grid.impl"
-        )
-
-        bundledPlugins(
-            "com.intellij.database",
+            "intellij.grid.impl",
+            "intellij.grid.core.impl",
+            "intellij.grid.csv.core.impl",
         )
     }
 }

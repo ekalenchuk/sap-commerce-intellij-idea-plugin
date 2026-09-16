@@ -18,7 +18,6 @@
 <idea-plugin>
 
     <dependencies>
-        <module name="sap.commerce.toolset.externalDependencies.core"/>
         <module name="sap.commerce.toolset.ccv2.core"/>
     </dependencies>
 

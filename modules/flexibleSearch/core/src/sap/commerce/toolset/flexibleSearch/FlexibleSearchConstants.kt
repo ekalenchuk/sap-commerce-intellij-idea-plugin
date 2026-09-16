@@ -33,6 +33,9 @@ object FlexibleSearchConstants {
     const val TABLE_POSTFIX_DASH_MARK = "^"
     const val TABLE_RESULT_SEPARATOR = "|"
 
+    // provided by the Database Tools plugin, resolved by id to keep it an optional dependency
+    const val SQL_LANGUAGE_ID = "SQL"
+
     val SUPPORTED_ELEMENT_TYPES = setOf(
         FlexibleSearchTypes.TABLE_ALIAS_NAME,
         FlexibleSearchTypes.COLUMN_ALIAS_NAME

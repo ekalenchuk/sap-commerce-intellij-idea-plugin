@@ -18,15 +18,16 @@
 
 package sap.commerce.toolset.flexibleSearch.console
 
+import com.intellij.lang.Language
 import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
-import com.intellij.sql.psi.SqlLanguage
 import com.intellij.ui.JBIntSpinner
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.dsl.builder.panel
 import sap.commerce.toolset.HybrisIcons
 import sap.commerce.toolset.Plugin
 import sap.commerce.toolset.console.HybrisConsole
+import sap.commerce.toolset.flexibleSearch.FlexibleSearchConstants
 import sap.commerce.toolset.flexibleSearch.exec.FlexibleSearchExecClient
 import sap.commerce.toolset.flexibleSearch.exec.context.FlexibleSearchExecContext
 import sap.commerce.toolset.flexibleSearch.exec.context.QueryMode
@@ -39,7 +40,7 @@ import javax.swing.Icon
 class SQLConsole(project: Project) : HybrisConsole<FlexibleSearchExecContext>(
     project,
     "[y] SQL Console",
-    if (Plugin.DATABASE.isActive()) SqlLanguage.INSTANCE else PlainTextLanguage.INSTANCE
+    Plugin.DATABASE.ifActive { Language.findLanguageByID(FlexibleSearchConstants.SQL_LANGUAGE_ID) } ?: PlainTextLanguage.INSTANCE
 ) {
 
     private lateinit var commitCheckbox: JBCheckBox

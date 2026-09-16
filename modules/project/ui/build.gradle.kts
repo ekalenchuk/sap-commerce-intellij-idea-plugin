@@ -39,7 +39,6 @@ dependencies {
     implementation(project(":project-extensioninfo"))
     implementation(project(":project-localextensions"))
     implementation(project(":project-core"))
-    implementation(project(":externalDependencies-core"))
     implementation(project(":ccv2-core"))
     implementation(project(":java-core"))
 

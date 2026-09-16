@@ -18,7 +18,6 @@
 <idea-plugin>
 
     <dependencies>
-        <plugin id="com.intellij.database"/>
         <module name="sap.commerce.toolset.console.core"/>
         <module name="sap.commerce.toolset.console.ui"/>
         <module name="sap.commerce.toolset.hac.exec"/>
