@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <extensions defaultExtensionNs="sap.commerce.toolset">
+        <ui.splitEditorFactory implementation="sap.commerce.toolset.groovy.editor.GroovySplitEditorFactory"/>
+    </extensions>
+
     <extensions defaultExtensionNs="com.intellij">
         <projectConfigurable id="hybris.project.groovy.settings" parentId="hybris.settings"
                              nonDefaultProject="true" dynamic="true"

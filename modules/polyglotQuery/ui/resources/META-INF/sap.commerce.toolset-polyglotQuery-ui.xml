@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <extensions defaultExtensionNs="sap.commerce.toolset">
+        <ui.splitEditorFactory implementation="sap.commerce.toolset.polyglotQuery.editor.PolyglotQuerySplitEditorFactory"/>
+    </extensions>
+
     <extensions defaultExtensionNs="com.intellij">
         <colorSettingsPage implementation="sap.commerce.toolset.polyglotQuery.highlighting.PolyglotQueryColorSettingsPage"/>
         <codeStyleSettingsProvider implementation="sap.commerce.toolset.polyglotQuery.formatting.PgQCodeStyleSettingsProvider"/>

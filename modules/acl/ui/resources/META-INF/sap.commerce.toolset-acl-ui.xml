@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <extensions defaultExtensionNs="sap.commerce.toolset">
+        <ui.splitEditorFactory implementation="sap.commerce.toolset.acl.editor.AclSplitEditorFactory"/>
+    </extensions>
+
     <extensions defaultExtensionNs="com.intellij">
         <codeStyleSettingsProvider implementation="sap.commerce.toolset.acl.formatting.AclCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider implementation="sap.commerce.toolset.acl.formatting.AclLanguageCodeStyleSettingsProvider"/>

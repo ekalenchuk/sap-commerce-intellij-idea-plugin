@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <extensions defaultExtensionNs="sap.commerce.toolset">
+        <ui.splitEditorFactory implementation="sap.commerce.toolset.impex.editor.ImpExSplitEditorFactory"/>
+    </extensions>
+
     <extensions defaultExtensionNs="com.intellij">
         <editorFactoryListener implementation="sap.commerce.toolset.impex.editor.event.ImpExEditorFactoryListener"/>
 

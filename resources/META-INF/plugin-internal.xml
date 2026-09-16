@@ -35,10 +35,6 @@
                                implementation="sap.commerce.toolset.project.view.HybrisProjectView"/>
     </extensions>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <fileEditorProvider implementation="sap.commerce.toolset.editor.HybrisSplitFileEditorProvider"/>
-    </extensions>
-
     <!-- Language injections -->
     <extensions defaultExtensionNs="com.intellij">
         <languageInjector implementation="sap.commerce.toolset.codeInsight.injection.FlexibleSearchLanguageInjector"/>

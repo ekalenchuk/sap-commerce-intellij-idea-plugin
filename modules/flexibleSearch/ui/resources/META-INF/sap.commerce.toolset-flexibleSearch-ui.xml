@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <extensions defaultExtensionNs="sap.commerce.toolset">
+        <ui.splitEditorFactory implementation="sap.commerce.toolset.flexibleSearch.editor.FlexibleSearchSplitEditorFactory"/>
+    </extensions>
+
     <extensions defaultExtensionNs="com.intellij">
         <editorNotificationProvider id="fxsReservedWordsCaseEditorNotificationProvider" implementation="sap.commerce.toolset.flexibleSearch.editor.FxSReservedWordsCaseEditorNotificationProvider"/>
         <editorNotificationProvider id="fxsTableAliasSeparatorEditorNotificationProvider" implementation="sap.commerce.toolset.flexibleSearch.editor.FxSTableAliasSeparatorEditorNotificationProvider"/>

@@ -21,11 +21,15 @@
         <extensionPoint qualifiedName="sap.commerce.toolset.ui.toolWindowProvider"
                         interface="sap.commerce.toolset.ui.toolwindow.CxToolWindowContentProvider"
                         dynamic="true"/>
+        <extensionPoint qualifiedName="sap.commerce.toolset.ui.splitEditorFactory"
+                        interface="sap.commerce.toolset.ui.editor.SplitEditorFactory"
+                        dynamic="true"/>
     </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
         <editorFactoryListener implementation="sap.commerce.toolset.ui.editor.event.HybrisEditorFactoryListener"/>
         <psi.treeChangeListener implementation="sap.commerce.toolset.ui.editor.event.ParameterizedSplitEditorPsiTreeChangeListener"/>
+        <fileEditorProvider implementation="sap.commerce.toolset.editor.HybrisSplitFileEditorProvider"/>
 
         <applicationConfigurable id="hybris.settings" parentId="root" displayName="[y] SAP CX"
                                  provider="sap.commerce.toolset.options.ApplicationSettingsConfigurableProvider"/>

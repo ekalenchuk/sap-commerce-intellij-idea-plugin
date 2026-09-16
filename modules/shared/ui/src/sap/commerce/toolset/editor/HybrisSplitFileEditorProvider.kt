@@ -27,40 +27,22 @@ import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.asSafely
-import org.jetbrains.plugins.groovy.GroovyFileType
-import sap.commerce.toolset.Plugin
-import sap.commerce.toolset.acl.editor.AclSplitEditorBase
-import sap.commerce.toolset.acl.file.AclFileType
-import sap.commerce.toolset.flexibleSearch.editor.FlexibleSearchSplitEditorBase
-import sap.commerce.toolset.flexibleSearch.file.FlexibleSearchFileType
-import sap.commerce.toolset.groovy.editor.GroovySplitEditorBase
-import sap.commerce.toolset.impex.editor.ImpExSplitEditorBase
-import sap.commerce.toolset.impex.file.ImpExFileType
-import sap.commerce.toolset.polyglotQuery.editor.PolyglotQuerySplitEditorBase
-import sap.commerce.toolset.polyglotQuery.file.PolyglotQueryFileType
+import sap.commerce.toolset.ui.editor.SplitEditorFactory
 
 class HybrisSplitFileEditorProvider : FileEditorProvider, DumbAware {
 
     override fun createEditor(project: Project, file: VirtualFile): FileEditor = with(TextEditorProvider.getInstance().createEditor(project, file)) {
         asSafely<TextEditor>()
-            ?.let {
-                when (file.fileType) {
-                    is FlexibleSearchFileType -> FlexibleSearchSplitEditorBase(it, project)
-                    is PolyglotQueryFileType -> PolyglotQuerySplitEditorBase(it, project)
-                    is ImpExFileType -> ImpExSplitEditorBase(it, project)
-                    is AclFileType -> AclSplitEditorBase(it, project)
-                    else -> if (Plugin.GROOVY.isActive() && file.fileType is GroovyFileType) GroovySplitEditorBase(it, project)
-                    else null
-                }
+            ?.let { textEditor ->
+                SplitEditorFactory.EP.extensionList
+                    .find { it.accept(file) }
+                    ?.createEditor(textEditor, project)
             }
             ?: this
     }
 
     override fun getEditorTypeId(): String = "hybris-split-file-editor"
     override fun getPolicy(): FileEditorPolicy = FileEditorPolicy.HIDE_DEFAULT_EDITOR
-    override fun accept(project: Project, file: VirtualFile): Boolean = file.fileType is FlexibleSearchFileType
-        || file.fileType is PolyglotQueryFileType
-        || file.fileType is ImpExFileType
-        || file.fileType is AclFileType
-        || (Plugin.GROOVY.isActive() && file.fileType is GroovyFileType)
+    override fun accept(project: Project, file: VirtualFile): Boolean = SplitEditorFactory.EP.extensionList
+        .any { it.accept(file) }
 }
