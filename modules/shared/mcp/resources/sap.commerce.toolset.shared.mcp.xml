@@ -18,8 +18,13 @@
 
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="com.intellij.mcpServer"/>
+        <module name="sap.commerce.toolset.ai.mcp"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="com.intellij">
-        <mcpServer.mcpToolset implementation="sap.commerce.toolset.ccv2.mcp.CCv2McpToolset"/>
+        <mcpServer.mcpToolset implementation="sap.commerce.toolset.shared.mcp.TransformerMcpToolset"/>
     </extensions>
 
 </idea-plugin>

@@ -18,8 +18,8 @@
 
 <idea-plugin>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <mcpServer.mcpToolset implementation="sap.commerce.toolset.groovy.mcp.GroovyMcpToolset"/>
-    </extensions>
+    <dependencies>
+        <plugin id="com.intellij.mcpServer"/>
+    </dependencies>
 
 </idea-plugin>

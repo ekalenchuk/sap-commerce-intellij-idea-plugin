@@ -18,8 +18,15 @@
 
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="com.intellij.mcpServer"/>
+        <plugin id="org.intellij.groovy"/>
+        <module name="sap.commerce.toolset.ai.mcp"/>
+        <module name="sap.commerce.toolset.hac.mcp"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="com.intellij">
-        <mcpServer.mcpToolset implementation="sap.commerce.toolset.logging.mcp.LoggingMcpToolset"/>
+        <mcpServer.mcpToolset implementation="sap.commerce.toolset.groovy.mcp.GroovyMcpToolset"/>
     </extensions>
 
 </idea-plugin>

@@ -155,17 +155,6 @@
     <depends optional="true" config-file="sap.commerce.toolset-cron-core.xml">com.intellij.cron</depends>
     <depends optional="true" config-file="sap.commerce.toolset-javascript-core.xml">JavaScript</depends>
 
-    <depends optional="true" config-file="sap.commerce.toolset-shared-mcp.xml">com.intellij.mcpServer</depends>
-    <depends optional="true" config-file="sap.commerce.toolset-hac-mcp.xml">com.intellij.mcpServer</depends>
-    <depends optional="true" config-file="sap.commerce.toolset-groovy-mcp.xml">com.intellij.mcpServer</depends>
-    <depends optional="true" config-file="sap.commerce.toolset-flexibleSearch-mcp.xml">com.intellij.mcpServer</depends>
-    <depends optional="true" config-file="sap.commerce.toolset-impex-mcp.xml">com.intellij.mcpServer</depends>
-    <depends optional="true" config-file="sap.commerce.toolset-solr-mcp.xml">com.intellij.mcpServer</depends>
-    <depends optional="true" config-file="sap.commerce.toolset-logging-mcp.xml">com.intellij.mcpServer</depends>
-    <depends optional="true" config-file="sap.commerce.toolset-typeSystem-mcp.xml">com.intellij.mcpServer</depends>
-    <depends optional="true" config-file="sap.commerce.toolset-beanSystem-mcp.xml">com.intellij.mcpServer</depends>
-    <depends optional="true" config-file="sap.commerce.toolset-ccv2-mcp.xml">com.intellij.mcpServer</depends>
-    <depends optional="true" config-file="sap.commerce.toolset-businessProcess-mcp.xml">com.intellij.mcpServer</depends>
 
     <!--
         Plugin Model v2 content modules -> https://plugins.jetbrains.com/docs/intellij/modular-plugins.html
@@ -173,6 +162,19 @@
     -->
     <content>
         <module name="sap.commerce.toolset.terminal.core"/>
+
+        <module name="sap.commerce.toolset.ai.mcp"/>
+        <module name="sap.commerce.toolset.shared.mcp"/>
+        <module name="sap.commerce.toolset.hac.mcp"/>
+        <module name="sap.commerce.toolset.groovy.mcp"/>
+        <module name="sap.commerce.toolset.flexibleSearch.mcp"/>
+        <module name="sap.commerce.toolset.impex.mcp"/>
+        <module name="sap.commerce.toolset.solr.mcp"/>
+        <module name="sap.commerce.toolset.logging.mcp"/>
+        <module name="sap.commerce.toolset.typeSystem.mcp"/>
+        <module name="sap.commerce.toolset.beanSystem.mcp"/>
+        <module name="sap.commerce.toolset.ccv2.mcp"/>
+        <module name="sap.commerce.toolset.businessProcess.mcp"/>
     </content>
 
     <xi:include href="/META-INF/plugin-internal.xml" xpointer="xpointer(/idea-plugin/*)"/>
