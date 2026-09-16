@@ -19,6 +19,7 @@
 
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <project.postImportConfigurator implementation="sap.commerce.toolset.beanSystem.project.configurator.BSProjectImportConfigurator"/>
+        <meta.modelTrackerProvider implementation="sap.commerce.toolset.beanSystem.meta.BSMetaModelTrackerProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">

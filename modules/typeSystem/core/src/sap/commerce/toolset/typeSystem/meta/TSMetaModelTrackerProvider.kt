@@ -16,15 +16,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sap.commerce.toolset.flexibleSearch.editor
+package sap.commerce.toolset.typeSystem.meta
 
-import sap.commerce.toolset.flexibleSearch.exec.context.FlexibleSearchExecContext
-import sap.commerce.toolset.flexibleSearch.exec.context.FlexibleSearchExecResult
-import sap.commerce.toolset.ui.editor.SplitEditorEx
+import com.intellij.openapi.project.Project
+import com.intellij.util.xml.DomFileDescription
+import sap.commerce.toolset.HybrisConstants
+import sap.commerce.toolset.meta.MetaModelTrackerProvider
+import sap.commerce.toolset.typeSystem.TSDomFileDescription
 
-interface FlexibleSearchSplitEditorEx : FlexibleSearchSplitEditor, SplitEditorEx {
-    var lastExecResult: FlexibleSearchExecResult?
-    fun showLoader(context: FlexibleSearchExecContext)
-    fun renderExecutionResult(result: FlexibleSearchExecResult)
-    fun clearExecutionResult()
+class TSMetaModelTrackerProvider : MetaModelTrackerProvider {
+
+    override fun getTracker(project: Project) = TSModificationTracker.getInstance(project)
+    override fun isTracked(domFileDescription: DomFileDescription<*>) = domFileDescription is TSDomFileDescription
+    override fun createKeyResolver(project: Project): (String, String) -> String? = { fileName, _ ->
+        fileName.takeIf { it.endsWith(HybrisConstants.HYBRIS_ITEMS_XML_FILE_ENDING) }
+    }
 }

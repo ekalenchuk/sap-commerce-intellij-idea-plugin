@@ -20,9 +20,13 @@ package sap.commerce.toolset.editor
 
 import com.intellij.openapi.Disposable
 import javax.swing.JComponent
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 interface ParameterizedSplitEditor : ExecutableSplitEditor {
     var inEditorParameters: Boolean
     var inEditorParametersView: JComponent?
     var virtualParametersDisposable: Disposable?
+
+    fun refreshParameters(delayMs: Duration = 500.milliseconds)
 }

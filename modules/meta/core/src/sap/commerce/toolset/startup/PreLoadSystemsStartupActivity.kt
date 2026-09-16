@@ -15,25 +15,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package sap.commerce.toolset.startup
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
-import sap.commerce.toolset.beanSystem.meta.BSMetaModelStateService
-import sap.commerce.toolset.cockpitNG.meta.CngMetaModelStateService
 import sap.commerce.toolset.isNotHybrisProject
+import sap.commerce.toolset.meta.MetaModelTrackerProvider
 import sap.commerce.toolset.project.PropertyService
 import sap.commerce.toolset.spring.SimpleSpringService
-import sap.commerce.toolset.typeSystem.meta.TSMetaModelStateService
 
 class PreLoadSystemsStartupActivity : ProjectActivity {
 
     override suspend fun execute(project: Project) {
         if (project.isNotHybrisProject) return
 
-        TSMetaModelStateService.getInstance(project).init()
-        BSMetaModelStateService.getInstance(project).init()
-        CngMetaModelStateService.getInstance(project).init()
+        MetaModelTrackerProvider.EP.extensionList
+            .forEach { it.getTracker(project).init() }
 
         SimpleSpringService.getService(project).initCache()
         PropertyService.getInstance(project).initCache()

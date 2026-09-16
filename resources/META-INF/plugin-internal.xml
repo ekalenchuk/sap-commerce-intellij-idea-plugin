@@ -36,8 +36,6 @@
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <vfs.asyncListener implementation="sap.commerce.toolset.meta.event.MetaSystemFileListener"/>
-        <psi.treeChangeListener implementation="sap.commerce.toolset.meta.event.MetaSystemPsiTreeChangeListener"/>
         <fileEditorProvider implementation="sap.commerce.toolset.editor.HybrisSplitFileEditorProvider"/>
     </extensions>
 
@@ -47,10 +45,6 @@
         <languageInjector implementation="sap.commerce.toolset.codeInsight.injection.XmlToImpExLanguageInjector"/>
         <languageInjector implementation="sap.commerce.toolset.codeInsight.injection.PolyglotQueryLanguageInjector"/>
         <languageInjector implementation="sap.commerce.toolset.codeInsight.injection.JavaToBeansXmlLanguageInjector"/>
-    </extensions>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <backgroundPostStartupActivity implementation="sap.commerce.toolset.startup.PreLoadSystemsStartupActivity"/>
     </extensions>
 
 </idea-plugin>

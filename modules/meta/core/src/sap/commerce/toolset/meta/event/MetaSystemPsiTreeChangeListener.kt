@@ -20,26 +20,15 @@ package sap.commerce.toolset.meta.event
 
 import com.intellij.openapi.application.readAction
 import com.intellij.openapi.extensions.ExtensionNotApplicableException
-import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiTreeChangeEvent
 import com.intellij.psi.PsiTreeChangeListener
 import com.intellij.psi.xml.XmlFile
+import com.intellij.util.asSafely
 import com.intellij.util.xml.DomManager
 import kotlinx.coroutines.*
-import sap.commerce.toolset.beanSystem.BSDomFileDescription
-import sap.commerce.toolset.beanSystem.meta.BSModificationTracker
-import sap.commerce.toolset.cockpitNG.*
-import sap.commerce.toolset.cockpitNG.meta.CngModificationTracker
-import sap.commerce.toolset.flexibleSearch.editor.FlexibleSearchSplitEditorEx
-import sap.commerce.toolset.flexibleSearch.psi.FlexibleSearchPsiFile
-import sap.commerce.toolset.impex.editor.ImpExSplitEditorEx
-import sap.commerce.toolset.impex.psi.ImpExFile
 import sap.commerce.toolset.isNotHybrisProject
-import sap.commerce.toolset.polyglotQuery.editor.PolyglotQuerySplitEditorEx
-import sap.commerce.toolset.polyglotQuery.file.PolyglotQueryFile
-import sap.commerce.toolset.typeSystem.TSDomFileDescription
-import sap.commerce.toolset.typeSystem.meta.TSModificationTracker
+import sap.commerce.toolset.meta.MetaModelTrackerProvider
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
@@ -54,9 +43,6 @@ class MetaSystemPsiTreeChangeListener(private val project: Project) : PsiTreeCha
 
     private var changeJob: Job? = null
     private val domManager by lazy { DomManager.getDomManager(project) }
-    private val tsModificationTracker by lazy { TSModificationTracker.getInstance(project) }
-    private val bsModificationTracker by lazy { BSModificationTracker.getInstance(project) }
-    private val cngModificationTracker by lazy { CngModificationTracker.getInstance(project) }
 
     override fun beforeChildAddition(event: PsiTreeChangeEvent) = doChange(event)
     override fun beforeChildRemoval(event: PsiTreeChangeEvent) = doChange(event)
@@ -72,41 +58,19 @@ class MetaSystemPsiTreeChangeListener(private val project: Project) : PsiTreeCha
     override fun propertyChanged(event: PsiTreeChangeEvent) = doChange(event)
 
     private fun doChange(event: PsiTreeChangeEvent) {
-        val file = event.file ?: return
+        val file = event.file?.asSafely<XmlFile>() ?: return
 
         changeJob?.cancel()
         changeJob = CoroutineScope(Dispatchers.Default).launch {
             delay(250.milliseconds)
 
-            when (file) {
-                is FlexibleSearchPsiFile -> FileEditorManager.getInstance(file.project).getAllEditors(file.virtualFile)
-                    .filterIsInstance<FlexibleSearchSplitEditorEx>()
-                    .forEach { it.refreshParameters() }
+            val domFileDescription = readAction { domManager.getDomFileDescription(file) }
+                ?: return@launch
 
-                is PolyglotQueryFile -> FileEditorManager.getInstance(file.project).getAllEditors(file.virtualFile)
-                    .filterIsInstance<PolyglotQuerySplitEditorEx>()
-                    .forEach { it.refreshParameters() }
-
-                is ImpExFile -> FileEditorManager.getInstance(file.project).getAllEditors(file.virtualFile)
-                    .filterIsInstance<ImpExSplitEditorEx>()
-                    .forEach { it.refreshParameters() }
-
-                is XmlFile -> {
-                    val domFileDescription = readAction { domManager.getDomFileDescription(file) }
-                        ?: return@launch
-
-                    when (domFileDescription) {
-                        is CngConfigDomFileDescription,
-                        is CngWidgetsDomFileDescription,
-                        is CngActionDefinitionDomFileDescription,
-                        is CngEditorDefinitionDomFileDescription,
-                        is CngWidgetDefinitionDomFileDescription -> cngModificationTracker.resetCache(file)
-
-                        is BSDomFileDescription -> bsModificationTracker.resetCache(file)
-                        is TSDomFileDescription -> tsModificationTracker.resetCache(file)
-                    }
-                }
-            }
+            MetaModelTrackerProvider.EP.extensionList
+                .find { it.isTracked(domFileDescription) }
+                ?.getTracker(project)
+                ?.resetCache(file)
         }
     }
 }

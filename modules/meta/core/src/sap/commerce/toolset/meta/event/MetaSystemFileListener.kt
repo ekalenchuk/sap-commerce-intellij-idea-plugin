@@ -19,19 +19,14 @@
 package sap.commerce.toolset.meta.event
 
 import com.intellij.openapi.project.DumbService
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.vfs.AsyncFileListener
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.openapi.vfs.newvfs.events.VFilePropertyChangeEvent
 import com.intellij.util.PathUtil
 import com.intellij.util.asSafely
-import sap.commerce.toolset.HybrisConstants
-import sap.commerce.toolset.beanSystem.meta.BSModificationTracker
-import sap.commerce.toolset.cockpitNG.meta.CngMetaModelStateService
-import sap.commerce.toolset.cockpitNG.meta.CngModificationTracker
 import sap.commerce.toolset.isHybrisProject
-import sap.commerce.toolset.typeSystem.meta.TSModificationTracker
+import sap.commerce.toolset.meta.MetaModelTrackerProvider
 
 /**
  * Limitation due performance restrictions:
@@ -42,19 +37,12 @@ import sap.commerce.toolset.typeSystem.meta.TSModificationTracker
  */
 class MetaSystemFileListener : AsyncFileListener {
 
-    private fun mapToTracker(fileName: String, fqn: String, project: Project, trackedCngModels: Set<String>) = when {
-        fileName.endsWith(HybrisConstants.HYBRIS_ITEMS_XML_FILE_ENDING) -> TSModificationTracker.getInstance(project) to fileName
-        fileName.endsWith(HybrisConstants.HYBRIS_BEANS_XML_FILE_ENDING) -> BSModificationTracker.getInstance(project) to fileName
-        // in case of the CockpitNG FQN is being tracked
-        trackedCngModels.contains(fqn) -> CngModificationTracker.getInstance(project) to fqn
-        else -> null
-    }
-
     override fun prepareChange(events: List<VFileEvent>) = ProjectManager.getInstance().openProjects
         .filterNot { DumbService.isDumb(it) }
         .filter { it.isHybrisProject }
         .mapNotNull { project ->
-            val trackedCngModels by lazy { CngMetaModelStateService.getInstance(project).getTrackedModels() }
+            val keyResolvers = MetaModelTrackerProvider.EP.extensionList
+                .map { it to it.createKeyResolver(project) }
 
             events
                 .map { event ->
@@ -68,7 +56,12 @@ class MetaSystemFileListener : AsyncFileListener {
                         }
                         ?: (PathUtil.getFileName(event.path) to event.path)
                 }
-                .mapNotNull { mapToTracker(it.first, it.second, project, trackedCngModels) }
+                .mapNotNull { (fileName, path) ->
+                    keyResolvers.firstNotNullOfOrNull { (provider, keyResolver) ->
+                        keyResolver(fileName, path)
+                            ?.let { provider.getTracker(project) to it }
+                    }
+                }
                 .groupBy({ it.first }, { it.second })
                 .takeIf { it.isNotEmpty() }
         }

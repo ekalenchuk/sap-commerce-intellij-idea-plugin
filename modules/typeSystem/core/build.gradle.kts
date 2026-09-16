@@ -46,6 +46,8 @@ dependencies {
     implementation(project(":project-core"))
     implementation(project(":project-extensioninfo"))
 
+    testImplementation(kotlin("test"))
+
     intellijPlatform {
         intellijIdea(properties("intellij.version")) {
             useInstaller = true

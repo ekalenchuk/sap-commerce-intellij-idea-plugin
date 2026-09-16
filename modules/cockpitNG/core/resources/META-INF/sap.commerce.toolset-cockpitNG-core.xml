@@ -19,6 +19,7 @@
 
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <project.postImportConfigurator implementation="sap.commerce.toolset.cockpitNG.project.configurator.CngProjectImportConfigurator"/>
+        <meta.modelTrackerProvider implementation="sap.commerce.toolset.cockpitNG.meta.CngMetaModelTrackerProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">

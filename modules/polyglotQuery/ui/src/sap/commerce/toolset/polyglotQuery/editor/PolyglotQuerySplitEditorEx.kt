@@ -20,11 +20,8 @@ package sap.commerce.toolset.polyglotQuery.editor
 
 import sap.commerce.toolset.flexibleSearch.exec.context.FlexibleSearchExecResult
 import sap.commerce.toolset.ui.editor.SplitEditorEx
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 
 interface PolyglotQuerySplitEditorEx : PolyglotQuerySplitEditor, SplitEditorEx {
     fun showLoader(richMessage: String)
     fun renderExecutionResult(result: FlexibleSearchExecResult)
-    fun refreshParameters(delayMs: Duration = 500.milliseconds)
 }
