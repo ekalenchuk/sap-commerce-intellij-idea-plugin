@@ -18,6 +18,11 @@
 
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.solr.core"/>
+        <module name="sap.commerce.toolset.solr.exec"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="com.intellij">
         <projectConfigurable id="sap.commerce.toolset.solr.exec.settings" parentId="hybris.settings"
                              nonDefaultProject="true" dynamic="true"

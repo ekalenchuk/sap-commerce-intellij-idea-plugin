@@ -23,6 +23,7 @@
         <plugin id="org.intellij.groovy"/>
         <module name="sap.commerce.toolset.ai.mcp"/>
         <module name="sap.commerce.toolset.hac.mcp"/>
+        <module name="sap.commerce.toolset.groovy.transform"/>
     </dependencies>
 
     <extensions defaultExtensionNs="com.intellij">

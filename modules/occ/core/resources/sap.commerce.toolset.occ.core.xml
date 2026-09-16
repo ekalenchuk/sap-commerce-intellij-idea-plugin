@@ -15,22 +15,6 @@
   ~ You should have received a copy of the GNU Lesser General Public License
   ~ along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
+
 <idea-plugin>
-
-    <actions resource-bundle="i18n.HybrisBundle">
-        <action id="sap.commerce.toolset.removeFromRecentProjects"
-                class="sap.commerce.toolset.welcomescreen.actionSystem.RemoveSapCommerceProjectAction">
-            <keyboard-shortcut keymap="$default" first-keystroke="DELETE"/>
-        </action>
-
-        <group id="sap.commerce.toolset.welcomeTab.projectContextMenu">
-            <reference ref="sap.commerce.toolset.removeFromRecentProjects"/>
-        </group>
-    </actions>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <welcomeTabFactory id="SapCommerceCloudWelcomeTab" order="first"
-                           implementation="sap.commerce.toolset.welcomescreen.ui.SapCommerceWelcomeTabFactory"/>
-    </extensions>
-
 </idea-plugin>

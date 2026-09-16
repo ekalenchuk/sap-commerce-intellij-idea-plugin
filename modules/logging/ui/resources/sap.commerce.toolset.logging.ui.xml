@@ -18,6 +18,10 @@
 
 <idea-plugin>
 
+    <dependencies>
+        <module name="sap.commerce.toolset.logging.exec"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <ui.toolWindowProvider implementation="sap.commerce.toolset.logging.ui.CxLoggingToolWindowContentProvider"/>
     </extensions>
