@@ -15,34 +15,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package sap.commerce.toolset.project.configurator
 
 import com.intellij.facet.FacetTypeId
 import com.intellij.facet.FacetTypeRegistry
 import com.intellij.framework.detection.DetectionExcludesConfiguration
 import com.intellij.framework.detection.impl.FrameworkDetectionUtil
-import com.intellij.javaee.application.facet.JavaeeApplicationFacet
-import com.intellij.javaee.web.facet.WebFacet
 import com.intellij.openapi.project.Project
-import com.intellij.spring.facet.SpringFacet
-import sap.commerce.toolset.Plugin
-import sap.commerce.toolset.project.context.ProjectImportContext
 
-class ExcludeFrameworkDetectionConfigurator : ProjectImportConfigurator {
+abstract class ExcludeFrameworkDetectionConfigurator : ProjectImportConfigurator {
 
     override val name: String
         get() = "Exclude Framework Detection"
 
-    override suspend fun configure(context: ProjectImportContext) {
-        val project = context.project
-
-        // TODO: maybe other plugins ?
-        Plugin.SPRING.ifActive { excludeFrameworkDetection(project, SpringFacet.FACET_TYPE_ID) }
-        Plugin.JAVAEE.ifActive { excludeFrameworkDetection(project, JavaeeApplicationFacet.ID) }
-        Plugin.JAVAEE_WEB.ifActive { excludeFrameworkDetection(project, WebFacet.ID) }
-    }
-
-    private fun excludeFrameworkDetection(project: Project, facetTypeId: FacetTypeId<*>) = FacetTypeRegistry.getInstance()
+    protected fun excludeFrameworkDetection(project: Project, facetTypeId: FacetTypeId<*>) = FacetTypeRegistry.getInstance()
         .findFacetType(facetTypeId)
         .let { FrameworkDetectionUtil.findFrameworkTypeForFacetDetector(it) }
         ?.let { DetectionExcludesConfiguration.getInstance(project).addExcludedFramework(it) }

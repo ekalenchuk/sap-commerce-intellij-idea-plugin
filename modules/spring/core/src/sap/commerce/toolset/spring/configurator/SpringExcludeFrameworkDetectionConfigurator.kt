@@ -16,36 +16,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-fun properties(key: String) = providers.gradleProperty(key)
+package sap.commerce.toolset.spring.configurator
 
-plugins {
-    id("org.jetbrains.intellij.platform.module")
-    alias(libs.plugins.kotlin) // Kotlin support
-}
+import com.intellij.spring.facet.SpringFacet
+import sap.commerce.toolset.Plugin
+import sap.commerce.toolset.project.configurator.ExcludeFrameworkDetectionConfigurator
+import sap.commerce.toolset.project.context.ProjectImportContext
 
-sourceSets {
-    main {
-        java.srcDirs("src")
-        resources.srcDirs("resources")
-    }
-    test {
-        java.srcDirs("tests")
-    }
-}
+class SpringExcludeFrameworkDetectionConfigurator : ExcludeFrameworkDetectionConfigurator() {
 
-dependencies {
-    implementation(project(":shared-core"))
-    implementation(project(":shared-ui"))
-    implementation(project(":project-extensioninfo"))
-    implementation(project(":project-localextensions"))
-    implementation(project(":project-core"))
-    implementation(project(":externalDependencies-core"))
-    implementation(project(":ccv2-core"))
-    implementation(project(":java-core"))
-
-    intellijPlatform {
-        intellijIdea(properties("intellij.version")) {
-            useInstaller = true
-        }
+    override suspend fun configure(context: ProjectImportContext) {
+        Plugin.SPRING.ifActive { excludeFrameworkDetection(context.project, SpringFacet.FACET_TYPE_ID) }
     }
 }

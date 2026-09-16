@@ -18,21 +18,12 @@
 
 <idea-plugin>
 
-    <extensions defaultExtensionNs="sap.commerce.toolset">
-        <project.importConfigurator implementation="sap.commerce.toolset.project.configurator.ExcludeFrameworkDetectionConfigurator"/>
-    </extensions>
-
     <extensions defaultExtensionNs="com.intellij">
         <compileServer.plugin id="sap.commerce.developers.toolset.jps" classpath="SAP Commerce Developers Toolset.jps-plugin.jar"/>
 
         <notificationGroup id="[y] SAP Commerce" displayType="BALLOON" isLogByDefault="true"/>
 
         <errorHandler implementation="com.intellij.diagnostic.JetBrainsMarketplaceErrorReportSubmitter"/>
-    </extensions>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <treeStructureProvider id="hybris.project.root.tree.structure.provider" order="first"
-                               implementation="sap.commerce.toolset.project.view.HybrisProjectView"/>
     </extensions>
 
 </idea-plugin>

@@ -35,6 +35,7 @@
                                               implementation="sap.commerce.toolset.spring.configurator.SpringFacetConfigurator"/>
 
         <shared.springService implementation="sap.commerce.toolset.spring.AdvancedSpringService"/>
+        <project.importConfigurator implementation="sap.commerce.toolset.spring.configurator.SpringExcludeFrameworkDetectionConfigurator"/>
     </extensions>
 
 </idea-plugin>

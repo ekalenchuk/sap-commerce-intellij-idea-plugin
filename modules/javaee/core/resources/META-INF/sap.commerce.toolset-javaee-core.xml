@@ -19,6 +19,7 @@
 
     <extensions defaultExtensionNs="sap.commerce.toolset">
         <project.postImportConfigurator implementation="sap.commerce.toolset.javaee.configurator.XsdSchemaConfigurator"/>
+        <project.importConfigurator implementation="sap.commerce.toolset.javaee.configurator.JavaeeExcludeFrameworkDetectionConfigurator"/>
     </extensions>
 
 </idea-plugin>

@@ -32,5 +32,7 @@
                              key="hybris.settings.project.title"
                              provider="sap.commerce.toolset.project.options.ProjectSettingsConfigurableProvider"/>
 
+        <treeStructureProvider id="hybris.project.root.tree.structure.provider" order="first"
+                               implementation="sap.commerce.toolset.project.view.HybrisProjectView"/>
     </extensions>
 </idea-plugin>

@@ -22,6 +22,7 @@
                                               implementation="sap.commerce.toolset.javaee.web.configurator.WebFacetConfigurator"/>
 
         <project.storage.cleanupConfigurator implementation="sap.commerce.toolset.javaee.web.configurator.CleanupWebFacetSettingsConfigurator"/>
+        <project.importConfigurator implementation="sap.commerce.toolset.javaee.web.configurator.WebExcludeFrameworkDetectionConfigurator"/>
     </extensions>
 
 </idea-plugin>
