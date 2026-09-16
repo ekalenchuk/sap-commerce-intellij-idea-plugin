@@ -20,11 +20,21 @@ import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.models.ProductRelease
+import org.jetbrains.intellij.platform.gradle.tasks.ComposedJarTask
 import org.jetbrains.intellij.platform.gradle.tasks.RunIdeTask
 import sap.commerce.toolset.gradle.api.CxFetchPRsGradleTask
 import java.nio.file.Files
 
 fun properties(key: String) = providers.gradleProperty(key)
+
+// Plugin Model v2 -> https://plugins.jetbrains.com/docs/intellij/modular-plugins.html
+// A submodule becomes a content module once it declares its own `resources/<content module name>.xml` descriptor.
+// Content modules are packaged as `lib/modules/<content module name>.jar` and loaded by a dedicated class loader,
+// all other submodules are still composed into the main plugin jar.
+val Project.contentModuleName
+    get() = "sap.commerce.toolset.${name.replace('-', '.')}"
+val Project.isContentModule
+    get() = projectDir.resolve("resources/$contentModuleName.xml").exists()
 
 plugins {
     id("java") // Java support
@@ -56,6 +66,18 @@ sourceSets {
     }
     test {
         java.srcDirs("tests")
+    }
+}
+
+subprojects {
+    val subproject = this
+    if (!subproject.isContentModule) return@subprojects
+
+    plugins.withId("org.jetbrains.intellij.platform.module") {
+        tasks.named<ComposedJarTask>("composedJar") {
+            // the platform resolves content module classes from `lib/modules/<content module name>.jar`
+            archiveBaseName = subproject.contentModuleName
+        }
     }
 }
 
@@ -243,10 +265,11 @@ dependencies {
         jetbrainsRuntime()
         pluginVerifier()
 
-        rootProject.childProjects.keys
-            .filter { it != "jps-plugin" }
+        rootProject.childProjects.values
+            .filter { it.name != "jps-plugin" }
             .forEach {
-                pluginComposedModule(implementation(project(it)))
+                if (it.isContentModule) pluginModule(implementation(project(it.path)))
+                else pluginComposedModule(implementation(project(it.path)))
             }
 
         bundledModules(

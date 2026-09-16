@@ -18,6 +18,10 @@
 
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="org.jetbrains.plugins.terminal"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="org.jetbrains.plugins.terminal">
         <localTerminalCustomizer implementation="sap.commerce.toolset.terminal.HybrisProjectTerminalCustomizer"/>
     </extensions>
