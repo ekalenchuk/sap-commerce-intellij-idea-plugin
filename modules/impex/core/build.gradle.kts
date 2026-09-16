@@ -58,7 +58,6 @@ dependencies {
         bundledPlugins(
             "com.intellij.java",
             "com.intellij.properties",
-            "com.intellij.database",
         )
     }
 }

@@ -21,4 +21,8 @@
         <project.postImportConfigurator implementation="sap.commerce.toolset.database.configurator.DataSourceConfigurator"/>
     </extensions>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.lineMarkerProvider language="ImpEx" implementationClass="sap.commerce.toolset.impex.codeInsight.daemon.ImpExDataEditModeLineMarkerProvider"/>
+    </extensions>
+
 </idea-plugin>
