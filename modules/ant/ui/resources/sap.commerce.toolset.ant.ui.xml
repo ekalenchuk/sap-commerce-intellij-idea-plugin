@@ -17,9 +17,14 @@
   -->
 <idea-plugin>
 
-    <extensions defaultExtensionNs="sap.commerce.toolset">
-        <project.startupConfigurator implementation="sap.commerce.toolset.jrebel.configurator.JRebelStartupConfigurator"/>
-        <project.postImportConfigurator implementation="sap.commerce.toolset.jrebel.configurator.JRebelConfigurator"/>
+    <dependencies>
+        <plugin id="AntSupport"/>
+        <module name="sap.commerce.toolset.ant.core"/>
+    </dependencies>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <editorNotificationProvider id="antUpdateMavenDependenciesNotificationProvider"
+                                    implementation="sap.commerce.toolset.ant.editor.AntUpdateMavenDependenciesNotificationProvider"/>
     </extensions>
 
 </idea-plugin>

@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="com.intellij.diagram"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="com.intellij">
         <additionalTextAttributes scheme="Default" file="colorSchemes/TSDiagramDefault.xml"/>
         <additionalTextAttributes scheme="Darcula" file="colorSchemes/TSDiagramDarcula.xml"/>

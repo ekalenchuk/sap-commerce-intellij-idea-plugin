@@ -17,15 +17,8 @@
   -->
 <idea-plugin>
 
-    <depends>org.jetbrains.idea.eclipse</depends>
-
-    <extensions defaultExtensionNs="sap.commerce.toolset">
-        <project.postImportConfigurator implementation="sap.commerce.toolset.eclipse.project.configurator.EclipseModuleConfigurator"/>
-
-        <project.module.descriptorProvider implementation="sap.commerce.toolset.eclipse.project.descriptor.provider.EclipseModuleDescriptorProvider"/>
-        <project.module.rootResolver order="after yCustomModuleRootResolver" id="eclipseModuleRootResolver"
-                                     implementation="sap.commerce.toolset.eclipse.project.module.EclipseModuleRootResolver"/>
-
-    </extensions>
+    <dependencies>
+        <plugin id="AngularJS"/>
+    </dependencies>
 
 </idea-plugin>

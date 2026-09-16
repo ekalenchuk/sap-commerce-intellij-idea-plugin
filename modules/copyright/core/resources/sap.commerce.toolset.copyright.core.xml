@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="com.intellij.copyright"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="com.intellij.copyright">
         <updater filetype="ImpEx" implementationClass="sap.commerce.toolset.copyright.UpdateImpExCopyrightsProvider"/>
         <updater filetype="Access Control Lists" implementationClass="sap.commerce.toolset.copyright.UpdateAclCopyrightsProvider"/>

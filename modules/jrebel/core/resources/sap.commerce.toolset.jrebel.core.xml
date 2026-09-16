@@ -17,13 +17,13 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="JRebelPlugin"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
-        <project.postImportConfigurator implementation="sap.commerce.toolset.maven.project.configurator.MavenConfigurator"/>
-
-        <project.module.descriptorProvider implementation="sap.commerce.toolset.maven.project.descriptor.provider.MavenModuleDescriptorProvider"/>
-
-        <project.module.rootResolver order="after yCustomModuleRootResolver" id="mavenModuleRootResolver"
-                                     implementation="sap.commerce.toolset.maven.project.module.MavenModuleRootResolver"/>
+        <project.startupConfigurator implementation="sap.commerce.toolset.jrebel.configurator.JRebelStartupConfigurator"/>
+        <project.postImportConfigurator implementation="sap.commerce.toolset.jrebel.configurator.JRebelConfigurator"/>
     </extensions>
 
 </idea-plugin>

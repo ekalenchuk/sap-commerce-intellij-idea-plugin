@@ -17,6 +17,10 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="com.intellij.diagram"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="com.intellij">
         <additionalTextAttributes scheme="Default" file="colorSchemes/ModuleDiagramDefault.xml"/>
         <additionalTextAttributes scheme="Darcula" file="colorSchemes/ModuleDiagramDarcula.xml"/>

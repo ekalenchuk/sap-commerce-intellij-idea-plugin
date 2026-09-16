@@ -17,16 +17,18 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="org.jetbrains.idea.eclipse"/>
+        <module name="sap.commerce.toolset.eclipse.core"/>
+    </dependencies>
+
     <extensions defaultExtensionNs="sap.commerce.toolset">
-        <project.beforeRefreshConfigurator implementation="sap.commerce.toolset.gradle.project.configurator.GradleBeforeRefreshConfigurator"/>
-        <project.postImportConfigurator implementation="sap.commerce.toolset.gradle.project.configurator.GradleConfigurator"/>
+        <project.postImportConfigurator implementation="sap.commerce.toolset.eclipse.project.configurator.EclipseModuleConfigurator"/>
 
-        <project.module.descriptorProvider implementation="sap.commerce.toolset.gradle.project.descriptor.provider.GradleDefaultModuleDescriptorProvider"/>
-        <project.module.descriptorProvider implementation="sap.commerce.toolset.gradle.project.descriptor.provider.GradleKtsModuleDescriptorProvider"/>
-        <project.module.descriptorProvider implementation="sap.commerce.toolset.gradle.project.descriptor.provider.GradleDclModuleDescriptorProvider"/>
+        <project.module.descriptorProvider implementation="sap.commerce.toolset.eclipse.project.descriptor.provider.EclipseModuleDescriptorProvider"/>
+        <project.module.rootResolver order="after yCustomModuleRootResolver" id="eclipseModuleRootResolver"
+                                     implementation="sap.commerce.toolset.eclipse.project.module.EclipseModuleRootResolver"/>
 
-        <project.module.rootResolver order="after yCustomModuleRootResolver" id="gradleModuleRootResolver"
-                                     implementation="sap.commerce.toolset.gradle.project.module.GradleModuleRootResolver"/>
     </extensions>
 
 </idea-plugin>

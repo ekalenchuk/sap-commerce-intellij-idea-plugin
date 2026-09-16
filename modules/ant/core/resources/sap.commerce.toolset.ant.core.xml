@@ -16,10 +16,14 @@
   ~ along with this program. If not, see <http://www.gnu.org/licenses/>.
   -->
 <idea-plugin>
-    <depends>JavaScript</depends>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <languageInjector implementation="sap.commerce.toolset.javascript.codeInsight.injection.JavaScriptLanguageInjector"/>
+    <dependencies>
+        <plugin id="AntSupport"/>
+    </dependencies>
+
+    <extensions defaultExtensionNs="sap.commerce.toolset">
+        <project.beforeRefreshConfigurator implementation="sap.commerce.toolset.ant.configurator.AntBeforeRefreshConfigurator"/>
+        <project.whenSmartConfigurator implementation="sap.commerce.toolset.ant.configurator.AntWhenSmartConfigurator"/>
     </extensions>
 
 </idea-plugin>

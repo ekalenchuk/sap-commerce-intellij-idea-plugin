@@ -17,4 +17,12 @@
   -->
 <idea-plugin>
 
+    <dependencies>
+        <plugin id="JavaScript"/>
+    </dependencies>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <languageInjector implementation="sap.commerce.toolset.javascript.codeInsight.injection.JavaScriptLanguageInjector"/>
+    </extensions>
+
 </idea-plugin>

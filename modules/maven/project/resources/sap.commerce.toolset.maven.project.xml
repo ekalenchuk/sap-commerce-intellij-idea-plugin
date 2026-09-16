@@ -17,15 +17,17 @@
   -->
 <idea-plugin>
 
-    <extensions defaultExtensionNs="sap.commerce.toolset">
-        <project.postImportLegacyConfigurator implementation="sap.commerce.toolset.angular.project.configurator.AngularYFacetConfigurator"/>
-        <project.postImportConfigurator implementation="sap.commerce.toolset.angular.project.configurator.AngularConfigurator"/>
+    <dependencies>
+        <plugin id="org.jetbrains.idea.maven"/>
+    </dependencies>
 
-        <project.module.provider implementation="sap.commerce.toolset.angular.project.configurator.AngularModuleProvider"/>
-        <project.module.importConfigurator implementation="sap.commerce.toolset.angular.project.configurator.AngularModuleImportConfigurator"/>
-        <project.module.descriptorProvider implementation="sap.commerce.toolset.angular.project.descriptor.provider.AngularModuleDescriptorProvider"/>
-        <project.module.rootResolver order="after yCustomModuleRootResolver" id="angularModuleRootResolver"
-                                     implementation="sap.commerce.toolset.angular.project.module.AngularModuleRootResolver"/>
+    <extensions defaultExtensionNs="sap.commerce.toolset">
+        <project.postImportConfigurator implementation="sap.commerce.toolset.maven.project.configurator.MavenConfigurator"/>
+
+        <project.module.descriptorProvider implementation="sap.commerce.toolset.maven.project.descriptor.provider.MavenModuleDescriptorProvider"/>
+
+        <project.module.rootResolver order="after yCustomModuleRootResolver" id="mavenModuleRootResolver"
+                                     implementation="sap.commerce.toolset.maven.project.module.MavenModuleRootResolver"/>
     </extensions>
 
 </idea-plugin>

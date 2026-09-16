@@ -17,8 +17,8 @@
   -->
 <idea-plugin>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <runConfigurationExtension implementation="sap.commerce.toolset.junit.runConfigurations.HybrisJUnitExtension"/>
-    </extensions>
+    <dependencies>
+        <plugin id="org.jetbrains.idea.eclipse"/>
+    </dependencies>
 
 </idea-plugin>
