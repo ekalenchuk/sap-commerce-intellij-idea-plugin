@@ -22,6 +22,7 @@
 - Keep the `SAP CX` project view and the localized `ImpEx` file grouping working when the platform provides no view settings
 - Show the project import notification once the project is opened
 - Render the `ImpEx`, `FlexibleSearch`, `Polyglot Query`, `Groovy` and `ACL` actions toolbar as part of the editor instead of the editor header
+- Report no IDE error when the `hybris4intellij.properties` group override file cannot be read or written during the project import
 
 ## [2026.2.3]
 

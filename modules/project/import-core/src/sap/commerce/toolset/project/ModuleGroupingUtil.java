@@ -101,7 +101,8 @@ public final class ModuleGroupingUtil {
             }
             properties.store(out, comments);
         } catch (IOException e) {
-            LOG.error("Cannot write " + HybrisConstants.IMPORT_OVERRIDE_FILENAME + ": " + groupFile.toAbsolutePath());
+            // an optional override file, f.e. a dangling symlink in the config directory must not break the import
+            LOG.warn("Cannot write " + HybrisConstants.IMPORT_OVERRIDE_FILENAME + ": " + groupFile.toAbsolutePath(), e);
         }
     }
 
@@ -117,7 +118,7 @@ public final class ModuleGroupingUtil {
         try (final InputStream in = new FileInputStream(groupFile.toFile())) {
             properties.load(in);
         } catch (IOException e) {
-            LOG.error("Cannot read " + HybrisConstants.IMPORT_OVERRIDE_FILENAME + " for module " + moduleName);
+            LOG.warn("Cannot read " + HybrisConstants.IMPORT_OVERRIDE_FILENAME + " for module " + moduleName, e);
             return null;
         }
         String rawGroupText = properties.getProperty(GROUP_OVERRIDE_KEY);
