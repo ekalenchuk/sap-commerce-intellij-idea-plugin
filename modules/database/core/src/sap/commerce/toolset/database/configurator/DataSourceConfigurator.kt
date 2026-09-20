@@ -27,6 +27,7 @@ import com.intellij.database.dataSource.LocalDataSourceManager
 import com.intellij.database.model.DasDataSource
 import com.intellij.database.util.LoaderContext
 import com.intellij.database.util.performAutoIntrospection
+import com.intellij.openapi.application.EDT
 import com.intellij.openapi.application.edtWriteAction
 import com.intellij.openapi.application.smartReadAction
 import com.intellij.openapi.vfs.VirtualFileManager
@@ -37,6 +38,7 @@ import com.intellij.util.ui.classpath.SingleRootClasspathElement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import sap.commerce.toolset.java.JavaConstants
 import sap.commerce.toolset.project.PropertyService
 import sap.commerce.toolset.project.configurator.ProjectPostImportConfigurator
@@ -76,12 +78,16 @@ class DataSourceConfigurator : ProjectPostImportConfigurator {
                 }
             })
 
-        edtWriteAction {
+        withContext(Dispatchers.EDT) {
             dataSourceDetectorBuilder.commit()
 
+            // `configureDetectedDataSources` acquires a write action on its own,
+            // an already acquired write lock will block storing of the data source credentials
             val credentials = DatabaseCredentials.getInstance()
             DataSourceConfigUtil.configureDetectedDataSources(project, dataSourceRegistry, false, true, credentials)
+        }
 
+        edtWriteAction {
             for (dataSource in dataSources) {
                 LocalDataSourceManager.getInstance(project).addDataSource(dataSource)
 
