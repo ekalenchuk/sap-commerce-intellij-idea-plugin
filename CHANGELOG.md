@@ -13,6 +13,9 @@
 ### `Project Import` enhancements
 - Speed up the libraries sources and javadocs fetching by remembering the previous lookup outcome and no longer blocking the shared background threads [#2002](https://github.com/epam/sap-commerce-intellij-idea-plugin/pull/2002)
 
+### Fixes
+- Restore the `SAP CX` tool window visibility stored in the project layout, it is no longer force-closed on each project open
+
 ## [2026.2.3]
 
 <cite>Release contributors</code>

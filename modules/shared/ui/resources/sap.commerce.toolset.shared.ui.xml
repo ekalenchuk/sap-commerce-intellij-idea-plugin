@@ -40,7 +40,7 @@
         <applicationConfigurable id="hybris.settings" parentId="root" displayName="[y] SAP CX"
                                  provider="sap.commerce.toolset.options.ApplicationSettingsConfigurableProvider"/>
 
-        <toolWindow id="SAP CX" icon="/icons/toolWindow.svg" anchor="bottom" doNotActivateOnStart="true" canCloseContents="true"
+        <toolWindow id="SAP CX" icon="/icons/toolWindow.svg" anchor="bottom" canCloseContents="true"
                     factoryClass="sap.commerce.toolset.toolwindow.HybrisToolWindowFactory"/>
 
         <postStartupActivity order="after hybrisProjectImport" implementation="sap.commerce.toolset.startup.WhatsNewStartupActivity"/>
