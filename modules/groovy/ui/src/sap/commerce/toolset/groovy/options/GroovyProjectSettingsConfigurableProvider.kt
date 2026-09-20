@@ -27,9 +27,7 @@ import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import com.intellij.ui.layout.selected
 import sap.commerce.toolset.HybrisConstants
 import sap.commerce.toolset.Plugin
-import sap.commerce.toolset.actionSystem.HybrisEditorToolbarProvider
 import sap.commerce.toolset.groovy.GroovyConstants
-import sap.commerce.toolset.groovy.actionSystem.GroovyEditorToolbarProvider
 import sap.commerce.toolset.groovy.groovySettings
 import sap.commerce.toolset.groovy.settings.state.GroovyExecExceptionHandling
 import sap.commerce.toolset.groovy.settings.state.GroovyExecMode
@@ -37,6 +35,7 @@ import sap.commerce.toolset.i18n
 import sap.commerce.toolset.isHybrisProject
 import sap.commerce.toolset.project.ProjectConstants
 import sap.commerce.toolset.settings.state.SpringContextMode
+import sap.commerce.toolset.ui.editor.SplitEditorBase
 import sap.commerce.toolset.settings.state.TransactionMode
 import sap.commerce.toolset.settings.yDeveloperSettings
 import javax.swing.JCheckBox
@@ -52,10 +51,6 @@ class GroovyProjectSettingsConfigurableProvider(private val project: Project) : 
 
         private val groovySettings = project.yDeveloperSettings.groovySettings
         private lateinit var enableActionToolbar: JCheckBox
-        private val toolbarProvider by lazy {
-            HybrisEditorToolbarProvider.EP.findExtensionOrFail(GroovyEditorToolbarProvider::class.java)
-        }
-
         override fun createPanel() = panel {
             row {
                 comboBox(
@@ -137,7 +132,7 @@ class GroovyProjectSettingsConfigurableProvider(private val project: Project) : 
 
         override fun apply() {
             super.apply()
-            toolbarProvider.toggle(project)
+            SplitEditorBase.refreshToolbars(project)
         }
     }
 }

@@ -21,6 +21,7 @@
 - Unlock the username and password fields of the `HAC` and `Solr` connection settings dialog on the EDT once the credentials are retrieved
 - Keep the `SAP CX` project view and the localized `ImpEx` file grouping working when the platform provides no view settings
 - Show the project import notification once the project is opened
+- Render the `ImpEx`, `FlexibleSearch`, `Polyglot Query`, `Groovy` and `ACL` actions toolbar as part of the editor instead of the editor header
 
 ## [2026.2.3]
 

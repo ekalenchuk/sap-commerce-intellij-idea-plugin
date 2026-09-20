@@ -21,6 +21,8 @@ package sap.commerce.toolset.ui.editor
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.application.edtWriteAction
+import com.intellij.openapi.editor.ex.EditorEx
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
@@ -35,8 +37,10 @@ import com.intellij.ui.OnePixelSplitter
 import com.intellij.ui.dsl.builder.*
 import com.intellij.ui.dsl.gridLayout.UnscaledGaps
 import com.intellij.util.application
+import com.intellij.util.asSafely
 import com.intellij.util.ui.JBUI
 import kotlinx.coroutines.*
+import sap.commerce.toolset.actionSystem.HybrisEditorToolbarProvider
 import sap.commerce.toolset.editor.SplitEditor
 import sap.commerce.toolset.ui.actionButton
 import java.awt.BorderLayout
@@ -55,6 +59,10 @@ abstract class SplitEditorBase(
         @Serial
         private const val serialVersionUID: Long = 6131790789133766553L
         private val KEY_IN_EDITOR_RESULTS = Key.create<Boolean>("split_editor.in_editor_results.key")
+
+        fun refreshToolbars(project: Project) = FileEditorManager.getInstance(project).allEditors
+            .filterIsInstance<SplitEditorBase>()
+            .forEach { it.refreshToolbar() }
     }
 
     override var inEditorResults: Boolean
@@ -120,10 +128,42 @@ abstract class SplitEditorBase(
         add(verticalSplitter, BorderLayout.CENTER)
     }
 
+    private var toolbarComponent: JComponent? = null
+
     init {
         // Default layout for editors without a parameters panel (ACL, Groovy).
         // Parameterized editors override this in their own init block.
         verticalSplitter.firstComponent = textEditor.component
+
+        installToolbar()
+    }
+
+    private fun installToolbar() {
+        val file = file ?: return
+        val editorEx = editor.asSafely<EditorEx>() ?: return
+        val toolbar = HybrisEditorToolbarProvider.EP.extensionList
+            .firstOrNull { it.isEnabled(project, file) }
+            ?.createToolbar(project, editorEx)
+            ?: return
+
+        toolbarComponent = toolbar
+        rootPanel.add(toolbar, BorderLayout.NORTH)
+    }
+
+    /**
+     * Reflects the settings which enable or disable the toolbar of the related file type.
+     */
+    fun refreshToolbar() {
+        val file = file ?: return
+        val enabled = HybrisEditorToolbarProvider.EP.extensionList
+            .any { it.isEnabled(project, file) }
+        val toolbar = toolbarComponent
+
+        if (toolbar == null) {
+            if (enabled) installToolbar()
+        } else {
+            toolbar.isVisible = enabled
+        }
     }
 
     open var inEditorParameters: Boolean

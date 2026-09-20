@@ -24,14 +24,13 @@ import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.editor.ex.EditorEx
-import com.intellij.openapi.editor.ex.util.EditorUtil
 import com.intellij.openapi.editor.impl.EditorHeaderComponent
 import com.intellij.openapi.extensions.ExtensionPointName
-import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.containers.JBIterable
+import javax.swing.JComponent
 
 interface HybrisEditorToolbarProvider {
 
@@ -42,21 +41,13 @@ interface HybrisEditorToolbarProvider {
 
     fun isEnabled(project: Project, vf: VirtualFile): Boolean = vf.fileType == fileType
 
-    fun toggle(project: Project) = FileEditorManager.getInstance(project).allEditors
-        .filter { fileType == it.file.fileType }
-        .mapNotNull { EditorUtil.getEditorEx(it) }
-        .forEach { toggle(project, it) }
-
-    fun toggle(project: Project, editor: EditorEx) {
-        val vf = editor.virtualFile ?: return
-
-        if (isEnabled(project, vf)) enableToolbar(project, editor)
-        else toggle(editor, false)
-    }
-
-    private fun install(project: Project, editor: EditorEx) {
+    /**
+     * Toolbar is rendered by the owning editor, it must not be registered as an editor header component:
+     * the header is projected anew on each editor binding, which is not supported for the Remote Development.
+     */
+    fun createToolbar(project: Project, editor: EditorEx): JComponent {
         val actionManager = ActionManager.getInstance()
-        val headerComponent = EditorHeaderComponent()
+        val toolbarComponent = EditorHeaderComponent()
         val leftGroup = actionManager.getAction(leftGroupId) as ActionGroup
         val rightGroup = actionManager.getAction(rightGroupId) as ActionGroup
         val leftToolbar = actionManager.createActionToolbar(ActionPlaces.EDITOR_TOOLBAR, leftGroup, true)
@@ -67,30 +58,19 @@ interface HybrisEditorToolbarProvider {
         leftToolbar.targetComponent = editor.contentComponent
         rightToolbar.targetComponent = editor.contentComponent
 
-        headerComponent.add(leftToolbar.component, "Center")
-        headerComponent.add(rightToolbar.component, "East")
+        toolbarComponent.add(leftToolbar.component, "Center")
+        toolbarComponent.add(rightToolbar.component, "East")
 
         leftToolbar.updateActionsAsync()
-
-        editor.permanentHeaderComponent = headerComponent
-        editor.headerComponent = headerComponent
 
         ToggleToolbarAction.setToolbarVisible(
             toolbarId,
             PropertiesComponent.getInstance(project),
-            JBIterable.of(headerComponent),
+            JBIterable.of(toolbarComponent),
             null as Boolean?
         )
-    }
 
-    private fun enableToolbar(project: Project, editor: EditorEx) {
-        if (editor.permanentHeaderComponent == null) install(project, editor)
-        else toggle(editor, true)
-    }
-
-    private fun toggle(editor: EditorEx, visible: Boolean) = with(editor) {
-        permanentHeaderComponent?.isVisible = visible
-        headerComponent?.isVisible = visible
+        return toolbarComponent
     }
 
     companion object {

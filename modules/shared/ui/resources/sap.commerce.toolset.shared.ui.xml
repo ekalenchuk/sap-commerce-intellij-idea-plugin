@@ -33,7 +33,6 @@
     </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
-        <editorFactoryListener implementation="sap.commerce.toolset.ui.editor.event.HybrisEditorFactoryListener"/>
         <psi.treeChangeListener implementation="sap.commerce.toolset.ui.editor.event.ParameterizedSplitEditorPsiTreeChangeListener"/>
         <fileEditorProvider implementation="sap.commerce.toolset.editor.HybrisSplitFileEditorProvider"/>
 
