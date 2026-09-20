@@ -29,6 +29,7 @@ import com.intellij.openapi.util.ModificationTracker
 import com.intellij.util.application
 import sap.commerce.toolset.HybrisConstants
 import sap.commerce.toolset.ccv2.CCv2Constants
+import sap.commerce.toolset.credentials.CxCredentialStore
 import sap.commerce.toolset.ccv2.event.CCv2SettingsListener
 import sap.commerce.toolset.ccv2.settings.state.CCv2ApplicationSettingsState
 import sap.commerce.toolset.ccv2.settings.state.CCv2Authentication
@@ -67,7 +68,8 @@ class CCv2ProjectSettings : SerializablePersistentStateComponent<CCv2Application
                 .onChange(state)
         }
 
-    fun getCCv2Authentication(subscriptionUUID: String? = null) = PasswordSafe.instance[getAuthentication(subscriptionUUID)]
+    fun getCCv2Authentication(subscriptionUUID: String? = null) = authenticationKey(subscriptionUUID)
+        .let { CxCredentialStore.get(it, it) }
 
     fun loadDefaultCCv2Authentication(callback: (Credentials?) -> Unit) {
         ProgressManager.getInstance().run(object : Task.Backgroundable(null, "Retrieving SAP CCv2 Authentication", false) {
@@ -93,8 +95,8 @@ class CCv2ProjectSettings : SerializablePersistentStateComponent<CCv2Application
             override fun run(indicator: ProgressIndicator) {
                 callback?.invoke(credentials)
 
-                if (credentials == null) PasswordSafe.instance[getAuthentication(subscriptionUUID)] = null
-                else PasswordSafe.instance[getAuthentication(subscriptionUUID)] = credentials
+                authenticationKey(subscriptionUUID)
+                    .let { CxCredentialStore.set(it, it, credentials) }
             }
         })
     }
@@ -106,11 +108,14 @@ class CCv2ProjectSettings : SerializablePersistentStateComponent<CCv2Application
 
     fun mutable() = state.mutable()
 
-    private fun getAuthentication(subscriptionUUID: String?) = if (subscriptionUUID == null) CredentialAttributes(CCv2Constants.SECURE_STORAGE_CCV2_AUTHENTICATION)
-    else CredentialAttributes(CCv2Constants.SECURE_STORAGE_CCV2_AUTHENTICATION + " - " + subscriptionUUID)
-
     companion object {
         @JvmStatic
         fun getInstance(): CCv2ProjectSettings = application.service()
+
+        /**
+         * Key of the stored authentication, the very same value was used as a service name before the migration to the platform service name.
+         */
+        fun authenticationKey(subscriptionUUID: String?) = if (subscriptionUUID == null) CCv2Constants.SECURE_STORAGE_CCV2_AUTHENTICATION
+        else CCv2Constants.SECURE_STORAGE_CCV2_AUTHENTICATION + " - " + subscriptionUUID
     }
 }

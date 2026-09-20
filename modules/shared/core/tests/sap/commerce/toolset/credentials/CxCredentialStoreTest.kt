@@ -16,33 +16,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-fun properties(key: String) = providers.gradleProperty(key)
+package sap.commerce.toolset.credentials
 
-plugins {
-    id("org.jetbrains.intellij.platform.module")
-    alias(libs.plugins.kotlin) // Kotlin support
-}
+import kotlin.test.Test
+import kotlin.test.assertContains
+import kotlin.test.assertTrue
 
-sourceSets {
-    main {
-        java.srcDirs("src")
-        resources.srcDirs("resources")
-    }
-    test {
-        java.srcDirs("tests")
-    }
-}
+class CxCredentialStoreTest {
 
-dependencies {
-    testImplementation(kotlin("test"))
+    @Test
+    fun `service name starts with the prefix served by the JetBrains Client`() {
+        val serviceName = CxCredentialStore.serviceName("11111111-2222-3333-4444-555555555555")
 
-    intellijPlatform {
-        intellijIdea(properties("intellij.version")) {
-            useInstaller = true
-        }
-
-        bundledPlugins(
-            "com.intellij.java",
+        assertTrue(
+            serviceName.startsWith("IntelliJ Platform"),
+            "Remote Development denies credentials of any other service name, was: $serviceName"
         )
+    }
+
+    @Test
+    fun `service name keeps the subsystem and the key`() {
+        val serviceName = CxCredentialStore.serviceName("proxy - 42")
+
+        assertContains(serviceName, "SAP CX")
+        assertContains(serviceName, "proxy - 42")
     }
 }

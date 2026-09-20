@@ -18,13 +18,12 @@
 
 package sap.commerce.toolset.exec
 
-import com.intellij.credentialStore.CredentialAttributes
 import com.intellij.credentialStore.Credentials
-import com.intellij.ide.passwordSafe.PasswordSafe
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
+import sap.commerce.toolset.credentials.CxCredentialStore
 import sap.commerce.toolset.exec.settings.event.ExecConnectionListener
 import sap.commerce.toolset.exec.settings.state.ExecConnectionSettingsState
 import sap.commerce.toolset.exec.settings.state.ExecCredentials
@@ -45,10 +44,10 @@ abstract class ExecConnectionService<T : ExecConnectionSettingsState, S : ExecCo
     abstract fun delete(state: T)
     abstract fun create(snapshot: S, notify: Boolean = true)
 
-    fun getCredentials(uuid: String) = PasswordSafe.instance[CredentialAttributes("SAP CX - $uuid")]
+    fun getCredentials(uuid: String) = CxCredentialStore.get(uuid, legacyServiceName(uuid))
         ?: defaultCredentials()
 
-    fun getProxyCredentials(uuid: String) = PasswordSafe.instance[CredentialAttributes("SAP CX - proxy - $uuid")]
+    fun getProxyCredentials(uuid: String) = CxCredentialStore.get(proxyKey(uuid), legacyServiceName(proxyKey(uuid)))
 
     fun update(snapshot: S) {
         delete(snapshot.state)
@@ -85,17 +84,19 @@ abstract class ExecConnectionService<T : ExecConnectionSettingsState, S : ExecCo
     private fun writeCredentials(title: String, uuid: String, credentials: ExecCredentials? = null, proxyCredentials: ExecCredentials? = null) = ProgressManager.getInstance()
         .run(object : Task.Backgroundable(project, title, false) {
             override fun run(indicator: ProgressIndicator) {
-                credentials.write("SAP CX - $uuid")
-                proxyCredentials.write("SAP CX - proxy - $uuid")
+                credentials.write(uuid)
+                proxyCredentials.write(proxyKey(uuid))
             }
         })
 
-    private fun ExecCredentials?.write(serviceName: String) {
+    private fun ExecCredentials?.write(key: String) {
         if (this == null || this.mutation == Mutation.SAVE) {
-            val credentialAttributes = CredentialAttributes(serviceName)
-            PasswordSafe.instance[credentialAttributes] = this?.credentials
+            CxCredentialStore.set(key, legacyServiceName(key), this?.credentials)
         }
     }
+
+    private fun proxyKey(uuid: String) = "proxy - $uuid"
+    private fun legacyServiceName(key: String) = "SAP CX - $key"
 
     protected fun getPropertyOrDefault(project: Project, key: String, fallback: String) = PropertyService.getInstance(project)
         .findProperty(key)

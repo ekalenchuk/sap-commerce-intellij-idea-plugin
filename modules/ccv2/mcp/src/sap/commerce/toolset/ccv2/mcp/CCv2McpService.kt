@@ -43,6 +43,7 @@ import sap.commerce.toolset.ccv2.mcp.CCv2McpMapper.mcpDto
 import sap.commerce.toolset.ccv2.mcp.dto.*
 import sap.commerce.toolset.ccv2.model.EndpointUpdateDTO
 import sap.commerce.toolset.ccv2.settings.CCv2ProjectSettings
+import sap.commerce.toolset.credentials.CxCredentialStore
 import sap.commerce.toolset.ccv2.settings.state.CCv2Authentication
 import sap.commerce.toolset.ccv2.settings.state.CCv2Subscription
 import sap.commerce.toolset.ccv2.unscramble.CCv2UnscrambleService
@@ -348,14 +349,10 @@ class CCv2McpService {
                 ?: error("Subscription '$subscriptionId' not found. Use sap_commerce_ccv2_list_subscriptions to list available subscriptions.")
         } else null
 
-        val credKey = if (subscription == null) {
-            CredentialAttributes(CCv2Constants.SECURE_STORAGE_CCV2_AUTHENTICATION)
-        } else {
-            CredentialAttributes(CCv2Constants.SECURE_STORAGE_CCV2_AUTHENTICATION + " - " + subscription.uuid)
-        }
+        val credentialsKey = CCv2ProjectSettings.authenticationKey(subscription?.uuid)
 
         withContext(Dispatchers.IO) {
-            PasswordSafe.instance[credKey] = Credentials(clientId, clientSecret)
+            CxCredentialStore.set(credentialsKey, credentialsKey, Credentials(clientId, clientSecret))
         }
 
         val scope = subscription?.presentableName ?: "global (shared across all subscriptions)"
