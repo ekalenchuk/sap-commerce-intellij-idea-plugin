@@ -36,7 +36,7 @@ import sap.commerce.toolset.project.view.HybrisProjectViewDirectoryHelper
 import javax.swing.Icon
 
 // TODO: remove this class and migrate to new Workspace Model API
-class HybrisProjectViewProjectNode(project: Project, viewSettings: ViewSettings) : ProjectViewProjectNode(project, viewSettings) {
+class HybrisProjectViewProjectNode(project: Project, viewSettings: ViewSettings?) : ProjectViewProjectNode(project, viewSettings) {
 
     override fun getChildren(): MutableCollection<AbstractTreeNode<*>> {
         val project = myProject
