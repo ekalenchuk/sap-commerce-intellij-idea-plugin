@@ -20,6 +20,7 @@
 - Refresh the loggers tree on the EDT when the active `HAC` connection or a log template changes
 - Unlock the username and password fields of the `HAC` and `Solr` connection settings dialog on the EDT once the credentials are retrieved
 - Keep the `SAP CX` project view and the localized `ImpEx` file grouping working when the platform provides no view settings
+- Show the project import notification once the project is opened
 
 ## [2026.2.3]
 

@@ -22,6 +22,7 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.module.ModifiableModuleModel
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.startup.StartupManager
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.packaging.artifacts.ModifiableArtifactModel
 import com.intellij.projectImport.ProjectImportBuilder
@@ -114,12 +115,15 @@ open class HybrisProjectImportBuilder : ProjectImportBuilder<ModuleDescriptor>()
         context = it
     }
 
-    private fun notifyImportNotFinishedYet(project: Project) = Notifications.create(
-        type = NotificationType.INFORMATION,
-        title = if (isUpdate) i18n("hybris.notification.project.refresh.title")
-        else i18n("hybris.notification.project.import.title"),
-        content = i18n("hybris.notification.import.or.refresh.process.not.finished.yet.content")
-    )
-        .notify(project)
+    // during the import the project is not opened yet, its client session may be unavailable
+    private fun notifyImportNotFinishedYet(project: Project) = StartupManager.getInstance(project).runAfterOpened {
+        Notifications.create(
+            type = NotificationType.INFORMATION,
+            title = if (isUpdate) i18n("hybris.notification.project.refresh.title")
+            else i18n("hybris.notification.project.import.title"),
+            content = i18n("hybris.notification.import.or.refresh.process.not.finished.yet.content")
+        )
+            .notify(project)
+    }
 
 }
