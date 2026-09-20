@@ -21,6 +21,7 @@ package sap.commerce.toolset.console.ui
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.ActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.application.WriteIntentReadAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vcs.impl.LineStatusTrackerManager
@@ -47,7 +48,12 @@ class CxConsolesToolWindow(private val project: Project, parentDisposable: Dispo
     private val tabsPanel = JBTabsPaneImpl(project, SwingConstants.TOP, this)
 
     // TODO: refresh on plugin reloads, f.e. Groovy
-    private val consoles: List<HybrisConsole<out ExecContext>> by lazy { HybrisConsoleProvider.EP.extensionList.mapNotNull { it.console(project) } }
+    // consoles are created on the EDT and read the model, f.e. the console document
+    private val consoles: List<HybrisConsole<out ExecContext>> by lazy {
+        WriteIntentReadAction.compute<List<HybrisConsole<out ExecContext>>> {
+            HybrisConsoleProvider.EP.extensionList.mapNotNull { it.console(project) }
+        }
+    }
 
     init {
         Disposer.register(LineStatusTrackerManager.getInstanceImpl(project), parentDisposable)
