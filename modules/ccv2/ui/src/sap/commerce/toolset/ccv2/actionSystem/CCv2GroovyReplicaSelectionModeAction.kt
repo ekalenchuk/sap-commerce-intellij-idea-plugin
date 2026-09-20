@@ -21,13 +21,12 @@ package sap.commerce.toolset.ccv2.actionSystem
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.util.Disposer
-import com.intellij.util.asSafely
+import sap.commerce.toolset.actionSystem.contextComponent
 import sap.commerce.toolset.Plugin
 import sap.commerce.toolset.ccv2.CCv2ExecConstants
 import sap.commerce.toolset.ccv2.ui.CCv2ReplicaSelectionDialog
 import sap.commerce.toolset.groovy.actionSystem.GroovyReplicaSelectionModeAction
 import sap.commerce.toolset.groovy.exec.GroovyExecService
-import java.awt.Component
 
 class CCv2GroovyReplicaSelectionModeAction : GroovyReplicaSelectionModeAction(CCv2ExecConstants.ccv2) {
 
@@ -38,7 +37,7 @@ class CCv2GroovyReplicaSelectionModeAction : GroovyReplicaSelectionModeAction(CC
     override fun setSelected(e: AnActionEvent, state: Boolean) {
         val project = e.project ?: return
         val virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE) ?: return
-        val component = e.inputEvent?.source?.asSafely<Component>() ?: return
+        val component = e.contextComponent ?: return
         val execSettings = GroovyExecService.getInstance(project).getSettings(virtualFile)
 
         val dialog = CCv2ReplicaSelectionDialog(project, virtualFile, execSettings, component)

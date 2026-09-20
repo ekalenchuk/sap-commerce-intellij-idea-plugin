@@ -20,18 +20,17 @@ package sap.commerce.toolset.groovy.actionSystem
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.util.asSafely
+import sap.commerce.toolset.actionSystem.contextComponent
 import sap.commerce.toolset.groovy.exec.GroovyExecConstants
 import sap.commerce.toolset.groovy.exec.GroovyExecService
 import sap.commerce.toolset.groovy.ui.ManualReplicaSelectionDialog
-import java.awt.Component
 
 class GroovyManualReplicaSelectionModeAction : GroovyReplicaSelectionModeAction(GroovyExecConstants.manual) {
 
     override fun setSelected(e: AnActionEvent, state: Boolean) {
         val project = e.project ?: return
         val virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE) ?: return
-        val component = e.inputEvent?.source?.asSafely<Component>() ?: return
+        val component = e.contextComponent ?: return
         val execSettings = GroovyExecService.getInstance(project).getSettings(virtualFile)
 
         ManualReplicaSelectionDialog(project, virtualFile, execSettings, component).showAndGet()

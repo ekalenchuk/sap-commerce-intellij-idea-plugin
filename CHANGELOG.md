@@ -25,6 +25,7 @@
 - Report no IDE error when the `hybris4intellij.properties` group override file cannot be read or written during the project import
 - Explain that the project reimport is not available in the `JetBrains Client` instead of closing the project and showing no import wizard
 - Store the `hAC`, `Solr` and `CCv2` credentials under the IntelliJ Platform service name, previously stored secrets are migrated on the next save
+- Open the connection settings dialog of the `hAC` and `Solr` connections when invoked from the editor toolbar menu
 
 ## [2026.2.3]
 

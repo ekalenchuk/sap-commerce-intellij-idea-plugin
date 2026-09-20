@@ -24,6 +24,17 @@ import com.intellij.openapi.actionSystem.impl.SimpleDataContext
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
+import com.intellij.util.asSafely
+import java.awt.Component
+
+/**
+ * Component the dialogs and popups of an action have to be attached to.
+ *
+ * An action performed from a popup menu or from the JetBrains Client has no `inputEvent`, the context component of the data context is the only source.
+ */
+val AnActionEvent.contextComponent: Component?
+    get() = inputEvent?.source?.asSafely<Component>()
+        ?: getData(PlatformCoreDataKeys.CONTEXT_COMPONENT)
 
 fun Project.triggerAction(
     actionId: String,

@@ -20,19 +20,15 @@ package sap.commerce.toolset.solr.actionSystem
 
 import com.intellij.openapi.actionSystem.AnActionEvent
 import sap.commerce.toolset.HybrisIcons
+import sap.commerce.toolset.actionSystem.contextComponent
 import sap.commerce.toolset.solr.exec.SolrExecConnectionService
 import sap.commerce.toolset.solr.ui.SolrConnectionSettingsDialog
-import java.awt.Component
-import java.awt.event.InputEvent
 
 class AddSolrConnectionAction : SolrConnectionAction("Create new connection", HybrisIcons.Connection.ADD) {
 
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val inputEvent: InputEvent? = e.inputEvent
-        val eventSource = inputEvent?.source
-        val component = (eventSource as? Component)
-            ?: return
+        val component = e.contextComponent ?: return
 
         val execService = SolrExecConnectionService.getInstance(project)
         val mutable = execService.default().mutable()
