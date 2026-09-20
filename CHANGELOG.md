@@ -17,6 +17,7 @@
 - Restore the `SAP CX` tool window visibility stored in the project layout, it is no longer force-closed on each project open
 - Report no IDE error while auto-configuring the local data source during the project import
 - Report no IDE error while opening the `Consoles` tool window
+- Refresh the loggers tree on the EDT when the active `HAC` connection or a log template changes
 
 ## [2026.2.3]
 

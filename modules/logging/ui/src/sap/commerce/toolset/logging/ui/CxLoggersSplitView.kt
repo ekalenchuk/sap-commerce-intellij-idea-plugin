@@ -27,6 +27,7 @@ import com.intellij.ui.PopupHandler
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.dsl.builder.Align
 import com.intellij.ui.dsl.builder.panel
+import com.intellij.util.application
 import com.intellij.util.asSafely
 import kotlinx.coroutines.*
 import sap.commerce.toolset.hac.exec.HacExecConnectionService
@@ -125,7 +126,9 @@ class CxLoggersSplitView(private val project: Project) : OnePixelSplitter(false,
     }
 
     override fun onActivated() = updateTree()
-    private fun updateTree() = tree.onActivated()
+
+    // connection and template listeners may be notified from a background thread, the tree can be refreshed on the EDT only
+    private fun updateTree() = application.invokeLater { tree.onActivated() }
 
     private fun registerListeners(tree: CxLoggersTree) = tree
         .addTreeSelectionListener(tree) { event ->
