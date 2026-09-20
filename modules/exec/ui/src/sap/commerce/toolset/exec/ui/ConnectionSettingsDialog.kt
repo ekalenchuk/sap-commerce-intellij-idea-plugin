@@ -36,6 +36,7 @@ import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBTextField
 import com.intellij.ui.dsl.builder.Cell
 import com.intellij.ui.dsl.builder.text
+import com.intellij.util.application
 import com.intellij.util.ui.JBUI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -149,19 +150,33 @@ abstract class ConnectionSettingsDialog<M : ExecConnectionSettingsState.Mutable>
         if (mutable.credentials.loaded) editableCredentials.set(true)
         else ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Retrieving credentials", false) {
             override fun run(indicator: ProgressIndicator) {
-                mutable.credentials.load(retrieveCredentials(mutable))
-                editableCredentials.set(true)
+                val credentials = retrieveCredentials(mutable)
+
+                applyCredentials {
+                    mutable.credentials.load(credentials)
+                    editableCredentials.set(true)
+                }
             }
         })
 
         if (mutable.proxyCredentials.loaded) editableProxyCredentials.set(true)
         else ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Retrieving proxy credentials", false) {
             override fun run(indicator: ProgressIndicator) {
-                mutable.proxyCredentials.load(retrieveProxyCredentials(mutable))
-                editableProxyCredentials.set(true)
+                val proxyCredentials = retrieveProxyCredentials(mutable)
+
+                applyCredentials {
+                    mutable.proxyCredentials.load(proxyCredentials)
+                    editableProxyCredentials.set(true)
+                }
             }
         })
     }
+
+    /**
+     * Credentials are retrieved in the background, the dialog is already shown and can be modified on the EDT only.
+     * Any modality is accepted, the dialog itself is modal.
+     */
+    private fun applyCredentials(action: () -> Unit) = application.invokeLater(action, ModalityState.any())
 
     protected fun generateUrl() = sap.commerce.toolset.exec.generateUrl(
         sslProtocolCheckBox.isSelected,
