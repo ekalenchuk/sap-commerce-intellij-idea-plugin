@@ -32,6 +32,7 @@ import com.intellij.ui.dsl.builder.Align
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.util.ui.JBUI
 import sap.commerce.toolset.actionSystem.triggerAction
+import sap.commerce.toolset.isRemoteClient
 import sap.commerce.toolset.path
 import sap.commerce.toolset.settings.WorkspaceSettings
 import sap.commerce.toolset.ui.banner
@@ -108,6 +109,23 @@ contact <a href="https://www.linkedin.com/in/michaellytvyn/">Mykhailo Lytvyn</a>
         }
 
         separator()
+
+        if (isRemoteClient) {
+            row {
+                cell(
+                    banner(
+                        text = """
+                            Reimport is not available in the JetBrains Client.<br>
+                            The import wizard is shown by the backend and cannot be projected to the client, open the project in a local IDE instance to reimport it.
+                        """.trimIndent(),
+                        status = EditorNotificationPanel.Status.Warning
+                    )
+                )
+                    .align(Align.FILL)
+            }
+
+            return@panel
+        }
 
         row {
             link("Re-import the project...") {

@@ -23,6 +23,7 @@
 - Show the project import notification once the project is opened
 - Render the `ImpEx`, `FlexibleSearch`, `Polyglot Query`, `Groovy` and `ACL` actions toolbar as part of the editor instead of the editor header
 - Report no IDE error when the `hybris4intellij.properties` group override file cannot be read or written during the project import
+- Explain that the project reimport is not available in the `JetBrains Client` instead of closing the project and showing no import wizard
 
 ## [2026.2.3]
 

@@ -18,6 +18,7 @@
 
 package sap.commerce.toolset
 
+import com.intellij.codeWithMe.ClientId
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.DataContext
@@ -31,6 +32,14 @@ import kotlin.io.path.Path
 import kotlin.io.path.isDirectory
 
 val isSandbox = System.getProperty("sap.commerce.toolset.mode") == "sandbox"
+
+/**
+ * `true` when the current activity is performed on behalf of a JetBrains Client connected to the Remote Development backend.
+ *
+ * Swing dialogs of such an activity can be shown only within an opened project, project-less dialogs never reach the client.
+ */
+val isRemoteClient: Boolean
+    get() = !ClientId.isCurrentlyUnderLocalId
 
 val PsiElement.isHybrisProject: Boolean
     get() = project.isHybrisProject

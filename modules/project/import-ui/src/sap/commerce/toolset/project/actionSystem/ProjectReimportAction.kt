@@ -20,10 +20,13 @@ package sap.commerce.toolset.project.actionSystem
 
 import com.intellij.ide.actions.ImportModuleAction
 import com.intellij.openapi.actionSystem.ActionUpdateThread
+import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.projectImport.ProjectImportProvider
+import sap.commerce.toolset.Notifications
+import sap.commerce.toolset.isRemoteClient
 import sap.commerce.toolset.project.HybrisProjectImportProvider
 
 class ProjectReimportAction : DumbAwareAction(
@@ -34,6 +37,15 @@ class ProjectReimportAction : DumbAwareAction(
     override fun getActionUpdateThread() = ActionUpdateThread.BGT
 
     override fun actionPerformed(e: AnActionEvent) {
+        if (isRemoteClient) {
+            Notifications.create(
+                NotificationType.WARNING,
+                "Reimport is not available",
+                "The project reimport relies on the import wizard, which cannot be shown in the JetBrains Client. Reimport the project in a local IDE instance."
+            ).notify(e.project)
+            return
+        }
+
         val projectDirectory = e.getData(CommonDataKeys.VIRTUAL_FILE) ?: return
         val importProvider = ProjectImportProvider.PROJECT_IMPORT_PROVIDER.extensionsIfPointIsRegistered
             .filterIsInstance<HybrisProjectImportProvider>()
